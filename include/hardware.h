@@ -42,7 +42,7 @@ public:
 	};
 
 	/**
-	 * Get a reference to a struct representing the state of the DS' buttons.
+	 * Get a reference to an object representing the state of the DS' buttons.
 	  *@return A reference to the current pad state.
 	 */
 	static inline const Pad& getPad() {
@@ -50,7 +50,7 @@ public:
 	};
 
 	/**
-	 * Get a reference to a struct representing the state of the DS' stylus.
+	 * Get a reference to an object representing the state of the DS' stylus.
 	  *@return A reference to the current stylus state.
 	 */
 	static inline const Stylus& getStylus() {
@@ -58,21 +58,21 @@ public:
 	};
 
 	/**
-	 * Waits for the next VBlank.  Also updates the pad state.
+	 * Waits for the next VBlank.  Also updates the pad/stylus states.
 	 */
 	static void waitForVBlank();
 
 private:
-	static Pad _pad;								/**< State of the DS' pad. */
-	static Stylus _stylus;							/**< State of the DS' stylus. */
-	static SDLFrameBuffer* _topBuffer;				/**< Top frame buffer. */
-	static SDLFrameBuffer* _bottomBuffer;			/**< Bottom frame buffer. */
-	static WoopsiGfx::Graphics* _topGfx;			/**< Top display graphics object. */
-	static WoopsiGfx::Graphics* _bottomGfx;			/**< Bottom display graphics object. */
+	static Pad _pad;						/**< State of the DS' pad. */
+	static Stylus _stylus;					/**< State of the DS' stylus. */
+	static SDLFrameBuffer* _topBuffer;		/**< Top frame buffer. */
+	static SDLFrameBuffer* _bottomBuffer;	/**< Bottom frame buffer. */
+	static WoopsiGfx::Graphics* _topGfx;	/**< Top display graphics object. */
+	static WoopsiGfx::Graphics* _bottomGfx;	/**< Bottom display graphics object. */
     
 #ifdef USING_SDL
     
-    static SDL_Surface* _surface;					/**< SDL surface for visual output. */
+    static SDL_Surface* _surface;			/**< SDL surface for visual output. */
 	
 #endif
 
