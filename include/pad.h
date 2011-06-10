@@ -41,31 +41,18 @@ public:
 	inline bool isStartNewPress() const { return _start == 1; };
 	inline bool isSelectNewPress() const { return _select == 1; };
 
-	inline bool isUpHeld() const { return _up > 1; };
-	inline bool isDownHeld() const { return _down > 1; };
-	inline bool isLeftHeld() const { return _left > 1; };
-	inline bool isRightHeld() const { return _right > 1; };
-	inline bool isAHeld() const { return _a > 1; };
-	inline bool isBHeld() const { return _b > 1; };
-	inline bool isXHeld() const { return _x > 1; };
-	inline bool isYHeld() const { return _y > 1; };
-	inline bool isLHeld() const { return _l > 1; };
-	inline bool isRHeld() const { return _r > 1; };
-	inline bool isStartHeld() const { return _start > 1; };
-	inline bool isSelectHeld() const { return _select > 1; };
-
-	inline bool isUpDown() const { return _up > 0; };
-	inline bool isDownDown() const { return _down > 0; };
-	inline bool isLeftDown() const { return _left > 0; };
-	inline bool isRightDown() const { return _right > 0; };
-	inline bool isADown() const { return _a > 0; };
-	inline bool isBDown() const { return _b > 0; };
-	inline bool isXDown() const { return _x > 0; };
-	inline bool isYDown() const { return _y > 0; };
-	inline bool isLDown() const { return _l > 0; };
-	inline bool isRDown() const { return _r > 0; };
-	inline bool isStartDown() const { return _start > 0; };
-	inline bool isSelectDown() const { return _select > 0; };
+	inline bool isUpHeld() const { return _up > 0; };
+	inline bool isDownHeld() const { return _down > 0; };
+	inline bool isLeftHeld() const { return _left > 0; };
+	inline bool isRightHeld() const { return _right > 0; };
+	inline bool isAHeld() const { return _a > 0; };
+	inline bool isBHeld() const { return _b > 0; };
+	inline bool isXHeld() const { return _x > 0; };
+	inline bool isYHeld() const { return _y > 0; };
+	inline bool isLHeld() const { return _l > 0; };
+	inline bool isRHeld() const { return _r > 0; };
+	inline bool isStartHeld() const { return _start > 0; };
+	inline bool isSelectHeld() const { return _select > 0; };
 
 	inline bool isUpRepeat() const { return _up > 0 && _up % PAD_REPEAT_TIME == 0; };
 	inline bool isDownRepeat() const { return _down > 0 && _down % PAD_REPEAT_TIME == 0; };

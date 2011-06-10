@@ -19,10 +19,8 @@ public:
 
 	~Stylus() { };
 
-	inline bool isTouched() const { return _touch > 0; };
-
 	inline bool isNewPress() const { return _touch == 1; };
-	inline bool isHeld() const { return _touch > 1; };
+	inline bool isHeld() const { return _touch > 0; };
 	inline bool isRepeat() const { return _touch > 0 && _touch % STYLUS_REPEAT_TIME == 0; };
 
 	s16 getX() const { return _x; };
