@@ -1,5 +1,3 @@
-
-
 #include "grid.h"
 
 Grid::Grid() {
@@ -12,4 +10,8 @@ Grid::~Grid() {
 
 void Grid::render(WoopsiGfx::Graphics* gfx) {
 	
+}
+
+void Grid::iterate() {
+
 }
