@@ -9,9 +9,12 @@
 class Pad {
 public:
 
-	static const s32 PAD_REPEAT_TIME = 10;
+	static const s32 PAD_REPEAT_TIME = 10;	/**< VBLs before buttons repeat. */
 
-	Pad() {
+	/**
+	 * Constructor.
+	 */
+	inline Pad() {
 		_up = 0;
 		_down = 0;
 		_left = 0;
@@ -26,7 +29,10 @@ public:
 		_select = 0;
 	};
 
-	~Pad() { };
+	/**
+	 * Destructor.
+	 */
+	inline ~Pad() { };
 
 	inline bool isUpNewPress() const { return _up == 1; };
 	inline bool isDownNewPress() const { return _down == 1; };
@@ -73,6 +79,10 @@ public:
 		return false;
 	};
 
+	/**
+	 * Update the pad's state to match the latest DS state.  The libnds function
+	 * scanKeys() must be called before this method.
+	 */
 	void update() {
 
 #ifndef USING_SDL

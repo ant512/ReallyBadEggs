@@ -9,23 +9,58 @@
 class Stylus {
 public:
 
-	static const s32 STYLUS_REPEAT_TIME = 10;
+	static const s32 STYLUS_REPEAT_TIME = 10;	/**< VBLs before the stylus repeats. */
 
-	Stylus() {
+	/**
+	 * Constructor.
+	 */
+	inline Stylus() {
 		_touch = 0;
 		_x = 0;
 		_y = 0;
 	};
 
-	~Stylus() { };
+	/**
+	 * Destructor.
+	 */
+	inline ~Stylus() { };
 
+	/**
+	 * Check if the stylus has been newly pressed down.
+	 * @return True if the stylus has been newly pressed down in this VBL.
+	 */
 	inline bool isNewPress() const { return _touch == 1; };
+
+	/**
+	 * Check if the stylus is held down.
+	 * @return True if the stylus is held down.
+	 */
 	inline bool isHeld() const { return _touch > 0; };
+
+	/**
+	 * Check if the stylus is repeating.  If the stylus has been held for a
+	 * while it is occasionally useful to treat that as a repeat press.  If this
+	 * method returns true, then a repeat action can be triggered.
+	 * @return True if the stylus is triggering a repeat.
+	 */
 	inline bool isRepeat() const { return _touch > 0 && _touch % STYLUS_REPEAT_TIME == 0; };
 
-	s16 getX() const { return _x; };
-	s16 getY() const { return _y; };
+	/**
+	 * Get the x co-ordinate of the stylus.
+	 * @return The x co-ordinate of the stylus.
+	 */
+	inline s16 getX() const { return _x; };
 
+	/**
+	 * Get the y co-ordinate of the stylus.
+	 * @return The y co-ordinate of the stylus.
+	 */
+	inline s16 getY() const { return _y; };
+
+	/**
+	 * Update the stylus' state to match the latest DS state.  The libnds
+	 * function scanKeys() must be called before this method.
+	 */
 	void update() {
 
 #ifndef USING_SDL
