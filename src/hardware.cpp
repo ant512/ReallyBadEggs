@@ -9,8 +9,6 @@ SDLFrameBuffer* Hardware::_bottomBuffer = NULL;
 WoopsiGfx::Graphics* Hardware::_topGfx = NULL;
 WoopsiGfx::Graphics* Hardware::_bottomGfx = NULL;
 
-bool Hardware::_isMostRecentDirectionVertical = false;
-
 #ifdef USING_SDL
 SDL_Surface* Hardware::_surface = NULL;
 #endif

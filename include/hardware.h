@@ -69,7 +69,6 @@ private:
 	static SDLFrameBuffer* _bottomBuffer;			/**< Bottom frame buffer. */
 	static WoopsiGfx::Graphics* _topGfx;			/**< Top display graphics object. */
 	static WoopsiGfx::Graphics* _bottomGfx;			/**< Bottom display graphics object. */
-	static bool _isMostRecentDirectionVertical;		/**< Remembers the last direction pressed. */
     
 #ifdef USING_SDL
     
