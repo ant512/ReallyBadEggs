@@ -1,0 +1,11 @@
+syntax: glob
+
+build
+Release
+*.o
+*.d
+*.a
+*.nds
+*.bin
+*.elf
+.DS_Store
