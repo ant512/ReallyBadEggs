@@ -13,6 +13,7 @@ public:
 	static const s32 GRID_WIDTH = 6;		/**< Width of the grid. */
 	static const s32 GRID_HEIGHT = 12;		/**< Height of the grid. */
 	static const s32 CHAIN_LENGTH = 4;		/**< Minimum length for a chain of blocks to be removed. */
+	static const s32 BLOCK_SIZE = 2;		/**< Size of each block in the grid. */
 
 	/**
 	 * Constructor.
@@ -24,7 +25,7 @@ public:
 	 */
 	~Grid();
 
-	void render(WoopsiGfx::Graphics* gfx);
+	void render(s32 x, s32 y, WoopsiGfx::Graphics* gfx);
 	void iterate();
 	void clear();
 
@@ -39,6 +40,15 @@ public:
 	bool dropBlocks();
 
 private:
+
+	enum BlockType {
+		BLOCK_NONE = 0,
+		BLOCK_RED = 1,
+		BLOCK_GREEN = 2,
+		BLOCK_BLUE = 3,
+		BLOCK_GREY = 4
+	};
+
 	u8* _data;
 	Point* _liveBlocks;
 	bool _hasLiveBlocks;

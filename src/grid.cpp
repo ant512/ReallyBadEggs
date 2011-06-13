@@ -227,8 +227,36 @@ bool Grid::dropBlocks() {
 	return hasDropped;
 }
 
-void Grid::render(WoopsiGfx::Graphics* gfx) {
-	
+void Grid::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
+
+	s32 renderX = 0;
+	s32 renderY = 0;
+
+	for (s32 blockY = 0; blockY < GRID_HEIGHT; ++blockY) {
+		for (s32 blockX = 0; blockX < GRID_WIDTH; ++blockX) {
+
+			renderX = x + (blockX * BLOCK_SIZE);
+			renderY = y + (blockY * BLOCK_SIZE);
+
+			switch (getBlockAt(blockX, blockY)) {
+				case BLOCK_NONE:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 0));
+					break;
+				case BLOCK_RED:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 0, 0));
+					break;
+				case BLOCK_GREEN:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 31, 0));
+					break;
+				case BLOCK_BLUE:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 31));
+					break;
+				case BLOCK_GREY:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(9, 9, 9));
+					break;
+			}
+		}
+	}
 }
 
 void Grid::iterate() {
