@@ -22,8 +22,13 @@ public:
 private:
 	s32 _x;
 	s32 _y;
+	bool _topConnection;
+	bool _leftConnection;
+	bool _rightConnection;
+	bool _bottomConnection;
+	u16 _colour;
 
-	WoopsiArray<BitmapBase*> _bitmaps;
+	WoopsiArray<WoopsiGfx::BitmapBase*> _bitmaps;
 };
 
 #endif
