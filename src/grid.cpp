@@ -205,6 +205,10 @@ void Grid::dropLiveBlocks() {
 			_hasLiveBlocks = false;
 		} else {
 
+			// Skip the top block if arranged vertically - we don't care that
+			// the top block is on top of the bottom block
+			if (_liveBlocks[0].x == _liveBlocks[1].x && i == 0) continue;
+
 			// Check if the block has landed on another
 			u8 blockBelow = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y + 1);
 
@@ -216,8 +220,9 @@ void Grid::dropLiveBlocks() {
 
 	if (_hasLiveBlocks) {
 
-		// Blocks are still live - drop them block to the next position
-		for (s32 i = 0; i < 2; ++i) {
+		// Blocks are still live - drop them to the next position.  Drop block
+		// 1 first as when vertical 1 is always below
+		for (s32 i = 1; i >= 0; --i) {
 			u8 block = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
 			setBlockAt(_liveBlocks[i].x, _liveBlocks[i].y + 1, block);
 			setBlockAt(_liveBlocks[i].x, _liveBlocks[i].y, BLOCK_NONE);
