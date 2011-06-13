@@ -402,7 +402,51 @@ void Grid::rotateLiveBlocksClockwise() {
 }
 
 void Grid::rotateLiveBlocksAntiClockwise() {
+	if (!_hasLiveBlocks) return;
 
+	// Determine whether the blocks swap to a vertical or horizontal arrangement
+	if (_liveBlocks[0].y == _liveBlocks[1].y) {
+
+		// Swapping to vertical
+
+		// Cannot swap if the blocks are at the bottom of the well
+		if (_liveBlocks[0].y == GRID_HEIGHT - 1) return;
+
+		// Cannot swap if the block below the block on the right is populated
+		if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 1) != BLOCK_NONE) return;
+
+		// Perform the rotation
+
+		// Move the left block down and right
+		setBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 1, getBlockAt(_liveBlocks[0].x, _liveBlocks[0].y));
+		setBlockAt(_liveBlocks[0].x, _liveBlocks[0].y, BLOCK_NONE);
+
+		// 0 block should always be at the top
+		_liveBlocks[0].x = _liveBlocks[1].x;
+		_liveBlocks[0].y = _liveBlocks[1].y;
+		++_liveBlocks[1].y;
+
+	} else {
+
+		// Swapping to horizontal
+
+		// Cannot swap if the blocks are at the left edge of the well
+		if (_liveBlocks[0].x == 0) return;
+
+		// Cannot swap if the block to the left of the block at the top is populated
+		if (getBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y) != BLOCK_NONE) return;
+
+		// Perform the rotation
+
+		// Move the top block left
+		setBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y, getBlockAt(_liveBlocks[0].x, _liveBlocks[0].y));
+		--_liveBlocks[0].x;
+
+		// Move the bottom block up
+		setBlockAt(_liveBlocks[1].x, _liveBlocks[1].y - 1, getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y));
+		setBlockAt(_liveBlocks[1].x, _liveBlocks[1].y, BLOCK_NONE);
+		--_liveBlocks[1].y;
+	}
 }
 
 void Grid::iterate() {
