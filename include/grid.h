@@ -46,6 +46,9 @@ public:
 	void moveLiveBlocksLeft();
 	void moveLiveBlocksRight();
 
+	void rotateLiveBlocksClockwise();
+	void rotateLiveBlocksAntiClockwise();
+
 	bool hasLiveBlocks() const;
 
 private:

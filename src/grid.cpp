@@ -334,7 +334,7 @@ void Grid::moveLiveBlocksRight() {
 
 	bool canMove = true;
 
-	// 1 block should always be on the right or at the top
+	// 1 block should always be on the right or at the bottom
 	if (_liveBlocks[1].x == GRID_WIDTH - 1) canMove = false;
 	if (getBlockAt(_liveBlocks[1].x + 1, _liveBlocks[1].y) != BLOCK_NONE) canMove = false;
 
@@ -350,6 +350,59 @@ void Grid::moveLiveBlocksRight() {
 			++_liveBlocks[i].x;
 		}
 	}
+}
+
+void Grid::rotateLiveBlocksClockwise() {
+	if (!_hasLiveBlocks) return;
+
+	// Determine whether the blocks swap to a vertical or horizontal arrangement
+	if (_liveBlocks[0].y == _liveBlocks[1].y) {
+
+		// Swapping to vertical
+
+		// Cannot swap if the blocks are at the bottom of the well
+		if (_liveBlocks[0].y == GRID_HEIGHT - 1) return;
+
+		// Cannot swap if the block below the block on the right is populated
+		if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 1) != BLOCK_NONE) return;
+
+		// Perform the rotation
+
+		// Move the right block down one place
+		setBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 1, getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y));
+		++_liveBlocks[1].y;
+
+		// Move the left block right one place
+		setBlockAt(_liveBlocks[0].x + 1, _liveBlocks[0].y, getBlockAt(_liveBlocks[0].x, _liveBlocks[0].y));
+		setBlockAt(_liveBlocks[0].x, _liveBlocks[0].y, BLOCK_NONE);
+		++_liveBlocks[0].x;
+
+	} else {
+
+		// Swapping to horizontal
+
+		// Cannot swap if the blocks are at the left edge of the well
+		if (_liveBlocks[0].x == 0) return;
+
+		// Cannot swap if the block to the left of the block at the top is populated
+		if (getBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y) != BLOCK_NONE) return;
+
+		// Perform the rotation
+
+		// Move the bottom block up and left
+		setBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y, getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y));
+		setBlockAt(_liveBlocks[1].x, _liveBlocks[1].y, BLOCK_NONE);
+
+		// 0 block should always be on the left
+		_liveBlocks[1].x = _liveBlocks[0].x;
+		_liveBlocks[1].y = _liveBlocks[0].y;
+
+		--_liveBlocks[0].x;
+	}
+}
+
+void Grid::rotateLiveBlocksAntiClockwise() {
+
 }
 
 void Grid::iterate() {
