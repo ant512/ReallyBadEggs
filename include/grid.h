@@ -13,7 +13,7 @@ public:
 	static const s32 GRID_WIDTH = 6;		/**< Width of the grid. */
 	static const s32 GRID_HEIGHT = 12;		/**< Height of the grid. */
 	static const s32 CHAIN_LENGTH = 4;		/**< Minimum length for a chain of blocks to be removed. */
-	static const s32 BLOCK_SIZE = 2;		/**< Size of each block in the grid. */
+	static const s32 BLOCK_SIZE = 16;		/**< Size of each block in the grid. */
 
 	/**
 	 * Constructor.
@@ -26,6 +26,7 @@ public:
 	~Grid();
 
 	void render(s32 x, s32 y, WoopsiGfx::Graphics* gfx);
+	void renderDirty(s32 x, s32 y, WoopsiGfx::Graphics* gfx);
 	void iterate();
 	void clear();
 
@@ -64,6 +65,7 @@ private:
 	u8* _data;
 	Point* _liveBlocks;
 	bool _hasLiveBlocks;
+	bool* _dirtyBlocks;
 
 	void setLiveBlocks(u8 block1, u8 block2);
 };

@@ -26,7 +26,7 @@ void liveTest() {
 
 	while (grid.dropBlocks()) {
 
-		grid.render(0, 0, gfx);
+		grid.renderDirty(0, 0, gfx);
 
 		for (s32 i = 0; i < 10; ++i) {
 			Hardware::waitForVBlank();
@@ -53,7 +53,7 @@ void liveTest() {
 				grid.rotateLiveBlocksAntiClockwise();
 			}
 
-			grid.render(0, 0, gfx);
+			grid.renderDirty(0, 0, gfx);
 
 			Hardware::waitForVBlank();
 		}
@@ -64,7 +64,7 @@ void liveTest() {
 
 			while (grid.dropBlocks()) {
 
-				grid.render(0, 0, gfx);
+				grid.renderDirty(0, 0, gfx);
 
 				for (s32 i = 0; i < 5; ++i) {
 					Hardware::waitForVBlank();

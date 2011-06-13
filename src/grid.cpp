@@ -2,6 +2,7 @@
 
 Grid::Grid() {
 	_data = new u8[GRID_WIDTH * GRID_HEIGHT];
+	_dirtyBlocks = new bool[GRID_WIDTH * GRID_HEIGHT];
 	_liveBlocks = new Point[2];
 	_hasLiveBlocks = false;
 
@@ -10,12 +11,14 @@ Grid::Grid() {
 
 Grid::~Grid() {
 	delete[] _data;
+	delete[] _dirtyBlocks;
 	delete[] _liveBlocks;
 }
 
 void Grid::clear() {
 	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
 		_data[i] = BLOCK_NONE;
+		_dirtyBlocks[i] = false;
 	}
 }
 
@@ -29,6 +32,7 @@ void Grid::setBlockAt(s32 x, s32 y, u8 block) {
 	if (!isValidCoordinate(x, y)) return;
 
 	_data[x + (y * GRID_WIDTH)] = block;
+	_dirtyBlocks[x + (y * GRID_WIDTH)] = true;
 }
 
 bool Grid::isValidCoordinate(s32 x, s32 y) const {
@@ -81,7 +85,7 @@ void Grid::getChains(WoopsiArray<WoopsiArray<Point>*>& chains) const {
 			if (checkedData[x + (y * GRID_WIDTH)]) continue;
 
 			// Skip if block is blank
-			if (_data[x + (y * GRID_WIDTH)] == BLOCK_NONE) continue;
+			if (getBlockAt(x, y) == BLOCK_NONE) continue;
 
 			WoopsiArray<Point>* chain = new WoopsiArray<Point>();
 
@@ -250,6 +254,41 @@ bool Grid::dropBlocks() {
 	}
 
 	return hasDropped;
+}
+
+void Grid::renderDirty(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
+
+	s32 renderX = 0;
+	s32 renderY = 0;
+
+	for (s32 blockY = 0; blockY < GRID_HEIGHT; ++blockY) {
+		for (s32 blockX = 0; blockX < GRID_WIDTH; ++blockX) {
+
+			// Only redraw dirty blocks
+			if (!_dirtyBlocks[blockX + (blockY * GRID_WIDTH)]) continue;
+
+			renderX = x + (blockX * BLOCK_SIZE);
+			renderY = y + (blockY * BLOCK_SIZE);
+
+			switch (getBlockAt(blockX, blockY)) {
+				case BLOCK_NONE:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 0));
+					break;
+				case BLOCK_RED:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 0, 0));
+					break;
+				case BLOCK_GREEN:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 31, 0));
+					break;
+				case BLOCK_BLUE:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 31));
+					break;
+				case BLOCK_GREY:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(9, 9, 9));
+					break;
+			}
+		}
+	}
 }
 
 void Grid::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
