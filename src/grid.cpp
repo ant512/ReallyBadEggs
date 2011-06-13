@@ -121,7 +121,7 @@ void Grid::getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) 
 	// should be part of the chain.  If so, add them to the chain.
 	while (index < chain.size()) {
 
-		Point point = chain[index];
+		Point& point = chain[index];
 		u8 block = getBlockAt(point.x, point.y);
 
 		// Check if the block on the left of this is part of the chain.  Ignore
@@ -136,11 +136,11 @@ void Grid::getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) 
 				adjacentPoint.y = point.y;
 
 				chain.push_back(adjacentPoint);
-			}
 
-			// Whether or not the block was relevant doesn't matter; we've
-			// checked it and don't want to check it again
-			checkedData[point.x - 1 + (point.y * GRID_WIDTH)] = true;
+				// Now that we know this block is part of a chain we don't want
+				// to check it again
+				checkedData[point.x - 1 + (point.y * GRID_WIDTH)] = true;
+			}
 		}
 
 		if (point.x + 1 < GRID_WIDTH && !checkedData[point.x + 1 + (point.y * GRID_WIDTH)]) {
@@ -151,9 +151,9 @@ void Grid::getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) 
 				adjacentPoint.y = point.y;
 
 				chain.push_back(adjacentPoint);
-			}
 
-			checkedData[point.x + 1 + (point.y * GRID_WIDTH)] = true;
+				checkedData[point.x + 1 + (point.y * GRID_WIDTH)] = true;
+			}
 		}
 
 		if (point.y - 1 >= 0 && !checkedData[point.x + ((point.y - 1) * GRID_WIDTH)]) {
@@ -164,9 +164,9 @@ void Grid::getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) 
 				adjacentPoint.y = point.y - 1;
 
 				chain.push_back(adjacentPoint);
-			}
 
-			checkedData[point.x + ((point.y - 1) * GRID_WIDTH)] = true;
+				checkedData[point.x + ((point.y - 1) * GRID_WIDTH)] = true;
+			}
 		}
 
 		if (point.y + 1 < GRID_HEIGHT && !checkedData[point.x + ((point.y + 1) * GRID_WIDTH)]) {
@@ -177,9 +177,9 @@ void Grid::getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) 
 				adjacentPoint.y = point.y + 1;
 
 				chain.push_back(adjacentPoint);
-			}
 
-			checkedData[point.x + ((point.y + 1) * GRID_WIDTH)] = true;
+				checkedData[point.x + ((point.y + 1) * GRID_WIDTH)] = true;
+			}
 		}
 
 		index++;
