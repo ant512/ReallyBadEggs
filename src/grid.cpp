@@ -2,11 +2,15 @@
 
 Grid::Grid() {
 	_data = new u8[GRID_WIDTH * GRID_HEIGHT];
+	_liveBlocks = new Point[2];
+	_hasLiveBlocks = false;
+
 	clear();
 }
 
 Grid::~Grid() {
 	delete[] _data;
+	delete[] _liveBlocks;
 }
 
 void Grid::clear() {
@@ -156,6 +160,71 @@ void Grid::getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) 
 
 		index++;
 	}
+}
+
+void Grid::dropLiveBlocks() {
+
+	// Abort if we don't have live blocks to move
+	if (!_hasLiveBlocks) return;
+
+	// Check both live blocks for collisions before we try to drop them.  This
+	// prevents us from getting into a situation in which one of the pair drops
+	// and the other hits something
+	for (s32 i = 0; i < 2; ++i) {
+
+		// Check if block is at bottom of grid
+		if (_liveBlocks[i].y + 1 >= GRID_HEIGHT) {
+			_hasLiveBlocks = false;
+		} else {
+
+			// Check if the block has landed on another
+			u8 blockBelow = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y + 1);
+
+			if (blockBelow > 0) {
+				_hasLiveBlocks = false;
+			}
+		}
+	}
+
+	if (_hasLiveBlocks) {
+
+		// Blocks are still live - drop them block to the next position
+		for (s32 i = 0; i < 2; ++i) {
+			u8 block = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
+			setBlockAt(_liveBlocks[i].x, _liveBlocks[i].y + 1, block);
+
+			// Update the live block co-ordinates
+			++_liveBlocks[i].y;
+		}
+	}
+}
+
+bool Grid::dropBlocks() {
+
+	// Do not allow blocks to drop if we have live blocks
+	if (_hasLiveBlocks) return false;
+
+	bool hasDropped = false;
+
+	// Drop starts at the second row from the bottom of the grid as there's no
+	// point in dropping the bottom row
+	for (s32 y = GRID_HEIGHT - 2; y >= 0; --y) {
+		for (s32 x = 0; x < GRID_WIDTH; ++x) {
+
+			// Ignore this block if it's empty
+			if (getBlockAt(x, y) == 0) continue;
+
+			// Drop the current block if the block below is empty
+			if (getBlockAt(x, y + 1) == 0) {
+				setBlockAt(x, y + 1, getBlockAt(x, y));
+				setBlockAt(x, y, 0);
+
+				hasDropped = true;
+			}
+		}
+	}
+
+	return hasDropped;
 }
 
 void Grid::render(WoopsiGfx::Graphics* gfx) {
