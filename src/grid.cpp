@@ -40,7 +40,31 @@ bool Grid::isValidCoordinate(s32 x, s32 y) const {
 	return true;
 }
 
-void Grid::getChains(WoopsiArray<WoopsiArray<Point>*>& chains) {
+s32 Grid::removeChains() {
+	s32 score = 0;
+	WoopsiArray<WoopsiArray<Point>*> chains;
+
+	getChains(chains);
+
+	for (s32 i = 0; i < chains.size(); ++i) {
+
+		// TODO: Fix scoring to use correct values
+		score += chains[i]->size() * 10;
+
+		for (s32 j = 0; j < chains[i]->size(); ++j) {
+
+			Point& point = chains[i]->at(j);
+
+			setBlockAt(point.x, point.y, BLOCK_NONE);
+		}
+
+		delete chains[i];
+	}
+
+	return score;
+}
+
+void Grid::getChains(WoopsiArray<WoopsiArray<Point>*>& chains) const {
 
 	// Array of bools remembers which blocks we've already examined so that we
 	// don't check them again and get stuck in a loop
@@ -76,7 +100,7 @@ void Grid::getChains(WoopsiArray<WoopsiArray<Point>*>& chains) {
 	delete[] checkedData;
 }
 
-void Grid::getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) {
+void Grid::getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) const {
 
 	// Stop if we've checked this block already
 	if (checkedData[x + (y * GRID_WIDTH)]) return;

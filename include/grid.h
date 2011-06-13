@@ -33,8 +33,10 @@ public:
 	void setBlockAt(s32 x, s32 y, u8 block);
 	bool isValidCoordinate(s32 x, s32 y) const;
 
-	void getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData);
-	void getChains(WoopsiArray<WoopsiArray<Point>*>& chains);
+	void getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) const;
+	void getChains(WoopsiArray<WoopsiArray<Point>*>& chains) const;
+
+	s32 removeChains();
 
 	void dropLiveBlocks();
 	bool dropBlocks();
