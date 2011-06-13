@@ -47,9 +47,9 @@ void liveTest() {
 				grid.moveLiveBlocksRight();
 			} else if (pad.isDownNewPress() || pad.isDownRepeat()) {
 				grid.dropLiveBlocks();
-			} else if (pad.isANewPress() || pad.isARepeat()) {
+			} else if (pad.isANewPress()) {
 				grid.rotateLiveBlocksClockwise();
-			} else if (pad.isBNewPress() || pad.isBRepeat()) {
+			} else if (pad.isBNewPress()) {
 				grid.rotateLiveBlocksAntiClockwise();
 			}
 

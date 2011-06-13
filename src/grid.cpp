@@ -272,6 +272,8 @@ void Grid::renderDirty(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 			// Only redraw dirty blocks
 			if (!_dirtyBlocks[blockX + (blockY * GRID_WIDTH)]) continue;
 
+			_dirtyBlocks[blockX + (blockY * GRID_WIDTH)] = false;
+
 			renderX = x + (blockX * BLOCK_SIZE);
 			renderY = y + (blockY * BLOCK_SIZE);
 
