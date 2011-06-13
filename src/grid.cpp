@@ -449,6 +449,13 @@ void Grid::rotateLiveBlocksAntiClockwise() {
 	}
 }
 
+void Grid::addLiveBlocks() {
+	u8 block1 = 1 + (rand() % 3);
+	u8 block2 = 1 + (rand() % 3);
+
+	setLiveBlocks(block1, block2);
+}
+
 void Grid::iterate() {
 
 }

@@ -41,8 +41,6 @@ public:
 	void dropLiveBlocks();
 	bool dropBlocks();
 
-	void setLiveBlocks(u8 block1, u8 block2);
-
 	void moveLiveBlocksLeft();
 	void moveLiveBlocksRight();
 
@@ -50,6 +48,8 @@ public:
 	void rotateLiveBlocksAntiClockwise();
 
 	bool hasLiveBlocks() const;
+
+	void addLiveBlocks();
 
 private:
 
@@ -64,6 +64,8 @@ private:
 	u8* _data;
 	Point* _liveBlocks;
 	bool _hasLiveBlocks;
+
+	void setLiveBlocks(u8 block1, u8 block2);
 };
 
 #endif

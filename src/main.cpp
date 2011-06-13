@@ -35,7 +35,7 @@ void liveTest() {
 
 	while (1) {
 
-		grid.setLiveBlocks(2, 3);
+		grid.addLiveBlocks();
 
 		while (grid.hasLiveBlocks()) {
 
