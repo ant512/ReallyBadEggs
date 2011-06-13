@@ -5,17 +5,14 @@
 #include <nds.h>
 #include <woopsiarray.h>
 
+#include "point.h"
+
 class Grid {
 public:
 
 	static const s32 GRID_WIDTH = 6;
 	static const s32 GRID_HEIGHT = 12;
 	static const s32 CHAIN_LENGTH = 4;
-
-	typedef struct {
-		s32 x;
-		s32 y;
-	} Point;
 
 	Grid();
 	~Grid();
@@ -28,13 +25,11 @@ public:
 	void setBlockAt(s32 x, s32 y, u8 block);
 	bool isValidCoordinate(s32 x, s32 y) const;
 
-	u8* _data;
-
 	void getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData);
 	void getChains(WoopsiArray<WoopsiArray<Point>*>& chains);
 
 private:
-
+	u8* _data;
 
 };
 

@@ -8,6 +8,12 @@
 int main(int argc, char* argv[]) {
 	Hardware::init();
 
+	Hardware::shutdown();
+	return 0;
+}
+
+void chainTest() {
+
 	WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 
 	Grid grid;
@@ -20,7 +26,7 @@ int main(int argc, char* argv[]) {
 	grid.setBlockAt(0, 2, 2);
 	grid.setBlockAt(0, 3, 2);
 
-	WoopsiArray<Grid::Point> chain;
+	WoopsiArray<Point> chain;
 
 	bool* checkedData = new bool[Grid::GRID_WIDTH * Grid::GRID_HEIGHT];
 
@@ -47,10 +53,6 @@ int main(int argc, char* argv[]) {
 	while (1) {
 		Hardware::waitForVBlank();
 	}
-
-	Hardware::shutdown();
-
-	return 0;
 }
 
 void padTest() {

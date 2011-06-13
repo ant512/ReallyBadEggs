@@ -34,7 +34,7 @@ bool Grid::isValidCoordinate(s32 x, s32 y) const {
 	if (x >= GRID_WIDTH) return false;
 	if (y < 0) return false;
 	if (y >= GRID_HEIGHT) return false;
-	
+
 	return true;
 }
 
@@ -75,6 +75,9 @@ void Grid::getChains(WoopsiArray<WoopsiArray<Point>*>& chains) {
 }
 
 void Grid::getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) {
+
+	// Stop if we've checked this block already
+	if (checkedData[x + (y * GRID_WIDTH)]) return;
 
 	s32 index = 0;
 
