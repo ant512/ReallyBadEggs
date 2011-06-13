@@ -41,6 +41,13 @@ public:
 	void dropLiveBlocks();
 	bool dropBlocks();
 
+	void setLiveBlocks(u8 block1, u8 block2);
+
+	void moveLiveBlocksLeft();
+	void moveLiveBlocksRight();
+
+	bool hasLiveBlocks() const;
+
 private:
 
 	enum BlockType {

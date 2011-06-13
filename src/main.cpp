@@ -3,7 +3,78 @@
 #include <woopsiarray.h>
 
 #include "hardware.h"
+#include "pad.h"
 #include "grid.h"
+
+void liveTest() {
+
+	WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
+
+	Grid grid;
+
+	grid.setBlockAt(0, 0, 1);
+	grid.setBlockAt(1, 0, 1);
+	grid.setBlockAt(2, 0, 1);
+	grid.setBlockAt(1, 1, 1);
+	grid.setBlockAt(1, 2, 1);
+	grid.setBlockAt(0, 2, 1);
+	grid.setBlockAt(0, 3, 1);
+
+	grid.setBlockAt(2, 2, 2);
+	grid.setBlockAt(2, 3, 2);
+	grid.setBlockAt(2, 1, 2);
+
+	while (grid.dropBlocks()) {
+
+		grid.render(0, 0, gfx);
+
+		for (s32 i = 0; i < 10; ++i) {
+			Hardware::waitForVBlank();
+		}
+	}
+
+	while (1) {
+
+		grid.setLiveBlocks(2, 3);
+
+		while (grid.hasLiveBlocks()) {
+
+			const Pad& pad = Hardware::getPad();
+
+			if (pad.isLeftNewPress() || pad.isLeftRepeat()) {
+				grid.moveLiveBlocksLeft();
+			} else if (pad.isRightNewPress() || pad.isRightRepeat()) {
+				grid.moveLiveBlocksRight();
+			} else if (pad.isDownNewPress() || pad.isDownRepeat()) {
+				grid.dropLiveBlocks();
+			}
+
+			grid.render(0, 0, gfx);
+
+			Hardware::waitForVBlank();
+		}
+
+		bool repeat = true;
+
+		while (repeat) {
+
+			while (grid.dropBlocks()) {
+
+				grid.render(0, 0, gfx);
+
+				for (s32 i = 0; i < 5; ++i) {
+					Hardware::waitForVBlank();
+				}
+			}
+
+			repeat = grid.removeChains();
+		}
+	}
+
+	for (s32 i = 0; i < 10; ++i) {
+		Hardware::waitForVBlank();
+	}
+}
 
 void dropTest() {
 
@@ -109,7 +180,7 @@ void padTest() {
 int main(int argc, char* argv[]) {
 	Hardware::init();
 
-	dropTest();
+	liveTest();
 
 	Hardware::shutdown();
 	return 0;

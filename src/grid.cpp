@@ -15,7 +15,7 @@ Grid::~Grid() {
 
 void Grid::clear() {
 	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
-		_data[i] = 0;
+		_data[i] = BLOCK_NONE;
 	}
 }
 
@@ -81,7 +81,7 @@ void Grid::getChains(WoopsiArray<WoopsiArray<Point>*>& chains) const {
 			if (checkedData[x + (y * GRID_WIDTH)]) continue;
 
 			// Skip if block is blank
-			if (_data[x + (y * GRID_WIDTH)] == 0) continue;
+			if (_data[x + (y * GRID_WIDTH)] == BLOCK_NONE) continue;
 
 			WoopsiArray<Point>* chain = new WoopsiArray<Point>();
 
@@ -204,7 +204,7 @@ void Grid::dropLiveBlocks() {
 			// Check if the block has landed on another
 			u8 blockBelow = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y + 1);
 
-			if (blockBelow > 0) {
+			if (blockBelow != BLOCK_NONE) {
 				_hasLiveBlocks = false;
 			}
 		}
@@ -216,6 +216,7 @@ void Grid::dropLiveBlocks() {
 		for (s32 i = 0; i < 2; ++i) {
 			u8 block = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
 			setBlockAt(_liveBlocks[i].x, _liveBlocks[i].y + 1, block);
+			setBlockAt(_liveBlocks[i].x, _liveBlocks[i].y, BLOCK_NONE);
 
 			// Update the live block co-ordinates
 			++_liveBlocks[i].y;
@@ -239,9 +240,9 @@ bool Grid::dropBlocks() {
 			if (getBlockAt(x, y) == 0) continue;
 
 			// Drop the current block if the block below is empty
-			if (getBlockAt(x, y + 1) == 0) {
+			if (getBlockAt(x, y + 1) == BLOCK_NONE) {
 				setBlockAt(x, y + 1, getBlockAt(x, y));
-				setBlockAt(x, y, 0);
+				setBlockAt(x, y, BLOCK_NONE);
 
 				hasDropped = true;
 			}
@@ -279,6 +280,74 @@ void Grid::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(9, 9, 9));
 					break;
 			}
+		}
+	}
+}
+
+void Grid::setLiveBlocks(u8 block1, u8 block2) {
+
+	// Do not add more live blocks if we have blocks already
+	if (_hasLiveBlocks) return;
+
+	// Live blocks always appear at the same co-ordinates
+	setBlockAt(2, 0, block1);
+	setBlockAt(3, 0, block2);
+
+	_liveBlocks[0].x = 2;
+	_liveBlocks[0].y = 0;
+
+	_liveBlocks[1].x = 3;
+	_liveBlocks[1].y = 0;
+
+	_hasLiveBlocks = true;
+}
+
+bool Grid::hasLiveBlocks() const {
+	return _hasLiveBlocks;
+}
+
+void Grid::moveLiveBlocksLeft() {
+	if (!_hasLiveBlocks) return;
+
+	bool canMove = true;
+
+	// 0 block should always be on the left or at the top
+	if (_liveBlocks[0].x == 0) canMove = false;
+	if (getBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y) != BLOCK_NONE) canMove = false;
+
+	// Check 1 block if it is below the 0 block
+	if (_liveBlocks[0].x == _liveBlocks[1].x) {
+		if (getBlockAt(_liveBlocks[1].x - 1, _liveBlocks[1].y) != BLOCK_NONE) canMove = false;
+	}
+
+	if (canMove) {
+		for (s32 i = 0; i < 2; ++i) {
+			setBlockAt(_liveBlocks[i].x - 1, _liveBlocks[i].y, getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y));
+			setBlockAt(_liveBlocks[i].x, _liveBlocks[i].y, BLOCK_NONE);
+			--_liveBlocks[i].x;
+		}
+	}
+}
+
+void Grid::moveLiveBlocksRight() {
+	if (!_hasLiveBlocks) return;
+
+	bool canMove = true;
+
+	// 1 block should always be on the right or at the top
+	if (_liveBlocks[1].x == GRID_WIDTH - 1) canMove = false;
+	if (getBlockAt(_liveBlocks[1].x + 1, _liveBlocks[1].y) != BLOCK_NONE) canMove = false;
+
+	// Check 0 block if it is above the 1 block
+	if (_liveBlocks[0].x == _liveBlocks[1].x) {
+		if (getBlockAt(_liveBlocks[0].x + 1, _liveBlocks[0].y) != BLOCK_NONE) canMove = false;
+	}
+
+	if (canMove) {
+		for (s32 i = 1; i >= 0; --i) {
+			setBlockAt(_liveBlocks[i].x + 1, _liveBlocks[i].y, getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y));
+			setBlockAt(_liveBlocks[i].x, _liveBlocks[i].y, BLOCK_NONE);
+			++_liveBlocks[i].x;
 		}
 	}
 }
