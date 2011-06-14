@@ -57,15 +57,19 @@ private:
 	enum BlockType {
 		BLOCK_NONE = 0,
 		BLOCK_RED = 1,
-		BLOCK_GREEN = 2,
-		BLOCK_BLUE = 3,
-		BLOCK_GREY = 4
+		BLOCK_BLUE = 2,
+		BLOCK_YELLOW = 3,
+		BLOCK_PURPLE = 4,
+		BLOCK_GREEN = 5,
+		BLOCK_ORANGE = 6,
+		BLOCK_GREY = 7
 	};
 
 	u8* _data;
 	Point* _liveBlocks;
 	bool _hasLiveBlocks;
 	bool* _dirtyBlocks;
+	s32 _blockColourCount;
 
 	void setLiveBlocks(u8 block1, u8 block2);
 };

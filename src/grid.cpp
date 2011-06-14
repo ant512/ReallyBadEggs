@@ -5,6 +5,7 @@ Grid::Grid() {
 	_dirtyBlocks = new bool[GRID_WIDTH * GRID_HEIGHT];
 	_liveBlocks = new Point[2];
 	_hasLiveBlocks = false;
+	_blockColourCount = 6;
 
 	clear();
 }
@@ -284,11 +285,17 @@ void Grid::renderDirty(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 				case BLOCK_RED:
 					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 0, 0));
 					break;
-				case BLOCK_GREEN:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 31, 0));
-					break;
 				case BLOCK_BLUE:
 					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 31));
+					break;
+				case BLOCK_YELLOW:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 31, 0));
+					break;
+				case BLOCK_PURPLE:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 0, 31));
+					break;
+				case BLOCK_ORANGE:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 31, 31));
 					break;
 				case BLOCK_GREY:
 					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(9, 9, 9));
@@ -316,11 +323,17 @@ void Grid::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 				case BLOCK_RED:
 					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 0, 0));
 					break;
-				case BLOCK_GREEN:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 31, 0));
-					break;
 				case BLOCK_BLUE:
 					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 31));
+					break;
+				case BLOCK_YELLOW:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 31, 0));
+					break;
+				case BLOCK_PURPLE:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 0, 31));
+					break;
+				case BLOCK_ORANGE:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 31, 31));
 					break;
 				case BLOCK_GREY:
 					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(9, 9, 9));
@@ -496,8 +509,8 @@ void Grid::rotateLiveBlocksAntiClockwise() {
 }
 
 void Grid::addLiveBlocks() {
-	u8 block1 = 1 + (rand() % 3);
-	u8 block2 = 1 + (rand() % 3);
+	u8 block1 = 1 + (rand() % (_blockColourCount - 1));
+	u8 block2 = 1 + (rand() % (_blockColourCount - 1));
 
 	setLiveBlocks(block1, block2);
 }
