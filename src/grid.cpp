@@ -1,7 +1,9 @@
 #include "grid.h"
+#include "greyblock.h"
+#include "normalblock.h"
 
 Grid::Grid() {
-	_data = new u8[GRID_WIDTH * GRID_HEIGHT];
+	_data = new BlockBase*[GRID_WIDTH * GRID_HEIGHT];
 	_dirtyBlocks = new bool[GRID_WIDTH * GRID_HEIGHT];
 	_liveBlocks = new Point[2];
 	_hasLiveBlocks = false;
@@ -11,6 +13,8 @@ Grid::Grid() {
 }
 
 Grid::~Grid() {
+	clear();
+
 	delete[] _data;
 	delete[] _dirtyBlocks;
 	delete[] _liveBlocks;
@@ -18,22 +22,51 @@ Grid::~Grid() {
 
 void Grid::clear() {
 	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
-		_data[i] = BLOCK_NONE;
+		if (_data[i] != NULL) {
+			delete _data[i];
+			_data[i] = NULL;
+		}
+
 		_dirtyBlocks[i] = false;
 	}
 }
 
-u8 Grid::getBlockAt(s32 x, s32 y) const {
+BlockBase* Grid::getBlockAt(s32 x, s32 y) const {
 	if (!isValidCoordinate(x, y)) return 0;
 
 	return _data[x + (y * GRID_WIDTH)];
 }
 
-void Grid::setBlockAt(s32 x, s32 y, u8 block) {
+void Grid::setBlockAt(s32 x, s32 y, BlockBase* block) {
 	if (!isValidCoordinate(x, y)) return;
 
-	_data[x + (y * GRID_WIDTH)] = block;
-	_dirtyBlocks[x + (y * GRID_WIDTH)] = true;
+	s32 index = x + (y * GRID_WIDTH);
+
+	if (_data[index] != NULL) {
+		delete _data[index];
+	}
+
+	_data[index] = block;
+	_dirtyBlocks[index] = true;
+}
+
+void Grid::moveBlock(s32 srcX, s32 srcY, s32 destX, s32 destY) {
+	if (!isValidCoordinate(srcX, srcY)) return;
+	if (!isValidCoordinate(destX, destY)) return;
+	if (srcX == destX && srcY == destY) return;
+
+	s32 srcIndex = srcX + (srcY * GRID_WIDTH);
+	s32 destIndex = destX + (destY * GRID_WIDTH);
+
+	if (_data[destIndex] != NULL) {
+		delete _data[destIndex];
+	}
+
+	_data[destIndex] = _data[srcIndex];
+	_data[srcIndex] = NULL;
+
+	_dirtyBlocks[srcIndex] = true;
+	_dirtyBlocks[destIndex] = true;
 }
 
 bool Grid::isValidCoordinate(s32 x, s32 y) const {
@@ -45,6 +78,7 @@ bool Grid::isValidCoordinate(s32 x, s32 y) const {
 	return true;
 }
 
+// TODO: Rename to explodeChains()
 s32 Grid::removeChains() {
 	s32 score = 0;
 	WoopsiArray<WoopsiArray<Point>*> chains;
@@ -53,30 +87,36 @@ s32 Grid::removeChains() {
 
 	for (s32 i = 0; i < chains.size(); ++i) {
 
-		// TODO: Fix scoring to use correct values
+		// TODO: Fix scoring to use correct values and include greys
 		score += chains[i]->size() * 10;
 
 		for (s32 j = 0; j < chains[i]->size(); ++j) {
 
 			Point& point = chains[i]->at(j);
 
-			setBlockAt(point.x, point.y, BLOCK_NONE);
+			setBlockAt(point.x, point.y, NULL);
 
 			// Remove any adjacent greys
-			if (getBlockAt(point.x - 1, point.y) == BLOCK_GREY) {
-				setBlockAt(point.x - 1, point.y, BLOCK_NONE);
+
+			// RTII - yuck, but fastest way for me to code it
+			GreyBlock* grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x - 1, point.y));
+			if (grey != NULL) {
+				setBlockAt(point.x - 1, point.y, NULL);
 			}
 
-			if (getBlockAt(point.x + 1, point.y) == BLOCK_GREY) {
-				setBlockAt(point.x + 1, point.y, BLOCK_NONE);
+			grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x + 1, point.y));
+			if (grey != NULL) {
+				setBlockAt(point.x + 1, point.y, NULL);
 			}
 
-			if (getBlockAt(point.x, point.y - 1) == BLOCK_GREY) {
-				setBlockAt(point.x, point.y - 1, BLOCK_NONE);
+			grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x, point.y - 1));
+			if (grey != NULL) {
+				setBlockAt(point.x, point.y - 1, NULL);
 			}
 
-			if (getBlockAt(point.x, point.y + 1) == BLOCK_GREY) {
-				setBlockAt(point.x, point.y + 1, BLOCK_NONE);
+			grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x, point.y + 1));
+			if (grey != NULL) {
+				setBlockAt(point.x, point.y + 1, NULL);
 			}
 		}
 
@@ -101,10 +141,6 @@ void Grid::getChains(WoopsiArray<WoopsiArray<Point>*>& chains) const {
 
 			// Skip if block already checked
 			if (checkedData[x + (y * GRID_WIDTH)]) continue;
-
-			// Stop if this block is empty or grey
-			if (getBlockAt(x, y) == BLOCK_NONE) continue;
-			if (getBlockAt(x, y) == BLOCK_GREY) continue;
 
 			WoopsiArray<Point>* chain = new WoopsiArray<Point>();
 
@@ -145,13 +181,15 @@ void Grid::getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) 
 	while (index < chain.size()) {
 
 		Point& point = chain[index];
-		u8 block = getBlockAt(point.x, point.y);
+		BlockBase* block = getBlockAt(point.x, point.y);
+
+		if (block == NULL) return;
 
 		// Check if the block on the left of this is part of the chain.  Ignore
 		// the block if it has already been checked.
-		if (point.x - 1 >= 0 && !checkedData[point.x - 1 + (point.y * GRID_WIDTH)]) {
+		if (!checkedData[point.x - 1 + (point.y * GRID_WIDTH)]) {
 
-			if (getBlockAt(point.x - 1, point.y) == block) {
+			if (block->hasLeftConnection()) {
 
 				// Block is part of the chain so remember its co-ordinates
 				Point adjacentPoint;
@@ -166,8 +204,9 @@ void Grid::getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) 
 			}
 		}
 
-		if (point.x + 1 < GRID_WIDTH && !checkedData[point.x + 1 + (point.y * GRID_WIDTH)]) {
-			if (getBlockAt(point.x + 1, point.y) == block) {
+		if (!checkedData[point.x + 1 + (point.y * GRID_WIDTH)]) {
+
+			if (block->hasRightConnection()) {
 
 				Point adjacentPoint;
 				adjacentPoint.x = point.x + 1;
@@ -180,7 +219,8 @@ void Grid::getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) 
 		}
 
 		if (point.y - 1 >= 0 && !checkedData[point.x + ((point.y - 1) * GRID_WIDTH)]) {
-			if (getBlockAt(point.x, point.y - 1) == block) {
+
+			if (block->hasTopConnection()) {
 
 				Point adjacentPoint;
 				adjacentPoint.x = point.x;
@@ -193,7 +233,8 @@ void Grid::getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) 
 		}
 
 		if (point.y + 1 < GRID_HEIGHT && !checkedData[point.x + ((point.y + 1) * GRID_WIDTH)]) {
-			if (getBlockAt(point.x, point.y + 1) == block) {
+
+			if (block->hasBottomConnection()) {
 
 				Point adjacentPoint;
 				adjacentPoint.x = point.x;
@@ -229,9 +270,9 @@ void Grid::dropLiveBlocks() {
 			if (_liveBlocks[0].x == _liveBlocks[1].x && i == 0) continue;
 
 			// Check if the block has landed on another
-			u8 blockBelow = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y + 1);
+			BlockBase* blockBelow = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y + 1);
 
-			if (blockBelow != BLOCK_NONE) {
+			if (blockBelow != NULL) {
 				_hasLiveBlocks = false;
 			}
 		}
@@ -242,9 +283,7 @@ void Grid::dropLiveBlocks() {
 		// Blocks are still live - drop them to the next position.  Drop block
 		// 1 first as when vertical 1 is always below
 		for (s32 i = 1; i >= 0; --i) {
-			u8 block = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
-			setBlockAt(_liveBlocks[i].x, _liveBlocks[i].y + 1, block);
-			setBlockAt(_liveBlocks[i].x, _liveBlocks[i].y, BLOCK_NONE);
+			moveBlock(_liveBlocks[i].x, _liveBlocks[i].y, _liveBlocks[i].x, _liveBlocks[i].y + 1);
 
 			// Update the live block co-ordinates
 			++_liveBlocks[i].y;
@@ -265,12 +304,11 @@ bool Grid::dropBlocks() {
 		for (s32 x = 0; x < GRID_WIDTH; ++x) {
 
 			// Ignore this block if it's empty
-			if (getBlockAt(x, y) == 0) continue;
+			if (getBlockAt(x, y) == NULL) continue;
 
 			// Drop the current block if the block below is empty
-			if (getBlockAt(x, y + 1) == BLOCK_NONE) {
-				setBlockAt(x, y + 1, getBlockAt(x, y));
-				setBlockAt(x, y, BLOCK_NONE);
+			if (getBlockAt(x, y + 1) == NULL) {
+				moveBlock(x, y, x, y + 1);
 
 				hasDropped = true;
 			}
@@ -296,31 +334,12 @@ void Grid::renderDirty(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 			renderX = x + (blockX * BLOCK_SIZE);
 			renderY = y + (blockY * BLOCK_SIZE);
 
-			switch (getBlockAt(blockX, blockY)) {
-				case BLOCK_NONE:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 0));
-					break;
-				case BLOCK_RED:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 0, 0));
-					break;
-				case BLOCK_BLUE:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 31));
-					break;
-				case BLOCK_YELLOW:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 31, 0));
-					break;
-				case BLOCK_PURPLE:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 0, 31));
-					break;
-				case BLOCK_GREEN:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 31, 0));
-					break;
-				case BLOCK_ORANGE:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 31, 31));
-					break;
-				case BLOCK_GREY:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(9, 9, 9));
-					break;
+			BlockBase* block = getBlockAt(blockX, blockY);
+
+			if (block == NULL) {
+				gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 0));
+			} else {
+				gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, block->getColour());
 			}
 		}
 	}
@@ -337,44 +356,25 @@ void Grid::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 			renderX = x + (blockX * BLOCK_SIZE);
 			renderY = y + (blockY * BLOCK_SIZE);
 
-			switch (getBlockAt(blockX, blockY)) {
-				case BLOCK_NONE:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 0));
-					break;
-				case BLOCK_RED:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 0, 0));
-					break;
-				case BLOCK_BLUE:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 31));
-					break;
-				case BLOCK_YELLOW:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 31, 0));
-					break;
-				case BLOCK_PURPLE:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 0, 31));
-					break;
-				case BLOCK_GREEN:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 31, 0));
-					break;
-				case BLOCK_ORANGE:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 31, 31));
-					break;
-				case BLOCK_GREY:
-					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(9, 9, 9));
-					break;
+			BlockBase* block = getBlockAt(blockX, blockY);
+
+			if (block == NULL) {
+				gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 0));
+			} else {
+				gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, block->getColour());
 			}
 		}
 	}
 }
 
-void Grid::setLiveBlocks(u8 block1, u8 block2) {
+void Grid::setLiveBlocks(u16 colour1, u16 colour2) {
 
 	// Do not add more live blocks if we have blocks already
 	if (_hasLiveBlocks) return;
 
 	// Live blocks always appear at the same co-ordinates
-	setBlockAt(2, 0, block1);
-	setBlockAt(3, 0, block2);
+	setBlockAt(2, 0, new NormalBlock(colour1));
+	setBlockAt(3, 0, new NormalBlock(colour2));
 
 	_liveBlocks[0].x = 2;
 	_liveBlocks[0].y = 0;
@@ -396,17 +396,16 @@ void Grid::moveLiveBlocksLeft() {
 
 	// 0 block should always be on the left or at the top
 	if (_liveBlocks[0].x == 0) canMove = false;
-	if (getBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y) != BLOCK_NONE) canMove = false;
+	if (getBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y) != NULL) canMove = false;
 
 	// Check 1 block if it is below the 0 block
 	if (_liveBlocks[0].x == _liveBlocks[1].x) {
-		if (getBlockAt(_liveBlocks[1].x - 1, _liveBlocks[1].y) != BLOCK_NONE) canMove = false;
+		if (getBlockAt(_liveBlocks[1].x - 1, _liveBlocks[1].y) != NULL) canMove = false;
 	}
 
 	if (canMove) {
 		for (s32 i = 0; i < 2; ++i) {
-			setBlockAt(_liveBlocks[i].x - 1, _liveBlocks[i].y, getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y));
-			setBlockAt(_liveBlocks[i].x, _liveBlocks[i].y, BLOCK_NONE);
+			moveBlock(_liveBlocks[i].x, _liveBlocks[i].y, _liveBlocks[i].x - 1, _liveBlocks[i].y);
 			--_liveBlocks[i].x;
 		}
 	}
@@ -419,17 +418,16 @@ void Grid::moveLiveBlocksRight() {
 
 	// 1 block should always be on the right or at the bottom
 	if (_liveBlocks[1].x == GRID_WIDTH - 1) canMove = false;
-	if (getBlockAt(_liveBlocks[1].x + 1, _liveBlocks[1].y) != BLOCK_NONE) canMove = false;
+	if (getBlockAt(_liveBlocks[1].x + 1, _liveBlocks[1].y) != NULL) canMove = false;
 
 	// Check 0 block if it is above the 1 block
 	if (_liveBlocks[0].x == _liveBlocks[1].x) {
-		if (getBlockAt(_liveBlocks[0].x + 1, _liveBlocks[0].y) != BLOCK_NONE) canMove = false;
+		if (getBlockAt(_liveBlocks[0].x + 1, _liveBlocks[0].y) != NULL) canMove = false;
 	}
 
 	if (canMove) {
 		for (s32 i = 1; i >= 0; --i) {
-			setBlockAt(_liveBlocks[i].x + 1, _liveBlocks[i].y, getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y));
-			setBlockAt(_liveBlocks[i].x, _liveBlocks[i].y, BLOCK_NONE);
+			moveBlock(_liveBlocks[i].x, _liveBlocks[i].y, _liveBlocks[i].x + 1, _liveBlocks[i].y);
 			++_liveBlocks[i].x;
 		}
 	}
@@ -447,17 +445,16 @@ void Grid::rotateLiveBlocksClockwise() {
 		if (_liveBlocks[0].y == GRID_HEIGHT - 1) return;
 
 		// Cannot swap if the block below the block on the right is populated
-		if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 1) != BLOCK_NONE) return;
+		if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 1) != NULL) return;
 
 		// Perform the rotation
 
 		// Move the right block down one place
-		setBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 1, getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y));
+		moveBlock(_liveBlocks[1].x, _liveBlocks[1].y, _liveBlocks[1].x, _liveBlocks[1].y + 1);
 		++_liveBlocks[1].y;
 
 		// Move the left block right one place
-		setBlockAt(_liveBlocks[0].x + 1, _liveBlocks[0].y, getBlockAt(_liveBlocks[0].x, _liveBlocks[0].y));
-		setBlockAt(_liveBlocks[0].x, _liveBlocks[0].y, BLOCK_NONE);
+		moveBlock(_liveBlocks[0].x, _liveBlocks[0].y, _liveBlocks[0].x + 1, _liveBlocks[0].y);
 		++_liveBlocks[0].x;
 
 	} else {
@@ -468,13 +465,12 @@ void Grid::rotateLiveBlocksClockwise() {
 		if (_liveBlocks[0].x == 0) return;
 
 		// Cannot swap if the block to the left of the block at the top is populated
-		if (getBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y) != BLOCK_NONE) return;
+		if (getBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y) != NULL) return;
 
 		// Perform the rotation
 
 		// Move the bottom block up and left
-		setBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y, getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y));
-		setBlockAt(_liveBlocks[1].x, _liveBlocks[1].y, BLOCK_NONE);
+		moveBlock(_liveBlocks[1].x, _liveBlocks[1].y, _liveBlocks[0].x - 1, _liveBlocks[0].y);
 
 		// 0 block should always be on the left
 		_liveBlocks[1].x = _liveBlocks[0].x;
@@ -496,13 +492,12 @@ void Grid::rotateLiveBlocksAntiClockwise() {
 		if (_liveBlocks[0].y == GRID_HEIGHT - 1) return;
 
 		// Cannot swap if the block below the block on the right is populated
-		if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 1) != BLOCK_NONE) return;
+		if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 1) != NULL) return;
 
 		// Perform the rotation
 
 		// Move the left block down and right
-		setBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 1, getBlockAt(_liveBlocks[0].x, _liveBlocks[0].y));
-		setBlockAt(_liveBlocks[0].x, _liveBlocks[0].y, BLOCK_NONE);
+		moveBlock(_liveBlocks[0].x, _liveBlocks[0].y, _liveBlocks[1].x, _liveBlocks[1].y + 1);
 
 		// 0 block should always be at the top
 		_liveBlocks[0].x = _liveBlocks[1].x;
@@ -517,26 +512,57 @@ void Grid::rotateLiveBlocksAntiClockwise() {
 		if (_liveBlocks[0].x == 0) return;
 
 		// Cannot swap if the block to the left of the block at the top is populated
-		if (getBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y) != BLOCK_NONE) return;
+		if (getBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y) != NULL) return;
 
 		// Perform the rotation
 
 		// Move the top block left
-		setBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y, getBlockAt(_liveBlocks[0].x, _liveBlocks[0].y));
+		moveBlock(_liveBlocks[0].x, _liveBlocks[0].y, _liveBlocks[0].x - 1, _liveBlocks[0].y);
 		--_liveBlocks[0].x;
 
 		// Move the bottom block up
-		setBlockAt(_liveBlocks[1].x, _liveBlocks[1].y - 1, getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y));
-		setBlockAt(_liveBlocks[1].x, _liveBlocks[1].y, BLOCK_NONE);
+		moveBlock(_liveBlocks[1].x, _liveBlocks[1].y, _liveBlocks[1].x, _liveBlocks[1].y - 1);
 		--_liveBlocks[1].y;
 	}
 }
 
 void Grid::addLiveBlocks() {
-	u8 block1 = 1 + (rand() % (_blockColourCount - 1));
-	u8 block2 = 1 + (rand() % (_blockColourCount - 1));
 
-	setLiveBlocks(block1, block2);
+	u16 colour1 = getRandomBlockColour();
+	u16 colour2 = getRandomBlockColour();
+
+	setLiveBlocks(colour1, colour2);
+}
+
+u16 Grid::getRandomBlockColour() const {
+	switch (rand() % (_blockColourCount - 1)) {
+		case 0:
+			return woopsiRGB(31, 0, 0);
+		case 1:
+			return woopsiRGB(0, 31, 0);
+		case 2:
+			return woopsiRGB(0, 0, 31);
+		case 3:
+			return woopsiRGB(31, 31, 0);
+		case 4:
+			return woopsiRGB(0, 31, 31);
+		case 5:
+			return woopsiRGB(31, 0, 31);
+	}
+
+	// Included to silence compiler warning
+	return woopsiRGB(31, 31, 31);
+}
+
+void Grid::connectBlocks() {
+	for (s32 y = 0; y < GRID_HEIGHT; ++y) {
+		for (s32 x = 0; x < GRID_WIDTH; ++x) {
+			getBlockAt(x, y)->connect(getBlockAt(x, y - 1),
+									  getBlockAt(x + 1, y),
+									  getBlockAt(x, y + 1),
+									  getBlockAt(x - 1, y));
+		}
+	}
 }
 
 void Grid::iterate() {

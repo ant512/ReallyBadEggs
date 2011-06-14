@@ -12,18 +12,6 @@ void liveTest() {
 
 	Grid grid;
 
-	grid.setBlockAt(0, 0, 7);
-	grid.setBlockAt(1, 0, 7);
-	grid.setBlockAt(2, 0, 7);
-	grid.setBlockAt(1, 1, 7);
-	grid.setBlockAt(1, 2, 7);
-	grid.setBlockAt(0, 2, 7);
-	grid.setBlockAt(0, 3, 7);
-
-	grid.setBlockAt(2, 2, 2);
-	grid.setBlockAt(2, 3, 2);
-	grid.setBlockAt(2, 1, 2);
-
 	while (grid.dropBlocks()) {
 
 		grid.renderDirty(0, 0, gfx);
@@ -71,96 +59,13 @@ void liveTest() {
 				}
 			}
 
+			grid.connectBlocks();
+
 			repeat = grid.removeChains();
 		}
 	}
 
 	for (s32 i = 0; i < 10; ++i) {
-		Hardware::waitForVBlank();
-	}
-}
-
-void dropTest() {
-
-	WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
-
-	Grid grid;
-
-	grid.setBlockAt(0, 0, 7);
-	grid.setBlockAt(1, 0, 7);
-	grid.setBlockAt(2, 0, 7);
-	grid.setBlockAt(1, 1, 7);
-	grid.setBlockAt(1, 2, 7);
-	grid.setBlockAt(0, 2, 7);
-	grid.setBlockAt(0, 3, 7);
-
-	grid.setBlockAt(2, 2, 2);
-	grid.setBlockAt(2, 3, 2);
-	grid.setBlockAt(2, 1, 2);
-
-	grid.render(0, 0, gfx);
-	grid.removeChains();
-
-	for (s32 i = 0; i < 10; ++i) {
-		Hardware::waitForVBlank();
-	}
-
-	while (grid.dropBlocks()) {
-
-		grid.render(0, 0, gfx);
-
-		for (s32 i = 0; i < 10; ++i) {
-			Hardware::waitForVBlank();
-		}
-	}
-}
-
-void chainTest() {
-
-	WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
-
-	Grid grid;
-
-	grid.setBlockAt(0, 0, 1);
-	grid.setBlockAt(1, 0, 1);
-	grid.setBlockAt(2, 0, 1);
-	grid.setBlockAt(1, 1, 1);
-	grid.setBlockAt(1, 2, 1);
-	grid.setBlockAt(0, 2, 1);
-	grid.setBlockAt(0, 3, 1);
-
-	grid.setBlockAt(2, 2, 2);
-	grid.setBlockAt(2, 3, 2);
-	grid.setBlockAt(2, 1, 2);
-
-	WoopsiArray<Point> chain;
-
-	bool* checkedData = new bool[Grid::GRID_WIDTH * Grid::GRID_HEIGHT];
-
-	grid.getChain(1, 1, chain, checkedData);
-
-	delete[] checkedData;
-
-	s32 blockSize = 2;
-
-	grid.render(0, 0, gfx);
-
-	for (s32 i = 0; i < 10; ++i) {
-		Hardware::waitForVBlank();
-	}
-
-	for (s32 i = 0; i < chain.size(); ++i) {
-		gfx->drawFilledRect(chain[i].x * blockSize, chain[i].y * blockSize, blockSize, blockSize, woopsiRGB(31, 31, 31));
-	}
-
-	for (s32 i = 0; i < 10; ++i) {
-		Hardware::waitForVBlank();
-	}
-
-	grid.removeChains();
-	grid.render(0, 0, gfx);
-
-	while (1) {
 		Hardware::waitForVBlank();
 	}
 }

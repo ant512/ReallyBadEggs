@@ -5,6 +5,7 @@
 #include <nds.h>
 #include <woopsiarray.h>
 
+#include "blockbase.h"
 #include "point.h"
 
 class Grid {
@@ -30,8 +31,9 @@ public:
 	void iterate();
 	void clear();
 
-	u8 getBlockAt(s32 x, s32 y) const;
-	void setBlockAt(s32 x, s32 y, u8 block);
+	BlockBase* getBlockAt(s32 x, s32 y) const;
+	void setBlockAt(s32 x, s32 y, BlockBase* block);
+	void moveBlock(s32 srcX, s32 srcY, s32 destX, s32 destY);
 	bool isValidCoordinate(s32 x, s32 y) const;
 
 	void getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) const;
@@ -52,6 +54,8 @@ public:
 
 	void addLiveBlocks();
 
+	void connectBlocks();
+
 private:
 
 	enum BlockType {
@@ -65,13 +69,14 @@ private:
 		BLOCK_GREY = 7
 	};
 
-	u8* _data;
+	BlockBase** _data;
 	Point* _liveBlocks;
 	bool _hasLiveBlocks;
 	bool* _dirtyBlocks;
 	s32 _blockColourCount;
 
-	void setLiveBlocks(u8 block1, u8 block2);
+	void setLiveBlocks(u16 colour1, u16 colour2);
+	u16 getRandomBlockColour() const;
 };
 
 #endif
