@@ -85,8 +85,9 @@ void Grid::getChains(WoopsiArray<WoopsiArray<Point>*>& chains) const {
 			// Skip if block already checked
 			if (checkedData[x + (y * GRID_WIDTH)]) continue;
 
-			// Skip if block is blank
+			// Stop if this block is empty or grey
 			if (getBlockAt(x, y) == BLOCK_NONE) continue;
+			if (getBlockAt(x, y) == BLOCK_GREY) continue;
 
 			WoopsiArray<Point>* chain = new WoopsiArray<Point>();
 
@@ -294,6 +295,9 @@ void Grid::renderDirty(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 				case BLOCK_PURPLE:
 					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 0, 31));
 					break;
+				case BLOCK_GREEN:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 31, 0));
+					break;
 				case BLOCK_ORANGE:
 					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 31, 31));
 					break;
@@ -331,6 +335,9 @@ void Grid::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 					break;
 				case BLOCK_PURPLE:
 					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(31, 0, 31));
+					break;
+				case BLOCK_GREEN:
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 31, 0));
 					break;
 				case BLOCK_ORANGE:
 					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 31, 31));

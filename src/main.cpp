@@ -12,13 +12,13 @@ void liveTest() {
 
 	Grid grid;
 
-	grid.setBlockAt(0, 0, 1);
-	grid.setBlockAt(1, 0, 1);
-	grid.setBlockAt(2, 0, 1);
-	grid.setBlockAt(1, 1, 1);
-	grid.setBlockAt(1, 2, 1);
-	grid.setBlockAt(0, 2, 1);
-	grid.setBlockAt(0, 3, 1);
+	grid.setBlockAt(0, 0, 7);
+	grid.setBlockAt(1, 0, 7);
+	grid.setBlockAt(2, 0, 7);
+	grid.setBlockAt(1, 1, 7);
+	grid.setBlockAt(1, 2, 7);
+	grid.setBlockAt(0, 2, 7);
+	grid.setBlockAt(0, 3, 7);
 
 	grid.setBlockAt(2, 2, 2);
 	grid.setBlockAt(2, 3, 2);
@@ -86,13 +86,13 @@ void dropTest() {
 
 	Grid grid;
 
-	grid.setBlockAt(0, 0, 1);
-	grid.setBlockAt(1, 0, 1);
-	grid.setBlockAt(2, 0, 1);
-	grid.setBlockAt(1, 1, 1);
-	grid.setBlockAt(1, 2, 1);
-	grid.setBlockAt(0, 2, 1);
-	grid.setBlockAt(0, 3, 1);
+	grid.setBlockAt(0, 0, 7);
+	grid.setBlockAt(1, 0, 7);
+	grid.setBlockAt(2, 0, 7);
+	grid.setBlockAt(1, 1, 7);
+	grid.setBlockAt(1, 2, 7);
+	grid.setBlockAt(0, 2, 7);
+	grid.setBlockAt(0, 3, 7);
 
 	grid.setBlockAt(2, 2, 2);
 	grid.setBlockAt(2, 3, 2);
