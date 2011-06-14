@@ -1,6 +1,9 @@
 #include "grid.h"
 #include "greyblock.h"
 #include "redblock.h"
+#include "purpleblock.h"
+#include "yellowblock.h"
+#include "blueblock.h"
 
 Grid::Grid() {
 	_data = new BlockBase*[GRID_WIDTH * GRID_HEIGHT];
@@ -523,11 +526,11 @@ BlockBase* Grid::newRandomBlock() const {
 		case 0:
 			return new RedBlock();
 		case 1:
-			return new RedBlock();
+			return new PurpleBlock();
 		case 2:
-			return new RedBlock();
+			return new YellowBlock();
 		case 3:
-			return new RedBlock();
+			return new BlueBlock();
 		case 4:
 			return new RedBlock();
 		case 5:
