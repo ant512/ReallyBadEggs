@@ -60,7 +60,7 @@ void liveTest() {
 
 			grid.connectBlocks();
 
-			repeat = grid.removeChains();
+			repeat = false;//grid.removeChains();
 		}
 	}
 
