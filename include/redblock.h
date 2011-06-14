@@ -27,11 +27,11 @@
 
 #include "redblockexplodebmp.h"
 
-#include "explode1bmp.h"
-#include "explode2bmp.h"
-#include "explode3bmp.h"
-#include "explode4bmp.h"
-#include "explode5bmp.h"
+#include "blockexplode1bmp.h"
+#include "blockexplode2bmp.h"
+#include "blockexplode3bmp.h"
+#include "blockexplode4bmp.h"
+#include "blockexplode5bmp.h"
 
 class RedBlock : public NormalBlock {
 public:
@@ -65,11 +65,11 @@ public:
 
 private:
 	RedBlockExplodeBmp _explodeBmp1;
-	Explode1Bmp _explodeBmp2;
-	Explode2Bmp _explodeBmp3;
-	Explode3Bmp _explodeBmp4;
-	Explode4Bmp _explodeBmp5;
-	Explode5Bmp _explodeBmp6;
+	BlockExplode1Bmp _explodeBmp2;
+	BlockExplode2Bmp _explodeBmp3;
+	BlockExplode3Bmp _explodeBmp4;
+	BlockExplode4Bmp _explodeBmp5;
+	BlockExplode5Bmp _explodeBmp6;
 };
 
 #endif

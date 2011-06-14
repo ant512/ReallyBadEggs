@@ -1,7 +1,7 @@
 #include <nds.h>
-#include "explode5bmp.h"
+#include "blockexplode5bmp.h"
 
-static const u16 explode5bmp_Bitmap[256
+static const u16 blockexplode5bmp_Bitmap[256
 ] __attribute__ ((aligned (4))) = {
 32768, 32768, 32768, 32768, 32768, 32768, 32768, 48623, 32768, 32768, 32768, 
 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 
@@ -29,4 +29,4 @@ static const u16 explode5bmp_Bitmap[256
 32768, 32768, 32768
 };
 
-Explode5Bmp::Explode5Bmp() : WoopsiGfx::BitmapWrapper(explode5bmp_Bitmap, 16, 16) { };
+BlockExplode5Bmp::BlockExplode5Bmp() : WoopsiGfx::BitmapWrapper(blockexplode5bmp_Bitmap, 16, 16) { };
