@@ -10,6 +10,14 @@
 
 #include "blueblockbmp.h"
 
+#include "blueblockexplodebmp.h"
+
+#include "blockexplode1bmp.h"
+#include "blockexplode2bmp.h"
+#include "blockexplode3bmp.h"
+#include "blockexplode4bmp.h"
+#include "blockexplode5bmp.h"
+
 class BlueBlock : public NormalBlock {
 public:
 	BlueBlock() : NormalBlock(woopsiRGB(0, 0, 31)) {
@@ -29,9 +37,24 @@ public:
 		_bitmaps[CONNECTION_LEFT] = new BlueBlockBmp();
 		_bitmaps[CONNECTION_RIGHT] = new BlueBlockBmp();
 		_bitmaps[CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockBmp();
+
+		_explodingAnim->addFrame(&_explodeBmp1, 0);
+		_explodingAnim->addFrame(&_explodeBmp2, 0);
+		_explodingAnim->addFrame(&_explodeBmp3, 0);
+		_explodingAnim->addFrame(&_explodeBmp4, 0);
+		_explodingAnim->addFrame(&_explodeBmp5, 0);
+		_explodingAnim->addFrame(&_explodeBmp6, 0);
 	};
 
 	~BlueBlock() { };
+
+private:
+	BlueBlockExplodeBmp _explodeBmp1;
+	BlockExplode1Bmp _explodeBmp2;
+	BlockExplode2Bmp _explodeBmp3;
+	BlockExplode3Bmp _explodeBmp4;
+	BlockExplode4Bmp _explodeBmp5;
+	BlockExplode5Bmp _explodeBmp6;
 };
 
 #endif
