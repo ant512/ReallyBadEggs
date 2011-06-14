@@ -10,31 +10,29 @@
 
 #include "redblockbmp.h"
 #include "redblockbottombmp.h"
+#include "redblockbottomleftbmp.h"
+#include "redblockbottomleftrightbmp.h"
+#include "redblockbottomrightbmp.h"
+#include "redblockbounce1bmp.h"
+#include "redblockbounce2bmp.h"
+#include "redblockexplodebmp.h"
+#include "redblockleftbmp.h"
+#include "redblockleftrightbmp.h"
+#include "redblockrightbmp.h"
 #include "redblocktopbmp.h"
 #include "redblocktopbottombmp.h"
-#include "redblockleftbmp.h"
-#include "redblockrightbmp.h"
 #include "redblocktopleftbmp.h"
-#include "redblocktoprightbmp.h"
-#include "redblockbottomrightbmp.h"
-#include "redblockbottomleftbmp.h"
-#include "redblockleftrightbmp.h"
 #include "redblocktopleftbottombmp.h"
-#include "redblocktoprightbottombmp.h"
 #include "redblocktopleftrightbmp.h"
 #include "redblocktopleftrightbottombmp.h"
-#include "redblockbottomleftrightbmp.h"
-
-#include "redblockexplodebmp.h"
+#include "redblocktoprightbmp.h"
+#include "redblocktoprightbottombmp.h"
 
 #include "blockexplode1bmp.h"
 #include "blockexplode2bmp.h"
 #include "blockexplode3bmp.h"
 #include "blockexplode4bmp.h"
 #include "blockexplode5bmp.h"
-
-#include "redblockbounce1bmp.h"
-#include "redblockbounce2bmp.h"
 
 class RedBlock : public NormalBlock {
 public:
