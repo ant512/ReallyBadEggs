@@ -22,14 +22,13 @@ public:
 	bool isLanding() const;
 	bool isFalling() const;
 	bool isExploding() const;
-
 	bool isExploded() const;
 
 	bool isConnectable() const;
 
-	void setLanded(bool landed);
-	void setFalling(bool falling);
+	void fall();
 	void explode();
+	void land();
 
 	void animate();
 

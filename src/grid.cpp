@@ -264,8 +264,7 @@ void Grid::dropLiveBlocks() {
 			_hasLiveBlocks = false;
 
 			BlockBase* block = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
-			block->setFalling(false);
-			//block->setLanding(true);
+			block->land();
 		} else {
 
 			// Check if the block has landed on another
@@ -278,8 +277,7 @@ void Grid::dropLiveBlocks() {
 					_hasLiveBlocks = false;
 
 					BlockBase* block = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
-					block->setFalling(false);
-					//block->setLanding(true);
+					block->land();
 				}
 			}
 		}
@@ -310,8 +308,7 @@ bool Grid::dropBlocks() {
 		BlockBase* block = getBlockAt(x, GRID_HEIGHT - 1);
 
 		if (block->isFalling()) {
-			block->setFalling(false);
-			//block->setLanding(true);
+			block->land();
 		}
 	}
 
@@ -326,15 +323,14 @@ bool Grid::dropBlocks() {
 			// Drop the current block if the block below is empty
 			if (getBlockAt(x, y + 1) == NULL) {
 				moveBlock(x, y, x, y + 1);
-				getBlockAt(x, y + 1)->setFalling(true);
+				getBlockAt(x, y + 1)->fall();
 
 				hasDropped = true;
 			} else {
 				BlockBase* block = getBlockAt(x, y);
 
 				if (block->isFalling()) {
-					block->setFalling(false);
-					//block->setLanding(true);
+					block->land();
 				}
 			}
 		}

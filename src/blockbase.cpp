@@ -65,12 +65,14 @@ bool BlockBase::isConnectable() const {
 	return !_isLanding && !_isFalling && !_isExploding;
 }
 
-void BlockBase::setLanded(bool landed) {
-	_isLanding = landed;
+void BlockBase::fall() {
+	_isFalling = true;
 }
 
-void BlockBase::setFalling(bool falling) {
-	_isFalling = falling;
+void BlockBase::land() {
+	_isFalling = false;
+	_isLanding = true;
+	_landingAnim->play();
 }
 
 void BlockBase::explode() {
@@ -83,6 +85,10 @@ void BlockBase::animate() {
 		_explodingAnim->run();
 	} else if (_isLanding) {
 		_landingAnim->run();
+
+		if (_landingAnim->getStatus() == WoopsiGfx::Animation::ANIMATION_STATUS_STOPPED) {
+			_isLanding = false;
+		}
 	}
 }
 

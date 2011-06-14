@@ -33,6 +33,9 @@
 #include "blockexplode4bmp.h"
 #include "blockexplode5bmp.h"
 
+#include "redblockbounce1bmp.h"
+#include "redblockbounce2bmp.h"
+
 class RedBlock : public NormalBlock {
 public:
 	RedBlock() : NormalBlock(woopsiRGB(31, 0, 0)) {
@@ -59,6 +62,12 @@ public:
 		_explodingAnim->addFrame(&_explodeBmp4, 0);
 		_explodingAnim->addFrame(&_explodeBmp5, 0);
 		_explodingAnim->addFrame(&_explodeBmp6, 0);
+
+		_landingAnim->addFrame(&_bounceBmp1, 0);
+		_landingAnim->addFrame(&_bounceBmp2, 0);
+		_landingAnim->addFrame(&_bounceBmp1, 0);
+		_landingAnim->addFrame(&_bounceBmp3, 0);
+		_landingAnim->addFrame(&_bounceBmp1, 0);
 	};
 
 	~RedBlock() { };
@@ -70,6 +79,10 @@ private:
 	BlockExplode3Bmp _explodeBmp4;
 	BlockExplode4Bmp _explodeBmp5;
 	BlockExplode5Bmp _explodeBmp6;
+
+	RedBlockBounce1Bmp _bounceBmp1;
+	RedBlockBounce2Bmp _bounceBmp2;
+	RedBlockBmp _bounceBmp3;
 };
 
 #endif
