@@ -38,7 +38,7 @@ public:
 	void getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) const;
 	void getChains(WoopsiArray<WoopsiArray<Point>*>& chains) const;
 
-	s32 removeChains();
+	s32 explodeChains();
 
 	void dropLiveBlocks();
 	bool dropBlocks();
@@ -54,6 +54,8 @@ public:
 	void addLiveBlocks();
 
 	void connectBlocks();
+
+	bool animate();
 
 private:
 

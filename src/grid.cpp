@@ -73,8 +73,7 @@ bool Grid::isValidCoordinate(s32 x, s32 y) const {
 	return true;
 }
 
-// TODO: Rename to explodeChains()
-s32 Grid::removeChains() {
+s32 Grid::explodeChains() {
 	s32 score = 0;
 	WoopsiArray<WoopsiArray<Point>*> chains;
 
@@ -89,29 +88,34 @@ s32 Grid::removeChains() {
 
 			Point& point = chains[i]->at(j);
 
-			setBlockAt(point.x, point.y, NULL);
+			getBlockAt(point.x, point.y)->explode();
+			//setBlockAt(point.x, point.y, NULL);
 
 			// Remove any adjacent greys
 
 			// RTII - yuck, but fastest way for me to code it
 			GreyBlock* grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x - 1, point.y));
 			if (grey != NULL) {
-				setBlockAt(point.x - 1, point.y, NULL);
+				getBlockAt(point.x - 1, point.y)->explode();
+				//setBlockAt(point.x - 1, point.y, NULL);
 			}
 
 			grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x + 1, point.y));
 			if (grey != NULL) {
-				setBlockAt(point.x + 1, point.y, NULL);
+				getBlockAt(point.x + 1, point.y)->explode();
+				//setBlockAt(point.x + 1, point.y, NULL);
 			}
 
 			grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x, point.y - 1));
 			if (grey != NULL) {
-				setBlockAt(point.x, point.y - 1, NULL);
+				getBlockAt(point.x, point.y - 1)->explode();
+				//setBlockAt(point.x, point.y - 1, NULL);
 			}
 
 			grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x, point.y + 1));
 			if (grey != NULL) {
-				setBlockAt(point.x, point.y + 1, NULL);
+				getBlockAt(point.x, point.y + 1)->explode();
+				//setBlockAt(point.x, point.y + 1, NULL);
 			}
 		}
 
@@ -554,4 +558,26 @@ void Grid::connectBlocks() {
 
 void Grid::iterate() {
 
+}
+
+bool Grid::animate() {
+
+	bool result = false;
+
+	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
+		_data[i]->animate();
+
+		if (_data[i]->isExploded()) {
+			delete _data[i];
+			_data[i] = NULL;
+
+			result = true;
+		} else if (_data[i]->isExploding()) {
+			result = true;
+		} else if (_data[i]->isLanding()) {
+			result = true;
+		}
+	}
+
+	return result;
 }

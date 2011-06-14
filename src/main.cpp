@@ -60,7 +60,14 @@ void liveTest() {
 
 			grid.connectBlocks();
 
-			repeat = false;//grid.removeChains();
+			repeat = grid.explodeChains();
+
+			while (grid.animate()) {
+
+				grid.render(0, 0, gfx);
+
+				Hardware::waitForVBlank();
+			}
 		}
 	}
 

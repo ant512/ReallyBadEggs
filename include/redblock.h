@@ -25,6 +25,14 @@
 #include "redblocktopleftrightbottombmp.h"
 #include "redblockbottomleftrightbmp.h"
 
+#include "redblockexplodebmp.h"
+
+#include "explode1bmp.h"
+#include "explode2bmp.h"
+#include "explode3bmp.h"
+#include "explode4bmp.h"
+#include "explode5bmp.h"
+
 class RedBlock : public NormalBlock {
 public:
 	RedBlock() : NormalBlock(woopsiRGB(31, 0, 0)) {
@@ -44,9 +52,24 @@ public:
 		_bitmaps[CONNECTION_LEFT] = new RedBlockLeftBmp();
 		_bitmaps[CONNECTION_RIGHT] = new RedBlockRightBmp();
 		_bitmaps[CONNECTION_LEFT | CONNECTION_RIGHT] = new RedBlockLeftRightBmp();
+
+		_explodingAnim->addFrame(&_explodeBmp1, 0);
+		_explodingAnim->addFrame(&_explodeBmp2, 0);
+		_explodingAnim->addFrame(&_explodeBmp3, 0);
+		_explodingAnim->addFrame(&_explodeBmp4, 0);
+		_explodingAnim->addFrame(&_explodeBmp5, 0);
+		_explodingAnim->addFrame(&_explodeBmp6, 0);
 	};
 
 	~RedBlock() { };
+
+private:
+	RedBlockExplodeBmp _explodeBmp1;
+	Explode1Bmp _explodeBmp2;
+	Explode2Bmp _explodeBmp3;
+	Explode3Bmp _explodeBmp4;
+	Explode4Bmp _explodeBmp5;
+	Explode5Bmp _explodeBmp6;
 };
 
 #endif
