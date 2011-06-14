@@ -58,6 +58,15 @@ void liveTest() {
 				}
 			}
 
+			while (grid.animate()) {
+
+				repeat = true;
+
+				grid.render(0, 0, gfx);
+
+				Hardware::waitForVBlank();
+			}
+
 			grid.connectBlocks();
 
 			repeat = grid.explodeChains();
