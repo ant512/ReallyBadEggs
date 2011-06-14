@@ -61,6 +61,23 @@ s32 Grid::removeChains() {
 			Point& point = chains[i]->at(j);
 
 			setBlockAt(point.x, point.y, BLOCK_NONE);
+
+			// Remove any adjacent greys
+			if (getBlockAt(point.x - 1, point.y) == BLOCK_GREY) {
+				setBlockAt(point.x - 1, point.y, BLOCK_NONE);
+			}
+
+			if (getBlockAt(point.x + 1, point.y) == BLOCK_GREY) {
+				setBlockAt(point.x + 1, point.y, BLOCK_NONE);
+			}
+
+			if (getBlockAt(point.x, point.y - 1) == BLOCK_GREY) {
+				setBlockAt(point.x, point.y - 1, BLOCK_NONE);
+			}
+
+			if (getBlockAt(point.x, point.y + 1) == BLOCK_GREY) {
+				setBlockAt(point.x, point.y + 1, BLOCK_NONE);
+			}
 		}
 
 		delete chains[i];
