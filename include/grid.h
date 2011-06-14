@@ -27,7 +27,6 @@ public:
 	~Grid();
 
 	void render(s32 x, s32 y, WoopsiGfx::Graphics* gfx);
-	void renderDirty(s32 x, s32 y, WoopsiGfx::Graphics* gfx);
 	void iterate();
 	void clear();
 
@@ -72,7 +71,6 @@ private:
 	BlockBase** _data;
 	Point* _liveBlocks;
 	bool _hasLiveBlocks;
-	bool* _dirtyBlocks;
 	s32 _blockColourCount;
 
 	BlockBase* newRandomBlock() const;

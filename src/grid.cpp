@@ -4,7 +4,6 @@
 
 Grid::Grid() {
 	_data = new BlockBase*[GRID_WIDTH * GRID_HEIGHT];
-	_dirtyBlocks = new bool[GRID_WIDTH * GRID_HEIGHT];
 	_liveBlocks = new Point[2];
 	_hasLiveBlocks = false;
 	_blockColourCount = 6;
@@ -16,7 +15,6 @@ Grid::~Grid() {
 	clear();
 
 	delete[] _data;
-	delete[] _dirtyBlocks;
 	delete[] _liveBlocks;
 }
 
@@ -26,8 +24,6 @@ void Grid::clear() {
 			delete _data[i];
 			_data[i] = NULL;
 		}
-
-		_dirtyBlocks[i] = false;
 	}
 }
 
@@ -47,7 +43,6 @@ void Grid::setBlockAt(s32 x, s32 y, BlockBase* block) {
 	}
 
 	_data[index] = block;
-	_dirtyBlocks[index] = true;
 }
 
 void Grid::moveBlock(s32 srcX, s32 srcY, s32 destX, s32 destY) {
@@ -64,9 +59,6 @@ void Grid::moveBlock(s32 srcX, s32 srcY, s32 destX, s32 destY) {
 
 	_data[destIndex] = _data[srcIndex];
 	_data[srcIndex] = NULL;
-
-	_dirtyBlocks[srcIndex] = true;
-	_dirtyBlocks[destIndex] = true;
 }
 
 bool Grid::isValidCoordinate(s32 x, s32 y) const {
@@ -263,17 +255,25 @@ void Grid::dropLiveBlocks() {
 		// Check if block is at bottom of grid
 		if (_liveBlocks[i].y + 1 >= GRID_HEIGHT) {
 			_hasLiveBlocks = false;
-		} else {
 
-			// Skip the top block if arranged vertically - we don't care that
-			// the top block is on top of the bottom block
-			if (_liveBlocks[0].x == _liveBlocks[1].x && i == 0) continue;
+			BlockBase* block = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
+			block->setFalling(false);
+			//block->setLanding(true);
+		} else {
 
 			// Check if the block has landed on another
 			BlockBase* blockBelow = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y + 1);
 
 			if (blockBelow != NULL) {
-				_hasLiveBlocks = false;
+
+				// Do not land if the block below is also falling
+				if (!blockBelow->isFalling()) {
+					_hasLiveBlocks = false;
+
+					BlockBase* block = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
+					block->setFalling(false);
+					//block->setLanding(true);
+				}
 			}
 		}
 	}
@@ -288,14 +288,6 @@ void Grid::dropLiveBlocks() {
 			// Update the live block co-ordinates
 			++_liveBlocks[i].y;
 		}
-	} else {
-
-		// Notify the live blocks that they are no longer falling
-		for (s32 i = 0; i < 2; ++i) {
-			BlockBase* liveBlock = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
-			liveBlock->setFalling(false);
-			//liveBlock->setLanding(true);
-		}
 	}
 }
 
@@ -305,6 +297,16 @@ bool Grid::dropBlocks() {
 	if (_hasLiveBlocks) return false;
 
 	bool hasDropped = false;
+
+	// Everything on the bottom row should have landed
+	for (s32 x = 0; x < GRID_WIDTH; ++x) {
+		BlockBase* block = getBlockAt(x, GRID_HEIGHT - 1);
+
+		if (block->isFalling()) {
+			block->setFalling(false);
+			//block->setLanding(true);
+		}
+	}
 
 	// Drop starts at the second row from the bottom of the grid as there's no
 	// point in dropping the bottom row
@@ -332,34 +334,6 @@ bool Grid::dropBlocks() {
 	}
 
 	return hasDropped;
-}
-
-void Grid::renderDirty(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
-
-	s32 renderX = 0;
-	s32 renderY = 0;
-
-	for (s32 blockY = 0; blockY < GRID_HEIGHT; ++blockY) {
-		for (s32 blockX = 0; blockX < GRID_WIDTH; ++blockX) {
-
-			// Only redraw dirty blocks
-			if (!_dirtyBlocks[blockX + (blockY * GRID_WIDTH)]) continue;
-
-			_dirtyBlocks[blockX + (blockY * GRID_WIDTH)] = false;
-
-			renderX = x + (blockX * BLOCK_SIZE);
-			renderY = y + (blockY * BLOCK_SIZE);
-
-			BlockBase* block = getBlockAt(blockX, blockY);
-
-			if (block == NULL) {
-				gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 0));
-			} else {
-				block->render(renderX, renderY, gfx);
-				//gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, block->getColour());
-			}
-		}
-	}
 }
 
 void Grid::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {

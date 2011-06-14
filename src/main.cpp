@@ -14,7 +14,7 @@ void liveTest() {
 
 	while (grid.dropBlocks()) {
 
-		grid.renderDirty(0, 0, gfx);
+		grid.render(0, 0, gfx);
 
 		for (s32 i = 0; i < 10; ++i) {
 			Hardware::waitForVBlank();
@@ -40,13 +40,10 @@ void liveTest() {
 				grid.rotateLiveBlocksAntiClockwise();
 			}
 
-			grid.renderDirty(0, 0, gfx);
+			grid.render(0, 0, gfx);
 
 			Hardware::waitForVBlank();
 		}
-
-		grid.connectBlocks();
-		grid.render(0, 0, gfx);
 
 		bool repeat = true;
 
@@ -54,7 +51,7 @@ void liveTest() {
 
 			while (grid.dropBlocks()) {
 
-				grid.renderDirty(0, 0, gfx);
+				grid.render(0, 0, gfx);
 
 				for (s32 i = 0; i < 5; ++i) {
 					Hardware::waitForVBlank();
@@ -63,7 +60,7 @@ void liveTest() {
 
 			grid.connectBlocks();
 
-			repeat = false;//grid.removeChains();
+			repeat = grid.removeChains();
 		}
 	}
 
