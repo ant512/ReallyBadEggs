@@ -51,6 +51,7 @@ void liveTest() {
 
 			while (grid.dropBlocks()) {
 
+				grid.animate();
 				grid.render(0, 0, gfx);
 
 				for (s32 i = 0; i < 5; ++i) {
