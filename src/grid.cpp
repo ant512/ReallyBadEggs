@@ -1,6 +1,6 @@
 #include "grid.h"
 #include "greyblock.h"
-#include "normalblock.h"
+#include "redblock.h"
 
 Grid::Grid() {
 	_data = new BlockBase*[GRID_WIDTH * GRID_HEIGHT];
@@ -288,6 +288,14 @@ void Grid::dropLiveBlocks() {
 			// Update the live block co-ordinates
 			++_liveBlocks[i].y;
 		}
+	} else {
+
+		// Notify the live blocks that they are no longer falling
+		for (s32 i = 0; i < 2; ++i) {
+			BlockBase* liveBlock = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
+			liveBlock->setFalling(false);
+			//liveBlock->setLanding(true);
+		}
 	}
 }
 
@@ -309,8 +317,16 @@ bool Grid::dropBlocks() {
 			// Drop the current block if the block below is empty
 			if (getBlockAt(x, y + 1) == NULL) {
 				moveBlock(x, y, x, y + 1);
+				getBlockAt(x, y + 1)->setFalling(true);
 
 				hasDropped = true;
+			} else {
+				BlockBase* block = getBlockAt(x, y);
+
+				if (block->isFalling()) {
+					block->setFalling(false);
+					//block->setLanding(true);
+				}
 			}
 		}
 	}
@@ -339,7 +355,8 @@ void Grid::renderDirty(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 			if (block == NULL) {
 				gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 0));
 			} else {
-				gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, block->getColour());
+				block->render(renderX, renderY, gfx);
+				//gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, block->getColour());
 			}
 		}
 	}
@@ -361,28 +378,11 @@ void Grid::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 			if (block == NULL) {
 				gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 0));
 			} else {
-				gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, block->getColour());
+				block->render(renderX, renderY, gfx);
+				//gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, block->getColour());
 			}
 		}
 	}
-}
-
-void Grid::setLiveBlocks(u16 colour1, u16 colour2) {
-
-	// Do not add more live blocks if we have blocks already
-	if (_hasLiveBlocks) return;
-
-	// Live blocks always appear at the same co-ordinates
-	setBlockAt(2, 0, new NormalBlock(colour1));
-	setBlockAt(3, 0, new NormalBlock(colour2));
-
-	_liveBlocks[0].x = 2;
-	_liveBlocks[0].y = 0;
-
-	_liveBlocks[1].x = 3;
-	_liveBlocks[1].y = 0;
-
-	_hasLiveBlocks = true;
 }
 
 bool Grid::hasLiveBlocks() const {
@@ -528,30 +528,40 @@ void Grid::rotateLiveBlocksAntiClockwise() {
 
 void Grid::addLiveBlocks() {
 
-	u16 colour1 = getRandomBlockColour();
-	u16 colour2 = getRandomBlockColour();
+		// Do not add more live blocks if we have blocks already
+	if (_hasLiveBlocks) return;
 
-	setLiveBlocks(colour1, colour2);
+	// Live blocks always appear at the same co-ordinates
+	setBlockAt(2, 0, newRandomBlock());
+	setBlockAt(3, 0, newRandomBlock());
+
+	_liveBlocks[0].x = 2;
+	_liveBlocks[0].y = 0;
+
+	_liveBlocks[1].x = 3;
+	_liveBlocks[1].y = 0;
+
+	_hasLiveBlocks = true;
 }
 
-u16 Grid::getRandomBlockColour() const {
+BlockBase* Grid::newRandomBlock() const {
 	switch (rand() % (_blockColourCount - 1)) {
 		case 0:
-			return woopsiRGB(31, 0, 0);
+			return new RedBlock();
 		case 1:
-			return woopsiRGB(0, 31, 0);
+			return new RedBlock();
 		case 2:
-			return woopsiRGB(0, 0, 31);
+			return new RedBlock();
 		case 3:
-			return woopsiRGB(31, 31, 0);
+			return new RedBlock();
 		case 4:
-			return woopsiRGB(0, 31, 31);
+			return new RedBlock();
 		case 5:
-			return woopsiRGB(31, 0, 31);
+			return new RedBlock();
 	}
 
 	// Included to silence compiler warning
-	return woopsiRGB(31, 31, 31);
+	return new RedBlock();
 }
 
 void Grid::connectBlocks() {

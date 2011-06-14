@@ -11,7 +11,7 @@
 class NormalBlock : public BlockBase {
 public:
 	NormalBlock(u16 colour);
-	~NormalBlock();
+	virtual ~NormalBlock();
 
 	void connect(const BlockBase* top, const BlockBase* right, const BlockBase* bottom, const BlockBase* left);
 };

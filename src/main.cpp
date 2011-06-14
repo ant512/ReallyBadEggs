@@ -22,7 +22,6 @@ void liveTest() {
 	}
 
 	while (1) {
-
 		grid.addLiveBlocks();
 
 		while (grid.hasLiveBlocks()) {
@@ -46,6 +45,9 @@ void liveTest() {
 			Hardware::waitForVBlank();
 		}
 
+		grid.connectBlocks();
+		grid.render(0, 0, gfx);
+
 		bool repeat = true;
 
 		while (repeat) {
@@ -61,7 +63,7 @@ void liveTest() {
 
 			grid.connectBlocks();
 
-			repeat = grid.removeChains();
+			repeat = false;//grid.removeChains();
 		}
 	}
 

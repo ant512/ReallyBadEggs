@@ -75,8 +75,7 @@ private:
 	bool* _dirtyBlocks;
 	s32 _blockColourCount;
 
-	void setLiveBlocks(u16 colour1, u16 colour2);
-	u16 getRandomBlockColour() const;
+	BlockBase* newRandomBlock() const;
 };
 
 #endif
