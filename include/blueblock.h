@@ -9,6 +9,13 @@
 #include "normalblock.h"
 
 #include "blueblockbmp.h"
+#include "blueblockbottombmp.h"
+#include "blueblocktopbmp.h"
+#include "blueblockbottomrightbmp.h"
+#include "blueblockleftbmp.h"
+#include "blueblocktoprightbmp.h"
+#include "blueblocktopleftbmp.h"
+#include "blueblocktopleftbottombmp.h"
 
 #include "blueblockexplodebmp.h"
 
@@ -22,19 +29,19 @@ class BlueBlock : public NormalBlock {
 public:
 	BlueBlock() : NormalBlock(woopsiRGB(0, 0, 31)) {
 		_bitmaps[CONNECTION_NONE] = new BlueBlockBmp();
-		_bitmaps[CONNECTION_TOP] = new BlueBlockBmp();
-		_bitmaps[CONNECTION_BOTTOM] = new BlueBlockBmp();
+		_bitmaps[CONNECTION_TOP] = new BlueBlockTopBmp();
+		_bitmaps[CONNECTION_BOTTOM] = new BlueBlockBottomBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM] = new BlueBlockBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT] = new BlueBlockBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_RIGHT] = new BlueBlockBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT] = new BlueBlockTopLeftBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_RIGHT] = new BlueBlockTopRightBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT] = new BlueBlockBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT] = new BlueBlockTopLeftBottomBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_RIGHT] = new BlueBlockBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockBmp();
 		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT] = new BlueBlockBmp();
-		_bitmaps[CONNECTION_BOTTOM | CONNECTION_RIGHT] = new BlueBlockBmp();
+		_bitmaps[CONNECTION_BOTTOM | CONNECTION_RIGHT] = new BlueBlockBottomRightBmp();
 		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockBmp();
-		_bitmaps[CONNECTION_LEFT] = new BlueBlockBmp();
+		_bitmaps[CONNECTION_LEFT] = new BlueBlockLeftBmp();
 		_bitmaps[CONNECTION_RIGHT] = new BlueBlockBmp();
 		_bitmaps[CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockBmp();
 

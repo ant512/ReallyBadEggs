@@ -561,8 +561,6 @@ bool Grid::animate() {
 	bool result = false;
 
 	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
-		_data[i]->animate();
-
 		if (_data[i]->isExploded()) {
 			delete _data[i];
 			_data[i] = NULL;
@@ -573,6 +571,8 @@ bool Grid::animate() {
 		} else if (_data[i]->isLanding()) {
 			result = true;
 		}
+
+		_data[i]->animate();
 	}
 
 	return result;
