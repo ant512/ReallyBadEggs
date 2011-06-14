@@ -21,6 +21,9 @@
 #include "redblockleftrightbmp.h"
 #include "redblocktopleftbottombmp.h"
 #include "redblocktoprightbottombmp.h"
+#include "redblocktopleftrightbmp.h"
+#include "redblocktopleftrightbottombmp.h"
+#include "redblockbottomleftrightbmp.h"
 
 class RedBlock : public NormalBlock {
 public:
@@ -31,13 +34,13 @@ public:
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM] = new RedBlockTopBottomBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT] = new RedBlockTopLeftBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_RIGHT] = new RedBlockTopRightBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT | CONNECTION_RIGHT] = new RedBlockBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT | CONNECTION_RIGHT] = new RedBlockTopLeftRightBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT] = new RedBlockTopLeftBottomBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_RIGHT] = new RedBlockTopRightBottomBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new RedBlockBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new RedBlockTopLeftRightBottomBmp();
 		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT] = new RedBlockBottomLeftBmp();
 		_bitmaps[CONNECTION_BOTTOM | CONNECTION_RIGHT] = new RedBlockBottomRightBmp();
-		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new RedBlockBmp();
+		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new RedBlockBottomLeftRightBmp();
 		_bitmaps[CONNECTION_LEFT] = new RedBlockLeftBmp();
 		_bitmaps[CONNECTION_RIGHT] = new RedBlockRightBmp();
 		_bitmaps[CONNECTION_LEFT | CONNECTION_RIGHT] = new RedBlockLeftRightBmp();
