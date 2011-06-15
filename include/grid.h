@@ -18,11 +18,10 @@ public:
 
 	/**
 	 * Constructor.
-	 * @param blockColourCount Number of block colours available to the grid.
 	 * @param startingHeight Number of rows that are filled with grey blocks at
 	 * the start of the game.
 	 */
-	Grid(s32 blockColourCount, s32 startingHeight);
+	Grid(s32 startingHeight);
 
 	/**
 	 * Destructor.
@@ -108,7 +107,6 @@ private:
 	BlockBase** _data;			/**< Grid of blocks. */
 	Point* _liveBlocks;			/**< Array of 2 Point objects that track the location of the live blocks. */
 	bool _hasLiveBlocks;		/**< True if there are any live blocks in the grid. */
-	s32 _blockColourCount;		/**< Number of block colours available. */
 
 	/**
 	 * Gets the block at the specified co-ordinates.

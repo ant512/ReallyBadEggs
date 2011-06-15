@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
 
 	BlockServer* blockServer = new BlockServer(1, 4);
 	PlayerController* controller = new PlayerController();
-	GridRunner runner(controller, 4, 3, blockServer, 0);
+	GridRunner runner(controller, 3, blockServer, 0);
 
 	while (1) {
 		runner.iterate(0, 0, Hardware::getTopGfx());

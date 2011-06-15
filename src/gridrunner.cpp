@@ -2,7 +2,6 @@
 #include "hardware.h"
 
 GridRunner::GridRunner(const ControllerBase* controller,
-					   s32 blockColourCount,
 					   s32 startingHeight,
 					   BlockServer* blockServer,
 					   s32 playerNumber) {
@@ -10,7 +9,7 @@ GridRunner::GridRunner(const ControllerBase* controller,
 	_state = GRID_RUNNER_STATE_DROP;
 	_timer = 0;
 	_controller = controller;
-	_grid = new Grid(blockColourCount, startingHeight);
+	_grid = new Grid(startingHeight);
 	_blockServer = blockServer;
 	_playerNumber = playerNumber;
 

@@ -26,3 +26,4 @@ To do
    entire rows be added and any left-overs be added randomly?
  - Can the GridRunner.iterate() method be split so that rendering is a separate
    method?  Is this desirable?
+ - When falling, do blocks fall in fractions of a grid square?

@@ -5,11 +5,10 @@
 #include "yellowblock.h"
 #include "blueblock.h"
 
-Grid::Grid(s32 blockColourCount, s32 startingHeight) {
+Grid::Grid(s32 startingHeight) {
 	_data = new BlockBase*[GRID_WIDTH * GRID_HEIGHT];
 	_liveBlocks = new Point[2];
 	_hasLiveBlocks = false;
-	_blockColourCount = blockColourCount;
 
 	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
 		_data[i] = NULL;
