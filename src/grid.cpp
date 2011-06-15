@@ -16,6 +16,10 @@ Grid::Grid(s32 blockColourCount) {
 		_data[i] = NULL;
 	}
 
+	for (s32 i = 0; i < 2; ++i) {
+		_nextBlocks[i] = NULL;
+	}
+
 	chooseNextBlocks();
 }
 
@@ -549,6 +553,9 @@ void Grid::addLiveBlocks() {
 	// Live blocks always appear at the same co-ordinates
 	setBlockAt(2, 0, _nextBlocks[0]);
 	setBlockAt(3, 0, _nextBlocks[1]);
+
+	_nextBlocks[0] = NULL;
+	_nextBlocks[1] = NULL;
 
 	chooseNextBlocks();
 
