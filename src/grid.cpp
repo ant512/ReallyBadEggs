@@ -7,17 +7,12 @@
 
 Grid::Grid(s32 blockColourCount, s32 startingHeight) {
 	_data = new BlockBase*[GRID_WIDTH * GRID_HEIGHT];
-	_nextBlocks = new BlockBase*[2];
 	_liveBlocks = new Point[2];
 	_hasLiveBlocks = false;
 	_blockColourCount = blockColourCount;
 
 	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
 		_data[i] = NULL;
-	}
-
-	for (s32 i = 0; i < 2; ++i) {
-		_nextBlocks[i] = NULL;
 	}
 
 	// Add rows of greys
@@ -30,8 +25,6 @@ Grid::Grid(s32 blockColourCount, s32 startingHeight) {
 			setBlockAt(x, y, new GreyBlock());
 		}
 	}
-
-	chooseNextBlocks();
 }
 
 Grid::~Grid() {
@@ -47,14 +40,6 @@ void Grid::clear() {
 		if (_data[i] != NULL) {
 			delete _data[i];
 			_data[i] = NULL;
-		}
-	}
-
-	// Delete the next blocks
-	for (s32 i = 0; i < 2; ++i) {
-		if (_nextBlocks[i] != NULL) {
-			delete _nextBlocks[i];
-			_nextBlocks[i] = NULL;
 		}
 	}
 }
@@ -532,43 +517,14 @@ void Grid::rotateLiveBlocksAntiClockwise() {
 	}
 }
 
-void Grid::renderNextBlocks(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
-
-	s32 renderX = 0;
-
-	for (s32 i = 0; i < 2; ++i) {
-		renderX = x + (i * BLOCK_SIZE);
-
-		BlockBase* block = _nextBlocks[i];
-
-		if (block == NULL) {
-			gfx->drawFilledRect(renderX, y, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 0));
-		} else {
-			block->render(renderX, y, gfx);
-		}
-	}
-}
-
-void Grid::chooseNextBlocks() {
-	for (s32 i = 0; i < 2; ++i) {
-		if (_nextBlocks[i] != NULL) delete _nextBlocks[i];
-		_nextBlocks[i] = newRandomBlock();
-	}
-}
-
-void Grid::addLiveBlocks() {
+void Grid::addLiveBlocks(BlockBase* block1, BlockBase* block2) {
 
 	// Do not add more live blocks if we have blocks already
 	if (_hasLiveBlocks) return;
 
 	// Live blocks always appear at the same co-ordinates
-	setBlockAt(2, 0, _nextBlocks[0]);
-	setBlockAt(3, 0, _nextBlocks[1]);
-
-	_nextBlocks[0] = NULL;
-	_nextBlocks[1] = NULL;
-
-	chooseNextBlocks();
+	setBlockAt(2, 0, block1);
+	setBlockAt(3, 0, block2);
 
 	_liveBlocks[0].x = 2;
 	_liveBlocks[0].y = 0;
@@ -577,26 +533,6 @@ void Grid::addLiveBlocks() {
 	_liveBlocks[1].y = 0;
 
 	_hasLiveBlocks = true;
-}
-
-BlockBase* Grid::newRandomBlock() const {
-	switch (rand() % (_blockColourCount - 1)) {
-		case 0:
-			return new RedBlock();
-		case 1:
-			return new PurpleBlock();
-		case 2:
-			return new YellowBlock();
-		case 3:
-			return new BlueBlock();
-		case 4:
-			return new RedBlock();
-		case 5:
-			return new RedBlock();
-	}
-
-	// Included to silence compiler warning
-	return new RedBlock();
 }
 
 void Grid::connectBlocks() {

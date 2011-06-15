@@ -1,15 +1,54 @@
 #include "gridrunner.h"
 #include "hardware.h"
 
-GridRunner::GridRunner(const ControllerBase* controller, s32 blockColourCount, s32 startingHeight) {
+GridRunner::GridRunner(const ControllerBase* controller,
+					   s32 blockColourCount,
+					   s32 startingHeight,
+					   BlockServer* blockServer,
+					   s32 playerNumber) {
+
 	_state = GRID_RUNNER_STATE_DROP;
 	_timer = 0;
 	_controller = controller;
 	_grid = new Grid(blockColourCount, startingHeight);
+	_blockServer = blockServer;
+	_playerNumber = playerNumber;
+
+	_nextBlocks = new BlockBase*[2];
+
+	// Ensure we have some initial blocks to add to the grid
+	_blockServer->getNextBlocks(_playerNumber, &_nextBlocks[0], &_nextBlocks[1]);
 }
 
 GridRunner::~GridRunner() {
 	delete _grid;
+
+	// Delete the next blocks
+	for (s32 i = 0; i < 2; ++i) {
+		if (_nextBlocks[i] != NULL) {
+			delete _nextBlocks[i];
+			_nextBlocks[i] = NULL;
+		}
+	}
+
+	delete[] _nextBlocks;
+}
+
+void GridRunner::renderNextBlocks(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
+
+	s32 renderX = 0;
+
+	for (s32 i = 0; i < 2; ++i) {
+		renderX = x + (i * Grid::BLOCK_SIZE);
+
+		BlockBase* block = _nextBlocks[i];
+
+		if (block == NULL) {
+			gfx->drawFilledRect(renderX, y, Grid::BLOCK_SIZE, Grid::BLOCK_SIZE, woopsiRGB(0, 0, 0));
+		} else {
+			block->render(renderX, y, gfx);
+		}
+	}
 }
 
 void GridRunner::iterate(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
@@ -57,7 +96,11 @@ void GridRunner::iterate(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 
 					// Nothing exploded, so we can put a new live block into
 					// the grid
-					_grid->addLiveBlocks();
+					_grid->addLiveBlocks(_nextBlocks[0], _nextBlocks[1]);
+
+					// Fetch the next blocks from the block server and remember
+					// them
+					_blockServer->getNextBlocks(_playerNumber, &_nextBlocks[0], &_nextBlocks[1]);
 
 					_state = GRID_RUNNER_STATE_LIVE;
 				}

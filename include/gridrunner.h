@@ -4,6 +4,7 @@
 #include <graphics.h>
 #include <nds.h>
 
+#include "blockserver.h"
 #include "grid.h"
 #include "controllerbase.h"
 
@@ -22,7 +23,11 @@ public:
 	 * @param startingHeight Number of rows that are filled with grey blocks at
 	 * the start of the game.
 	 */
-	GridRunner(const ControllerBase* controller, s32 blockColourCount, s32 startingHeight);
+	GridRunner(const ControllerBase* controller,
+			   s32 blockColourCount,
+			   s32 startingHeight,
+			   BlockServer* blockServer,
+			   s32 playerNumber);
 
 	/**
 	 * Destructor.
@@ -38,6 +43,14 @@ public:
 	 * @param gfx The graphics object to draw with.
 	 */
 	void iterate(s32 x, s32 y, WoopsiGfx::Graphics* gfx);
+
+	/**
+	 * Draws the two next blocks at the specified co-ordinates.
+	 * @param x The x co-ordinate to draw at.
+	 * @param y The y co-ordinate to draw at.
+	 * @param gfx The graphics object to draw with.
+	 */
+	void renderNextBlocks(s32 x, s32 y, WoopsiGfx::Graphics* gfx);
 
 private:
 
@@ -58,6 +71,9 @@ private:
 	GridRunnerState _state;					/**< The state of the state machine. */
 	s32 _timer;								/**< Frames since the last event took place. */
 	const ControllerBase* _controller;		/**< Controller that feeds user input to live blocks. */
+	BlockServer* _blockServer;
+	BlockBase** _nextBlocks;				/**< Array of 2 blocks that will be placed next. */
+	s32 _playerNumber;
 };
 
 #endif
