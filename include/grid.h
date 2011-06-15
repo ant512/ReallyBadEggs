@@ -3,41 +3,79 @@
 
 #include <graphics.h>
 #include <nds.h>
+#include <woopsiarray.h>
 
-class BlockBase;
+#include "blockbase.h"
+#include "point.h"
 
 class Grid {
 public:
 
-	static const s32 GRID_WIDTH = 6;
-	static const s32 GRID_HEIGHT = 12;
-	static const s32 MAX_CONNECTIONS = 4;
+	static const s32 GRID_WIDTH = 6;		/**< Width of the grid. */
+	static const s32 GRID_HEIGHT = 12;		/**< Height of the grid. */
+	static const s32 CHAIN_LENGTH = 4;		/**< Minimum length for a chain of blocks to be removed. */
+	static const s32 BLOCK_SIZE = 16;		/**< Size of each block in the grid. */
 
+	/**
+	 * Constructor.
+	 */
 	Grid();
+
+	/**
+	 * Destructor.
+	 */
 	~Grid();
 
-	void render(WoopsiGfx::Graphics* gfx);
+	void render(s32 x, s32 y, WoopsiGfx::Graphics* gfx);
 	void iterate();
+	void clear();
 
 	BlockBase* getBlockAt(s32 x, s32 y) const;
-	void setBlockAt(s32 x, s32 y, u8 block);
+	void setBlockAt(s32 x, s32 y, BlockBase* block);
+	void moveBlock(s32 srcX, s32 srcY, s32 destX, s32 destY);
+	bool isValidCoordinate(s32 x, s32 y) const;
 
-	void clear();
+	void getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) const;
+	void getChains(WoopsiArray<WoopsiArray<Point>*>& chains) const;
+
+	s32 explodeChains();
+
+	void dropLiveBlocks();
+	bool dropBlocks();
+
+	void moveLiveBlocksLeft();
+	void moveLiveBlocksRight();
+
+	void rotateLiveBlocksClockwise();
+	void rotateLiveBlocksAntiClockwise();
+
+	bool hasLiveBlocks() const;
+
+	void addLiveBlocks();
+
+	void connectBlocks();
+
+	bool animate();
 
 private:
 
+	enum BlockType {
+		BLOCK_NONE = 0,
+		BLOCK_RED = 1,
+		BLOCK_BLUE = 2,
+		BLOCK_YELLOW = 3,
+		BLOCK_PURPLE = 4,
+		BLOCK_GREEN = 5,
+		BLOCK_ORANGE = 6,
+		BLOCK_GREY = 7
+	};
+
 	BlockBase** _data;
+	Point* _liveBlocks;
+	bool _hasLiveBlocks;
+	s32 _blockColourCount;
 
-	/**
-	 * Removes all blocks that are currently connected to at least 3 others.
-	 * This should be called repeatedly after blocks fall to their new positions
-	 * until it returns false.  This ensures that all connected blocks are
-	 * removed correctly.
-	 * @return True if any blocks were removed.
-	 */
-	bool removeConnectedBlocks();
-
-	s32 identifyConnections(s32 x, s32 y, s32 connectionCount, u8* connectionData);
+	BlockBase* newRandomBlock() const;
 };
 
 #endif

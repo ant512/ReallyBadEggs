@@ -1,34 +1,64 @@
 #ifndef _BLOCK_BASE_H_
 #define _BLOCK_BASE_H_
 
+#include <animation.h>
 #include <bitmapbase.h>
 #include <graphics.h>
 #include <nds.h>
 
-class Grid;
-
 class BlockBase {
 public:
-	BlockBase(s32 x, s32 y) {
-		_x = x;
-		_y = y;
+	BlockBase(u16 colour);
+
+	virtual ~BlockBase();
+
+	u16 getColour() const;
+
+	bool hasLeftConnection() const;
+	bool hasRightConnection() const;
+	bool hasTopConnection() const;
+	bool hasBottomConnection() const;
+
+	bool isLanding() const;
+	bool isFalling() const;
+	bool isExploding() const;
+	bool isExploded() const;
+
+	bool isConnectable() const;
+
+	void fall();
+	void explode();
+	void land();
+
+	void animate();
+
+	virtual void connect(const BlockBase* top, const BlockBase* right, const BlockBase* bottom, const BlockBase* left) = 0;
+
+	void render(s32 x, s32 y, WoopsiGfx::Graphics* gfx);
+
+	const WoopsiGfx::BitmapBase* getBitmap() const;
+
+protected:
+
+	enum ConnectionDirection {
+		CONNECTION_NONE = 0,
+		CONNECTION_TOP = 1,
+		CONNECTION_LEFT = 2,
+		CONNECTION_RIGHT = 4,
+		CONNECTION_BOTTOM = 8
 	};
 
-	virtual ~BlockBase() { };
-
-	inline s32 getX() const { return _x; };
-	inline s32 getY() const { return _y; };
-
-private:
-	s32 _x;
-	s32 _y;
-	bool _topConnection;
-	bool _leftConnection;
-	bool _rightConnection;
-	bool _bottomConnection;
+	u8 _connections;
 	u16 _colour;
+	bool _isExploding;
+	bool _isLanding;
+	bool _isFalling;
 
-	WoopsiArray<WoopsiGfx::BitmapBase*> _bitmaps;
+	WoopsiGfx::BitmapBase** _bitmaps;
+	WoopsiGfx::Animation* _landingAnim;
+	WoopsiGfx::Animation* _explodingAnim;
+
+	void setConnections(bool top, bool right, bool bottom, bool left);
 };
 
 #endif
