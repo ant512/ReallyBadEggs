@@ -5,7 +5,7 @@
 #include "yellowblock.h"
 #include "blueblock.h"
 
-Grid::Grid(s32 blockColourCount) {
+Grid::Grid(s32 blockColourCount, s32 startingHeight) {
 	_data = new BlockBase*[GRID_WIDTH * GRID_HEIGHT];
 	_nextBlocks = new BlockBase*[2];
 	_liveBlocks = new Point[2];
@@ -18,6 +18,17 @@ Grid::Grid(s32 blockColourCount) {
 
 	for (s32 i = 0; i < 2; ++i) {
 		_nextBlocks[i] = NULL;
+	}
+
+	// Add rows of greys
+	if (startingHeight > GRID_HEIGHT) startingHeight = GRID_HEIGHT;
+
+	for (s32 row = 0; row < startingHeight; ++row) {
+		for (s32 x = 0; x < GRID_WIDTH; ++x) {
+			s32 y = GRID_HEIGHT - 1 - row;
+
+			setBlockAt(x, y, new GreyBlock());
+		}
 	}
 
 	chooseNextBlocks();

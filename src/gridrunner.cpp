@@ -1,11 +1,11 @@
 #include "gridrunner.h"
 #include "hardware.h"
 
-GridRunner::GridRunner(const ControllerBase* controller, s32 blockColourCount) {
+GridRunner::GridRunner(const ControllerBase* controller, s32 blockColourCount, s32 startingHeight) {
 	_state = GRID_RUNNER_STATE_DROP;
 	_timer = 0;
 	_controller = controller;
-	_grid = new Grid(blockColourCount);
+	_grid = new Grid(blockColourCount, startingHeight);
 }
 
 GridRunner::~GridRunner() {

@@ -17,8 +17,11 @@ public:
 	 * Constructor.
 	 * @param controller A controller object that will provide input for the
 	 * movement of live blocks.
+	 * @param blockColourCount Number of block colours available to the grid.
+	 * @param startingHeight Number of rows that are filled with grey blocks at
+	 * the start of the game.
 	 */
-	GridRunner(const ControllerBase* controller, s32 blockColourCount);
+	GridRunner(const ControllerBase* controller, s32 blockColourCount, s32 startingHeight);
 
 	/**
 	 * Destructor.

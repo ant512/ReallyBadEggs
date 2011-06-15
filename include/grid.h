@@ -18,8 +18,11 @@ public:
 
 	/**
 	 * Constructor.
+	 * @param blockColourCount Number of block colours available to the grid.
+	 * @param startingHeight Number of rows that are filled with grey blocks at
+	 * the start of the game.
 	 */
-	Grid(s32 blockColoursCount);
+	Grid(s32 blockColourCount, s32 startingHeight);
 
 	/**
 	 * Destructor.
