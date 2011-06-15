@@ -301,10 +301,16 @@ void Grid::dropLiveBlocks() {
 		// Blocks are still live - drop them to the next position.  Drop block
 		// 1 first as when vertical 1 is always below
 		for (s32 i = 1; i >= 0; --i) {
-			moveBlock(_liveBlocks[i].x, _liveBlocks[i].y, _liveBlocks[i].x, _liveBlocks[i].y + 1);
 
-			// Update the live block co-ordinates
-			++_liveBlocks[i].y;
+			BlockBase* liveBlock = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
+			if (liveBlock->hasDroppedHalfBlock()) {
+				moveBlock(_liveBlocks[i].x, _liveBlocks[i].y, _liveBlocks[i].x, _liveBlocks[i].y + 1);
+				
+				// Update the live block co-ordinates
+				++_liveBlocks[i].y;
+			}
+			
+			liveBlock->dropHalfBlock();
 		}
 	}
 }
@@ -329,22 +335,25 @@ bool Grid::dropBlocks() {
 	// point in dropping the bottom row
 	for (s32 y = GRID_HEIGHT - 2; y >= 0; --y) {
 		for (s32 x = 0; x < GRID_WIDTH; ++x) {
+			
+			BlockBase* block = getBlockAt(x, y);
 
 			// Ignore this block if it's empty
-			if (getBlockAt(x, y) == NULL) continue;
+			if (block == NULL) continue;
 
 			// Drop the current block if the block below is empty
 			if (getBlockAt(x, y + 1) == NULL) {
-				moveBlock(x, y, x, y + 1);
-				getBlockAt(x, y + 1)->fall();
+				
+				if (block->hasDroppedHalfBlock()) {
+					moveBlock(x, y, x, y + 1);
+				}
+				
+				block->dropHalfBlock();
+				block->fall();
 
 				hasDropped = true;
-			} else {
-				BlockBase* block = getBlockAt(x, y);
-
-				if (block->isFalling()) {
-					block->land();
-				}
+			} else if (block->isFalling()) {
+				block->land();
 			}
 		}
 	}
@@ -357,9 +366,9 @@ void Grid::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 	s32 renderX = 0;
 	s32 renderY = 0;
 
-	for (s32 blockY = 0; blockY < GRID_HEIGHT; ++blockY) {
-		for (s32 blockX = 0; blockX < GRID_WIDTH; ++blockX) {
-
+	for (s32 blockX = 0; blockX < GRID_WIDTH; ++blockX) {
+		for (s32 blockY = GRID_HEIGHT - 1; blockY >= 0; --blockY) {
+		
 			renderX = x + (blockX * BLOCK_SIZE);
 			renderY = y + (blockY * BLOCK_SIZE);
 
@@ -368,8 +377,14 @@ void Grid::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 			if (block == NULL) {
 				gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 0));
 			} else {
+				if (block->hasDroppedHalfBlock()) {
+					
+					// Erase the half-block above
+					gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE / 2, woopsiRGB(0, 0, 0));
+					renderY += BLOCK_SIZE / 2;
+				}
+
 				block->render(renderX, renderY, gfx);
-				//gfx->drawFilledRect(renderX, renderY, BLOCK_SIZE, BLOCK_SIZE, block->getColour());
 			}
 		}
 	}

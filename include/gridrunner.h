@@ -62,7 +62,7 @@ private:
 		GRID_RUNNER_STATE_EXPLODING = 3		/**< Blocks are running their exploding animations. */
 	};
 
-	static const s32 AUTO_DROP_TIME = 5;	/**< Frames between drops when blocks are automatically dropping. */
+	static const s32 AUTO_DROP_TIME = 2;	/**< Frames between drops when blocks are automatically dropping. */
 	static const s32 LIVE_DROP_TIME = 30;	/**< Frames between forced drops of live blocks. */
 
 	Grid* _grid;							/**< The grid the runner controls. */

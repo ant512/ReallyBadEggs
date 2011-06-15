@@ -6,6 +6,7 @@ BlockBase::BlockBase(u16 colour) {
 	_isFalling = true;
 	_isLanding = false;
 	_isExploding = false;
+	_hasDroppedHalfBlock = false;
 
 	_bitmaps = new WoopsiGfx::BitmapBase*[16];
 

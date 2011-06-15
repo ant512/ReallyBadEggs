@@ -107,7 +107,7 @@ private:
 	BlockBase** _data;			/**< Grid of blocks. */
 	Point* _liveBlocks;			/**< Array of 2 Point objects that track the location of the live blocks. */
 	bool _hasLiveBlocks;		/**< True if there are any live blocks in the grid. */
-
+	
 	/**
 	 * Gets the block at the specified co-ordinates.
 	 * @param x The x co-ordinate of the block.

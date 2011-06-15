@@ -128,10 +128,16 @@ void GridRunner::iterate(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 
 			if (_grid->hasLiveBlocks()) {
 
+				bool dropped = false;
+
 				// Drop the block to the next row if the timer has expired
 				if (_timer == LIVE_DROP_TIME) {
 					_timer = 0;
+					
+					// Only force blocks down when player is not doing it
 					_grid->dropLiveBlocks();
+
+					dropped = true;
 				}
 
 				// Process user input
@@ -139,7 +145,7 @@ void GridRunner::iterate(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 					_grid->moveLiveBlocksLeft();
 				} else if (_controller->right()) {
 					_grid->moveLiveBlocksRight();
-				} else if (_controller->down()) {
+				} else if (_controller->down() && (_timer % 2 == 0) && !dropped) {
 					_grid->dropLiveBlocks();
 				} else if (_controller->rotateClockwise()) {
 					_grid->rotateLiveBlocksClockwise();

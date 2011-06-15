@@ -35,6 +35,10 @@ public:
 
 	void animate();
 
+	bool hasDroppedHalfBlock() const { return _hasDroppedHalfBlock; };
+
+	void dropHalfBlock() { _hasDroppedHalfBlock = !_hasDroppedHalfBlock; };
+
 	/**
 	 * Attempt to establish which of the surrounding blocks are of the same type
 	 * as this and remember those connections.
@@ -67,6 +71,7 @@ protected:
 	bool _isExploding;						/**< True if the block is exploding. */
 	bool _isLanding;						/**< True if the block is landing. */
 	bool _isFalling;						/**< True if the block is falling. */
+	bool _hasDroppedHalfBlock;
 
 	WoopsiGfx::BitmapBase** _bitmaps;		/**< Array of bitmaps showing all possible connections. */
 	WoopsiGfx::Animation* _landingAnim;		/**< Animation that plays when the block is landing. */

@@ -47,7 +47,7 @@ public:
 	 */
 	bool down() const {
 		const Pad& pad = Hardware::getPad();
-		return pad.isDownNewPress() || pad.isDownRepeat();
+		return pad.isDownHeld();
 	};
 
 	/**
