@@ -9,7 +9,7 @@
 class Pad {
 public:
 
-	static const s32 PAD_REPEAT_TIME = 6;	/**< VBLs before buttons repeat. */
+	static const s32 PAD_REPEAT_TIME = 8;	/**< VBLs before buttons repeat. */
 
 	/**
 	 * Constructor.

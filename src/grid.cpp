@@ -401,11 +401,24 @@ void Grid::moveLiveBlocksLeft() {
 
 	// 0 block should always be on the left or at the top
 	if (_liveBlocks[0].x == 0) canMove = false;
+
+	// Check the block to the left
 	if (getBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y) != NULL) canMove = false;
+
+	// If we've dropped half a block we also need to check the block left and
+	// down one
+	if (getBlockAt(_liveBlocks[0].x, _liveBlocks[0].y)->hasDroppedHalfBlock()) {
+		if (getBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y + 1) != NULL) canMove = false;
+	}
 
 	// Check 1 block if it is below the 0 block
 	if (_liveBlocks[0].x == _liveBlocks[1].x) {
 		if (getBlockAt(_liveBlocks[1].x - 1, _liveBlocks[1].y) != NULL) canMove = false;
+
+		// Check the block left and down one if we've dropped a half block
+		if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y)->hasDroppedHalfBlock()) {
+			if (getBlockAt(_liveBlocks[1].x - 1, _liveBlocks[1].y + 1) != NULL) canMove = false;
+		}
 	}
 
 	if (canMove) {
@@ -423,11 +436,24 @@ void Grid::moveLiveBlocksRight() {
 
 	// 1 block should always be on the right or at the bottom
 	if (_liveBlocks[1].x == GRID_WIDTH - 1) canMove = false;
+
+	// Check the block to the right
 	if (getBlockAt(_liveBlocks[1].x + 1, _liveBlocks[1].y) != NULL) canMove = false;
+
+	// If we've dropped half a block we also need to check the block right and
+	// down one
+	if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y)->hasDroppedHalfBlock()) {
+		if (getBlockAt(_liveBlocks[1].x + 1, _liveBlocks[1].y + 1) != NULL) canMove = false;
+	}
 
 	// Check 0 block if it is above the 1 block
 	if (_liveBlocks[0].x == _liveBlocks[1].x) {
 		if (getBlockAt(_liveBlocks[0].x + 1, _liveBlocks[0].y) != NULL) canMove = false;
+
+		// Check the block right and down one if we've dropped a half block
+		if (getBlockAt(_liveBlocks[0].x, _liveBlocks[0].y)->hasDroppedHalfBlock()) {
+			if (getBlockAt(_liveBlocks[0].x + 1, _liveBlocks[0].y + 1) != NULL) canMove = false;
+		}
 	}
 
 	if (canMove) {
