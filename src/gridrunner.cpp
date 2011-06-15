@@ -56,6 +56,8 @@ void GridRunner::iterate(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 	bool animated = _grid->animate();
 	_grid->render(x, y, gfx);
 
+	renderNextBlocks(x + ((Grid::GRID_WIDTH + 1) * Grid::BLOCK_SIZE), y, gfx);
+
 	++_timer;
 
 	switch (_state) {

@@ -18,10 +18,6 @@ int main(int argc, char* argv[]) {
 
 	while (1) {
 		runner.iterate(0, 0, Hardware::getTopGfx());
-
-		// TODO: Where should this go?  Inside the GridRunner class?
-		runner.renderNextBlocks(112, 0, Hardware::getTopGfx());
-
 		Hardware::waitForVBlank();
 	}
 
