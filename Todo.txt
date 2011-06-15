@@ -18,7 +18,6 @@ To do
  - Can the single-player mode be enhanced?  Tetris-style speed increases, levels
    and scores?
  - Mode where everything on the screen must be removed?
- - "Next block" indicator drawn to screen.
  - Additional block colours - orange and green.
  - Block auto drop speed change option.
  - Way to add n grey blocks into random columns in the grid.  Are the columns
