@@ -1,6 +1,7 @@
 #ifndef _GRID_RUNNER_H_
 #define _GRID_RUNNER_H_
 
+#include <graphics.h>
 #include <nds.h>
 
 #include "grid.h"
@@ -32,8 +33,11 @@ public:
 	 * Process a single iteration of the state machine/grid logic.  This model
 	 * enables other code to be run between iterations of the grid (for example,
 	 * if two grids are running because we've got a two-player game).
+	 * @param x The x co-ordinate to draw to.
+	 * @param y The y co-ordinate to draw to.
+	 * @param gfx The graphics object to draw with.
 	 */
-	void iterate();
+	void iterate(s32 x, s32 y, WoopsiGfx::Graphics* gfx);
 
 private:
 

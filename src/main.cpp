@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 	GridRunner runner(&controller, 4, 3);
 
 	while (1) {
-		runner.iterate();
+		runner.iterate(0, 0, Hardware::getTopGfx());
 		Hardware::waitForVBlank();
 	}
 

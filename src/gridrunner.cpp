@@ -12,13 +12,11 @@ GridRunner::~GridRunner() {
 	delete _grid;
 }
 
-void GridRunner::iterate() {
-
-	WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
+void GridRunner::iterate(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 
 	// Returns true if any blocks have an animation still in progress
 	bool animated = _grid->animate();
-	_grid->render(0, 0, gfx);
+	_grid->render(x, y, gfx);
 
 	++_timer;
 
