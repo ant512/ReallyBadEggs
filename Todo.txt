@@ -13,7 +13,6 @@ To do
  - Sound effects.
  - Background graphics.
  - AI, displayed on lower screen.
- - Wifi second player?
  - Options screen.
  - Title screen.
  - If wifi second player does not work, can the single-player mode be enhanced?
