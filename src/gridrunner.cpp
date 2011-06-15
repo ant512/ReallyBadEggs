@@ -1,9 +1,10 @@
 #include "gridrunner.h"
 #include "hardware.h"
 
-GridRunner::GridRunner() {
+GridRunner::GridRunner(const ControllerBase* controller) {
 	_state = GRID_RUNNER_STATE_DROP;
 	_timer = 0;
+	_controller = controller;
 }
 
 GridRunner::~GridRunner() {
@@ -90,17 +91,15 @@ void GridRunner::iterate() {
 				}
 
 				// Process user input
-				const Pad& pad = Hardware::getPad();
-
-				if (pad.isLeftNewPress() || pad.isLeftRepeat()) {
+				if (_controller->left()) {
 					_grid.moveLiveBlocksLeft();
-				} else if (pad.isRightNewPress() || pad.isRightRepeat()) {
+				} else if (_controller->right()) {
 					_grid.moveLiveBlocksRight();
-				} else if (pad.isDownNewPress() || pad.isDownRepeat()) {
+				} else if (_controller->down()) {
 					_grid.dropLiveBlocks();
-				} else if (pad.isANewPress()) {
+				} else if (_controller->rotateClockwise()) {
 					_grid.rotateLiveBlocksClockwise();
-				} else if (pad.isBNewPress()) {
+				} else if (_controller->rotateAntiClockwise()) {
 					_grid.rotateLiveBlocksAntiClockwise();
 				}
 			} else {

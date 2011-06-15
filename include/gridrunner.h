@@ -4,10 +4,11 @@
 #include <nds.h>
 
 #include "grid.h"
+#include "controllerbase.h"
 
 class GridRunner {
 public:
-	GridRunner();
+	GridRunner(const ControllerBase* controller);
 	~GridRunner();
 
 	void iterate();
@@ -27,6 +28,7 @@ private:
 	Grid _grid;
 	GridRunnerState _state;
 	s32 _timer;
+	const ControllerBase* _controller;
 };
 
 #endif
