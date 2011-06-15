@@ -1,0 +1,28 @@
+To do
+-----
+
+ - Add all bitmaps for blocks.
+ - GridRunner needs to get number of blocks exploded in chains and buffer it
+   somewhere.  It might be useful if the grid spat out the number of blocks in
+   each chain so that an overall array of chain sets can be created (ie. chain
+   set 1 contained 2 chains of 4 blocks each).  This allows us to apply
+   multipliers when figuring out how many blocks to dump on the opponent.
+ - When grey blocks land on a column that column needs to offset itself by n
+   vertical pixels.  Part of the animation process needs to be moving the row
+   back to its correct location.  Does the row bounce?
+ - Sound effects.
+ - AI, displayed on lower screen.
+ - Wifi second player?
+ - Options screen.
+ - Title screen.
+ - If wifi second player does not work, can the single-player mode be enhanced?
+   Tetris-style speed increases, levels and scores?
+ - Mode where everything on the screen must be removed?
+ - Starting grid height optional - greys added to bottom of grid.
+ - "Next block" indicator.
+ - Additional block colours - orange and green.
+ - Block auto drop speed change option.
+ - Way to add n grey blocks into random columns in the grid.  Are the columns
+   always random?  If we have more blocks to add than there are columns, should
+   entire rows be added and any left-overs be added randomly?
+ - 
