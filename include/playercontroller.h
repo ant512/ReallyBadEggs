@@ -7,32 +7,62 @@
 #include "hardware.h"
 #include "pad.h"
 
+/**
+ * Watches the DS' buttons and reports their states appropriately.
+ */
 class PlayerController : public ControllerBase {
 public:
+
+	/**
+	 * Constructor.
+	 */
 	PlayerController() { };
 
-	virtual ~PlayerController() { };
+	/**
+	 * Destructor.
+	 */
+	~PlayerController() { };
 
+	/**
+	 * Is the left control active?
+	 * @return True if the left control is active.
+	 */
 	bool left() const {
 		const Pad& pad = Hardware::getPad();
 		return pad.isLeftNewPress() || pad.isLeftRepeat();
 	};
 
+	/**
+	 * Is the right control active?
+	 * @return True if the right control is active.
+	 */
 	bool right() const {
 		const Pad& pad = Hardware::getPad();
 		return pad.isRightNewPress() || pad.isRightRepeat();
 	};
 
+	/**
+	 * Is the down control active?
+	 * @return True if the down control is active.
+	 */
 	bool down() const {
 		const Pad& pad = Hardware::getPad();
 		return pad.isDownNewPress() || pad.isDownRepeat();
 	};
 
+	/**
+	 * Is the clockwise rotation control active?
+	 * @return True if the clockwise rotation control is active.
+	 */
 	bool rotateClockwise() const {
 		const Pad& pad = Hardware::getPad();
 		return pad.isANewPress();
 	};
 
+	/**
+	 * Is the anticlockwise rotation control active?
+	 * @return True if the anticlockwise rotation control is active.
+	 */
 	bool rotateAntiClockwise() const {
 		const Pad& pad = Hardware::getPad();
 		return pad.isBNewPress();
