@@ -5,6 +5,7 @@
 #include "hardware.h"
 #include "pad.h"
 #include "grid.h"
+#include "gridrunner.h"
 
 void liveTest() {
 
@@ -107,7 +108,14 @@ void padTest() {
 int main(int argc, char* argv[]) {
 	Hardware::init();
 
-	liveTest();
+	//liveTest();
+	GridRunner runner;
+
+	while (1) {
+		runner.iterate();
+		Hardware::waitForVBlank();
+	}
+
 
 	Hardware::shutdown();
 	return 0;
