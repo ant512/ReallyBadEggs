@@ -15,8 +15,8 @@ To do
  - AI, displayed on lower screen.
  - Options screen.
  - Title screen.
- - If wifi second player does not work, can the single-player mode be enhanced?
-   Tetris-style speed increases, levels and scores?
+ - Can the single-player mode be enhanced?  Tetris-style speed increases, levels
+   and scores?
  - Mode where everything on the screen must be removed?
  - Starting grid height optional - greys added to bottom of grid.
  - "Next block" indicator drawn to screen.
