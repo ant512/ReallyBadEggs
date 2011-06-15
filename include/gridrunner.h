@@ -18,7 +18,7 @@ public:
 	 * @param controller A controller object that will provide input for the
 	 * movement of live blocks.
 	 */
-	GridRunner(const ControllerBase* controller);
+	GridRunner(const ControllerBase* controller, s32 blockColourCount);
 
 	/**
 	 * Destructor.
@@ -47,7 +47,7 @@ private:
 	static const s32 AUTO_DROP_TIME = 5;	/**< Frames between drops when blocks are automatically dropping. */
 	static const s32 LIVE_DROP_TIME = 30;	/**< Frames between forced drops of live blocks. */
 
-	Grid _grid;								/**< The grid the runner controls. */
+	Grid* _grid;							/**< The grid the runner controls. */
 	GridRunnerState _state;					/**< The state of the state machine. */
 	s32 _timer;								/**< Frames since the last event took place. */
 	const ControllerBase* _controller;		/**< Controller that feeds user input to live blocks. */

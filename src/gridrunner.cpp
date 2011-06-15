@@ -1,13 +1,15 @@
 #include "gridrunner.h"
 #include "hardware.h"
 
-GridRunner::GridRunner(const ControllerBase* controller) {
+GridRunner::GridRunner(const ControllerBase* controller, s32 blockColourCount) {
 	_state = GRID_RUNNER_STATE_DROP;
 	_timer = 0;
 	_controller = controller;
+	_grid = new Grid(blockColourCount);
 }
 
 GridRunner::~GridRunner() {
+	delete _grid;
 }
 
 void GridRunner::iterate() {
@@ -15,8 +17,8 @@ void GridRunner::iterate() {
 	WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 
 	// Returns true if any blocks have an animation still in progress
-	bool animated = _grid.animate();
-	_grid.render(0, 0, gfx);
+	bool animated = _grid->animate();
+	_grid->render(0, 0, gfx);
 
 	++_timer;
 
@@ -29,7 +31,7 @@ void GridRunner::iterate() {
 
 			_timer = 0;
 
-			if (!_grid.dropBlocks()) {
+			if (!_grid->dropBlocks()) {
 
 				// Blocks have stopped dropping, so we need to run the landing
 				// animations
@@ -46,10 +48,10 @@ void GridRunner::iterate() {
 
 				// All animations have finished, so establish all connections
 				// between blocks now that they have settled
-				_grid.connectBlocks();
+				_grid->connectBlocks();
 
 				// Attempt to explode any chains that exist in the grid
-				if (_grid.explodeChains()) {
+				if (_grid->explodeChains()) {
 
 					// We need to run the explosion animations next
 					_state = GRID_RUNNER_STATE_EXPLODING;
@@ -57,7 +59,7 @@ void GridRunner::iterate() {
 
 					// Nothing exploded, so we can put a new live block into
 					// the grid
-					_grid.addLiveBlocks();
+					_grid->addLiveBlocks();
 
 					_state = GRID_RUNNER_STATE_LIVE;
 				}
@@ -82,25 +84,25 @@ void GridRunner::iterate() {
 
 			// Player-controllable blocks are in the grid
 
-			if (_grid.hasLiveBlocks()) {
+			if (_grid->hasLiveBlocks()) {
 
 				// Drop the block to the next row if the timer has expired
 				if (_timer == LIVE_DROP_TIME) {
 					_timer = 0;
-					_grid.dropLiveBlocks();
+					_grid->dropLiveBlocks();
 				}
 
 				// Process user input
 				if (_controller->left()) {
-					_grid.moveLiveBlocksLeft();
+					_grid->moveLiveBlocksLeft();
 				} else if (_controller->right()) {
-					_grid.moveLiveBlocksRight();
+					_grid->moveLiveBlocksRight();
 				} else if (_controller->down()) {
-					_grid.dropLiveBlocks();
+					_grid->dropLiveBlocks();
 				} else if (_controller->rotateClockwise()) {
-					_grid.rotateLiveBlocksClockwise();
+					_grid->rotateLiveBlocksClockwise();
 				} else if (_controller->rotateAntiClockwise()) {
-					_grid.rotateLiveBlocksAntiClockwise();
+					_grid->rotateLiveBlocksAntiClockwise();
 				}
 			} else {
 

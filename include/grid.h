@@ -19,7 +19,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Grid();
+	Grid(s32 blockColoursCount);
 
 	/**
 	 * Destructor.
@@ -57,6 +57,17 @@ public:
 
 	bool animate();
 
+
+
+
+	/**
+	 * Draws the two next blocks at the specified co-ordinates.
+	 * @param x The x co-ordinate to draw at.
+	 * @param y The y co-ordinate to draw at.
+	 * @param gfx The graphics object to draw with.
+	 */
+	void renderNextBlocks(s32 x, s32 y, WoopsiGfx::Graphics* gfx);
+
 private:
 
 	enum BlockType {
@@ -70,12 +81,24 @@ private:
 		BLOCK_GREY = 7
 	};
 
-	BlockBase** _data;
-	Point* _liveBlocks;
-	bool _hasLiveBlocks;
-	s32 _blockColourCount;
+	BlockBase** _data;			/**< Grid of blocks. */
+	BlockBase** _nextBlocks;	/**< Array of 2 blocks that will be placed next. */
+	Point* _liveBlocks;			/**< Array of 2 Point objects that track the location of the live blocks. */
+	bool _hasLiveBlocks;		/**< True if there are any live blocks in the grid. */
+	s32 _blockColourCount;		/**< Number of block colours available. */
 
+	/**
+	 * Creates a new randomly-coloured block.  Should be deleted when no longer
+	 * needed.
+	 */
 	BlockBase* newRandomBlock() const;
+
+	/**
+	 * Populates the next blocks array with two new blocks.  Deletes any
+	 * existing blocks in the array so it is safe to call it repeatedly without
+	 * leaking memory.
+	 */
+	void chooseNextBlocks();
 };
 
 #endif

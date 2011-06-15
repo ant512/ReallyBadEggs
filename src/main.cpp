@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
 	Hardware::init();
 
 	PlayerController controller;
-	GridRunner runner(&controller);
+	GridRunner runner(&controller, 4);
 
 	while (1) {
 		runner.iterate();

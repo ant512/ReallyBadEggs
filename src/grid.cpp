@@ -5,27 +5,41 @@
 #include "yellowblock.h"
 #include "blueblock.h"
 
-Grid::Grid() {
+Grid::Grid(s32 blockColourCount) {
 	_data = new BlockBase*[GRID_WIDTH * GRID_HEIGHT];
+	_nextBlocks = new BlockBase*[2];
 	_liveBlocks = new Point[2];
 	_hasLiveBlocks = false;
-	_blockColourCount = 6;
+	_blockColourCount = blockColourCount;
 
-	clear();
+	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
+		_data[i] = NULL;
+	}
+
+	chooseNextBlocks();
 }
 
 Grid::~Grid() {
 	clear();
-
 	delete[] _data;
 	delete[] _liveBlocks;
 }
 
 void Grid::clear() {
+
+	// Delete everything in the grid
 	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
 		if (_data[i] != NULL) {
 			delete _data[i];
 			_data[i] = NULL;
+		}
+	}
+
+	// Delete the next blocks
+	for (s32 i = 0; i < 2; ++i) {
+		if (_nextBlocks[i] != NULL) {
+			delete _nextBlocks[i];
+			_nextBlocks[i] = NULL;
 		}
 	}
 }
@@ -503,14 +517,40 @@ void Grid::rotateLiveBlocksAntiClockwise() {
 	}
 }
 
+void Grid::renderNextBlocks(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
+
+	s32 renderX = 0;
+
+	for (s32 i = 0; i < 2; ++i) {
+		renderX = x + (i * BLOCK_SIZE);
+
+		BlockBase* block = _nextBlocks[i];
+
+		if (block == NULL) {
+			gfx->drawFilledRect(renderX, y, BLOCK_SIZE, BLOCK_SIZE, woopsiRGB(0, 0, 0));
+		} else {
+			block->render(renderX, y, gfx);
+		}
+	}
+}
+
+void Grid::chooseNextBlocks() {
+	for (s32 i = 0; i < 2; ++i) {
+		if (_nextBlocks[i] != NULL) delete _nextBlocks[i];
+		_nextBlocks[i] = newRandomBlock();
+	}
+}
+
 void Grid::addLiveBlocks() {
 
-		// Do not add more live blocks if we have blocks already
+	// Do not add more live blocks if we have blocks already
 	if (_hasLiveBlocks) return;
 
 	// Live blocks always appear at the same co-ordinates
-	setBlockAt(2, 0, newRandomBlock());
-	setBlockAt(3, 0, newRandomBlock());
+	setBlockAt(2, 0, _nextBlocks[0]);
+	setBlockAt(3, 0, _nextBlocks[1]);
+
+	chooseNextBlocks();
 
 	_liveBlocks[0].x = 2;
 	_liveBlocks[0].y = 0;
