@@ -11,6 +11,7 @@ To do
    vertical pixels.  Part of the animation process needs to be moving the row
    back to its correct location.  Does the row bounce?
  - Sound effects.
+ - Background graphics.
  - AI, displayed on lower screen.
  - Wifi second player?
  - Options screen.
@@ -25,4 +26,3 @@ To do
  - Way to add n grey blocks into random columns in the grid.  Are the columns
    always random?  If we have more blocks to add than there are columns, should
    entire rows be added and any left-overs be added randomly?
- - 

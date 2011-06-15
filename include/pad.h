@@ -89,8 +89,8 @@ public:
 
 		scanKeys();
 
-		s32 pressed = keysDown();	// buttons pressed this loop
-		s32 held = keysHeld();		// buttons currently held
+		s32 pressed = keysDown();	// Buttons pressed this loop
+		s32 held = keysHeld();		// Buttons currently held
 		s32 allKeys = pressed | held;
 
 		allKeys & KEY_UP ? _up++ : _up = 0;

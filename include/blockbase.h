@@ -10,6 +10,9 @@ class BlockBase {
 public:
 	BlockBase(u16 colour);
 
+	/**
+	 * Destructor.
+	 */
 	virtual ~BlockBase();
 
 	u16 getColour() const;
@@ -32,6 +35,14 @@ public:
 
 	void animate();
 
+	/**
+	 * Attempt to establish which of the surrounding blocks are of the same type
+	 * as this and remember those connections.
+	 * @param top The block above this.
+	 * @param bottom The block below this.
+	 * @param right The block to the right of this.
+	 * @param left The block to the left of this.
+	 */
 	virtual void connect(const BlockBase* top, const BlockBase* right, const BlockBase* bottom, const BlockBase* left) = 0;
 
 	void render(s32 x, s32 y, WoopsiGfx::Graphics* gfx);
@@ -40,6 +51,9 @@ public:
 
 protected:
 
+	/**
+	 * Bitmask of possible connections.
+	 */
 	enum ConnectionDirection {
 		CONNECTION_NONE = 0,
 		CONNECTION_TOP = 1,
@@ -48,15 +62,15 @@ protected:
 		CONNECTION_BOTTOM = 8
 	};
 
-	u8 _connections;
-	u16 _colour;
-	bool _isExploding;
-	bool _isLanding;
-	bool _isFalling;
+	u8 _connections;						/**< Bitmask of active connections. */
+	u16 _colour;							/**< Colour of the block. */
+	bool _isExploding;						/**< True if the block is exploding. */
+	bool _isLanding;						/**< True if the block is landing. */
+	bool _isFalling;						/**< True if the block is falling. */
 
-	WoopsiGfx::BitmapBase** _bitmaps;
-	WoopsiGfx::Animation* _landingAnim;
-	WoopsiGfx::Animation* _explodingAnim;
+	WoopsiGfx::BitmapBase** _bitmaps;		/**< Array of bitmaps showing all possible connections. */
+	WoopsiGfx::Animation* _landingAnim;		/**< Animation that plays when the block is landing. */
+	WoopsiGfx::Animation* _explodingAnim;	/**< Animation that plays when the block is exploding. */
 
 	void setConnections(bool top, bool right, bool bottom, bool left);
 };
