@@ -599,10 +599,6 @@ void Grid::connectBlocks() {
 	}
 }
 
-void Grid::iterate() {
-
-}
-
 bool Grid::animate() {
 
 	bool result = false;
