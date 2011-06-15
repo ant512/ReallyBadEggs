@@ -17,12 +17,17 @@ void GridRunner::iterate() {
 	bool animated = _grid.animate();
 	_grid.render(0, 0, gfx);
 
+	++_timer;
+
 	switch (_state) {
 		case GRID_RUNNER_STATE_DROP:
 
 			// Blocks are dropping down the screen automatically
 
-			// TODO: 5 frames before next drop attempt
+			if (_timer < AUTO_DROP_TIME) return;
+
+			_timer = 0;
+
 			if (!_grid.dropBlocks()) {
 
 				// Blocks have stopped dropping, so we need to run the landing
@@ -77,6 +82,14 @@ void GridRunner::iterate() {
 			// Player-controllable blocks are in the grid
 
 			if (_grid.hasLiveBlocks()) {
+
+				// Drop the block to the next row if the timer has expired
+				if (_timer == LIVE_DROP_TIME) {
+					_timer = 0;
+					_grid.dropLiveBlocks();
+				}
+
+				// Process user input
 				const Pad& pad = Hardware::getPad();
 
 				if (pad.isLeftNewPress() || pad.isLeftRepeat()) {
@@ -93,7 +106,7 @@ void GridRunner::iterate() {
 			} else {
 
 				// At least one of the blocks in the live pair has touched down.
-				// We need to drop the other
+				// We need to drop the other block automatically
 				_state = GRID_RUNNER_STATE_DROP;
 			}
 

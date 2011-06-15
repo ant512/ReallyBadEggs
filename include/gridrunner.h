@@ -21,6 +21,9 @@ private:
 		GRID_RUNNER_STATE_EXPLODING = 3
 	};
 
+	static const s32 AUTO_DROP_TIME = 5;	/**< Frames between drops when blocks are automatically dropping. */
+	static const s32 LIVE_DROP_TIME = 30;	/**< Frames between forced drops of live blocks. */
+
 	Grid _grid;
 	GridRunnerState _state;
 	s32 _timer;
