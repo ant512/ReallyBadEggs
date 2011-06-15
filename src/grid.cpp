@@ -535,12 +535,19 @@ void Grid::addLiveBlocks(BlockBase* block1, BlockBase* block2) {
 }
 
 void Grid::connectBlocks() {
+	
+	BlockBase* block = NULL;
+	
 	for (s32 y = 0; y < GRID_HEIGHT; ++y) {
 		for (s32 x = 0; x < GRID_WIDTH; ++x) {
-			getBlockAt(x, y)->connect(getBlockAt(x, y - 1),
-									  getBlockAt(x + 1, y),
-									  getBlockAt(x, y + 1),
-									  getBlockAt(x - 1, y));
+			block = getBlockAt(x, y);
+			
+			if (block == NULL) continue;
+			
+			block->connect(getBlockAt(x, y - 1),
+						   getBlockAt(x + 1, y),
+						   getBlockAt(x, y + 1),
+						   getBlockAt(x - 1, y));
 		}
 	}
 }
@@ -550,6 +557,9 @@ bool Grid::animate() {
 	bool result = false;
 
 	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
+		
+		if (_data[i] == NULL) continue;
+		
 		if (_data[i]->isExploded()) {
 			delete _data[i];
 			_data[i] = NULL;
@@ -561,7 +571,7 @@ bool Grid::animate() {
 			result = true;
 		}
 
-		_data[i]->animate();
+		if (_data[i] != NULL) _data[i]->animate();
 	}
 
 	return result;

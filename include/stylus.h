@@ -86,10 +86,10 @@ public:
 		int mouseState = SDL_GetMouseState(&mouseX, &mouseY);
 		
 		// Check buttons
-		mouseState & SDL_BUTTON_LEFT ? _stylus.touch++ : _stylus.touch = 0;
+		mouseState & SDL_BUTTON_LEFT ? _touch++ : _touch = 0;
 		
-		_stylus.x = mouseX;
-		_stylus.y = mouseY - SCREEN_HEIGHT;
+		_x = mouseX;
+		_y = mouseY - SCREEN_HEIGHT;
 #endif
 	};
 

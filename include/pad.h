@@ -113,7 +113,7 @@ public:
 		keyState[SDLK_UP] ? _up++ : _up = 0;
 		keyState[SDLK_DOWN] ? _down++ : _down = 0;
 		keyState[SDLK_LEFT] ? _left++ : _left = 0;
-		keyState[SDLK_RIGHT] ? _right : _right = 0;
+		keyState[SDLK_RIGHT] ? _right++ : _right = 0;
 		keyState[SDLK_a] ? _l++ : _l = 0;
 		keyState[SDLK_s] ? _r++ : _r = 0;
 		keyState[SDLK_z] ? _a++ : _a = 0;
