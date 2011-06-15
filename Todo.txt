@@ -1,6 +1,8 @@
 To do
 -----
 
+ - Live blocks drop in half grid squares, which means they need to be removed
+   from the grid and controlled by the grid runner instead.
  - Add all bitmaps for blocks.
  - GridRunner needs to get number of blocks exploded in chains and buffer it
    somewhere.  It might be useful if the grid spat out the number of blocks in
