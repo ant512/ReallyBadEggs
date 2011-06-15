@@ -55,37 +55,60 @@ public:
 	 */
 	s32 explodeChains();
 
+	/**
+	 * Drops the live blocks down one row if possible.
+	 */
 	void dropLiveBlocks();
+
+	/**
+	 * Drops all blocks down one row if possible.
+	 * @return True if blocks were dropped; false if not.
+	 */
 	bool dropBlocks();
 
+	/**
+	 * Moves the live blocks one column left if possible.
+	 */
 	void moveLiveBlocksLeft();
+
+	/**
+	 * Moves the live blocks on column right if possible.
+	 */
 	void moveLiveBlocksRight();
 
+	/**
+	 * Rotates the live blocks clockwise if possible.
+	 */
 	void rotateLiveBlocksClockwise();
+
+	/**
+	 * Rotates the live blocks anticlockwise if possible.
+	 */
 	void rotateLiveBlocksAntiClockwise();
 
+	/**
+	 * Check if the grid has any live blocks.
+	 * @return True if the grid contains live blocks; false if not.
+	 */
 	bool hasLiveBlocks() const;
 
+	/**
+	 * Adds the next live blocks into the grid.
+	 */
 	void addLiveBlocks();
 
+	/**
+	 * Establishes connections between blocks.
+	 */
 	void connectBlocks();
 
+	/**
+	 * Animates all blocks in the grid.
+	 * @return True if any blocks animate; false if not.
+	 */
 	bool animate();
 
-
-
 private:
-
-	enum BlockType {
-		BLOCK_NONE = 0,
-		BLOCK_RED = 1,
-		BLOCK_BLUE = 2,
-		BLOCK_YELLOW = 3,
-		BLOCK_PURPLE = 4,
-		BLOCK_GREEN = 5,
-		BLOCK_ORANGE = 6,
-		BLOCK_GREY = 7
-	};
 
 	BlockBase** _data;			/**< Grid of blocks. */
 	BlockBase** _nextBlocks;	/**< Array of 2 blocks that will be placed next. */
