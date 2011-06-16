@@ -260,6 +260,12 @@ void SDLFrameBuffer::copy(s16 x, s16 y, u32 size, u16* dest) const {
 	woopsiDmaCopy(pos, dest, size);
 }
 
+void SDLFrameBuffer::flipBuffer() {
+	u16* tmp = _bitmap;
+	_bitmap = _backBuffer;
+	_backBuffer = tmp;
+}
+
 #endif
 
 WoopsiGfx::Graphics* SDLFrameBuffer::newGraphics() {

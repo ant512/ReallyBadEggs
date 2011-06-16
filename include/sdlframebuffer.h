@@ -55,7 +55,9 @@ public:
 	 * @return Pointer to the internal bitmap.
 	 */
 	const u16* getData() const;
+
 #else
+
 	// DS version
 
 	/**
@@ -69,6 +71,8 @@ public:
 	/**
 	 * Constructor.
 	 * @param data Pointer to the raw bitmap data.
+	 * @param backBuffer Pointer to the bitmap to use as a back buffer when
+	 * double buffering.
 	 * @param width The width of the bitmap.
 	 * @param height The height of the bitmap.
 	 */
@@ -84,6 +88,7 @@ public:
 	 * @return Pointer to the internal bitmap.
 	 */
 	inline const u16* getData() const { return _bitmap; };
+
 #endif
 
 	/**
@@ -148,15 +153,16 @@ public:
 	 */
 	inline const u16 getHeight() const { return _height; };
 
-	inline void flipBuffer() {
-		u16* tmp = _bitmap;
-		_bitmap = _backBuffer;
-		_backBuffer = tmp;
-	}
+	/**
+	 * Flips the buffers so that future writes are drawn to the back buffer
+	 * (which becomes the main buffer).
+	 */
+	void flipBuffer();
 
 protected:
 	
 #ifdef USING_SDL
+
 	// SDL version
 	SDL_Surface* _surface;	/**< Pointer to the SDL surface. */
 	u16 _yOffset;			/**< Y offset from top of surface to draw. */
@@ -177,9 +183,13 @@ protected:
 	 * @return The pixel colour.
 	 */
 	Uint32 getSDLPixel(int x, int y);
+
 #else
+
 	// DS version
 	u16* _bitmap __attribute__ ((aligned (4)));		/**< Bitmap. */
+	u16* _backBuffer __attribute__ ((aligned (4)));	/**< Back buffer bitmap */
+
 #endif
 
 	/**
@@ -187,10 +197,8 @@ protected:
 	 */
 	inline SDLFrameBuffer(const SDLFrameBuffer& bitmap) { };
 
-	u16 _width;									/**< Width of the bitmap */
-	u16 _height;								/**< Height of the bitmap */
-
-	u16* _backBuffer __attribute__ ((aligned (4)));
+	u16 _width;										/**< Width of the bitmap */
+	u16 _height;									/**< Height of the bitmap */
 };
 
 #endif
