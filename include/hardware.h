@@ -62,6 +62,9 @@ public:
 	 */
 	static void waitForVBlank();
 
+	static inline SDLFrameBuffer* getTopBuffer() { return _topBuffer; };
+	static inline SDLFrameBuffer* getBottomBuffer() { return _bottomBuffer; };
+
 private:
 	static Pad _pad;						/**< State of the DS' pad. */
 	static Stylus _stylus;					/**< State of the DS' stylus. */

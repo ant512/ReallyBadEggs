@@ -16,7 +16,7 @@ GridRunner::GridRunner(const ControllerBase* controller,
 	_x = x;
 
 	_score = 0;
-	_level = 0;
+	_level = 20;
 	_chains = 0;
 
 	_nextBlocks = new BlockBase*[2];
@@ -156,7 +156,10 @@ void GridRunner::iterate() {
 				bool dropped = false;
 
 				// Drop the block to the next row if the timer has expired
-				if (_timer == LIVE_DROP_TIME - _level) {
+				s32 timeToDrop = LIVE_DROP_TIME - _level;
+				if (timeToDrop < 0) timeToDrop = 0;
+
+				if (_timer >= timeToDrop) {
 					_timer = 0;
 					
 					// Only force blocks down when player is not doing it

@@ -266,6 +266,10 @@ void SDLFrameBuffer::flipBuffer() {
 	_backBuffer = tmp;
 }
 
+void SDLFrameBuffer::buffer() {
+	copy(0, 0, _width * _height, _backBuffer);
+}
+
 #endif
 
 WoopsiGfx::Graphics* SDLFrameBuffer::newGraphics() {

@@ -1,5 +1,6 @@
 #include <nds.h>
 
+#include <graphics.h>
 #include <woopsiarray.h>
 
 #include "aicontroller.h"
@@ -9,9 +10,15 @@
 #include "hardware.h"
 #include "pad.h"
 #include "playercontroller.h"
+#include "twoplayerbgbmp.h"
 
 int main(int argc, char* argv[]) {
 	Hardware::init();
+
+	TwoPlayerBgBmp background;
+	WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
+	gfx->drawBitmap(0, 0, background.getWidth(), background.getHeight(), &background, 0, 0);
+	Hardware::getTopBuffer()->buffer();
 
 	BlockServer* blockServer = new BlockServer(2, 4);
 

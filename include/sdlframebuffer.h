@@ -159,6 +159,8 @@ public:
 	 */
 	void flipBuffer();
 
+	void buffer();
+
 protected:
 	
 #ifdef USING_SDL
