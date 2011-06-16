@@ -16,7 +16,7 @@ To do
    - 1 brick on the right hand side of the screen;
    - 2 bricks in the middle of the screen.
  - AI, displayed on right-hand side of the screen.
- - Score, level, etc, on bottom screen.
+ - Score, level, next block, etc, on bottom screen.
  - Options screen.
  - Title screen.
  - Can the single-player mode be enhanced?  Tetris-style speed increases, levels

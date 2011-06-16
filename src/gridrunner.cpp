@@ -2,14 +2,14 @@
 #include "hardware.h"
 
 GridRunner::GridRunner(const ControllerBase* controller,
-					   s32 startingHeight,
+					   Grid* grid,
 					   BlockServer* blockServer,
 					   s32 playerNumber) {
 
 	_state = GRID_RUNNER_STATE_DROP;
 	_timer = 0;
 	_controller = controller;
-	_grid = new Grid(startingHeight);
+	_grid = grid;
 	_blockServer = blockServer;
 	_playerNumber = playerNumber;
 
@@ -20,7 +20,6 @@ GridRunner::GridRunner(const ControllerBase* controller,
 }
 
 GridRunner::~GridRunner() {
-	delete _grid;
 
 	// Delete the next blocks
 	for (s32 i = 0; i < 2; ++i) {

@@ -19,14 +19,13 @@ public:
 	 * Constructor.
 	 * @param controller A controller object that will provide input for the
 	 * movement of live blocks.
-	 * @param startingHeight Number of rows that are filled with grey blocks at
-	 * the start of the game.
+	 * @param grid Grid to run.
 	 * @param blockServer The block server to use to produce next blocks for the
 	 * grid.
 	 * @param playerNumber The unique number of the player using this runner.
 	 */
 	GridRunner(const ControllerBase* controller,
-			   s32 startingHeight,
+			   Grid* grid,
 			   BlockServer* blockServer,
 			   s32 playerNumber);
 
