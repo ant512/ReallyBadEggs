@@ -18,19 +18,16 @@ int main(int argc, char* argv[]) {
 	// Player 1
 	Grid* grid = new Grid(3);
 	ControllerBase* controller = new PlayerController();
-	GridRunner runner(controller, grid, blockServer, 0);
+	GridRunner runner(controller, grid, blockServer, 0, Grid::BLOCK_SIZE);
 	
 	// Player 2
 	Grid* aiGrid = new Grid(3);
 	ControllerBase* aiController = new AIController(aiGrid);
-	GridRunner aiRunner(aiController, aiGrid, blockServer, 1);
-	
-	s32 runnerX = Grid::BLOCK_SIZE;
-	s32 aiRunnerX = SCREEN_WIDTH - (Grid::GRID_WIDTH * Grid::BLOCK_SIZE) - Grid::BLOCK_SIZE;
+	GridRunner aiRunner(aiController, aiGrid, blockServer, 1, SCREEN_WIDTH - (Grid::GRID_WIDTH * Grid::BLOCK_SIZE) - Grid::BLOCK_SIZE);
 
 	while (1) {
-		runner.iterate(runnerX, 0, Hardware::getTopGfx());
-		aiRunner.iterate(aiRunnerX, 0, Hardware::getTopGfx());
+		runner.iterate();
+		aiRunner.iterate();
 		Hardware::waitForVBlank();
 	}
 

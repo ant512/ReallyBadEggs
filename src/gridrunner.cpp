@@ -4,7 +4,8 @@
 GridRunner::GridRunner(const ControllerBase* controller,
 					   Grid* grid,
 					   BlockServer* blockServer,
-					   s32 playerNumber) {
+					   s32 playerNumber,
+					   s32 x) {
 
 	_state = GRID_RUNNER_STATE_DROP;
 	_timer = 0;
@@ -12,6 +13,7 @@ GridRunner::GridRunner(const ControllerBase* controller,
 	_grid = grid;
 	_blockServer = blockServer;
 	_playerNumber = playerNumber;
+	_x = x;
 
 	_nextBlocks = new BlockBase*[2];
 
@@ -32,7 +34,9 @@ GridRunner::~GridRunner() {
 	delete[] _nextBlocks;
 }
 
-void GridRunner::renderNextBlocks(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
+void GridRunner::renderNextBlocks(s32 x, s32 y) {
+
+	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
 	s32 renderX = 0;
 
@@ -49,13 +53,15 @@ void GridRunner::renderNextBlocks(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 	}
 }
 
-void GridRunner::iterate(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
+void GridRunner::iterate() {
+
+	WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 
 	// Returns true if any blocks have an animation still in progress
 	bool animated = _grid->animate();
-	_grid->render(x, y, gfx);
+	_grid->render(_x, 0, gfx);
 
-	renderNextBlocks(x + ((Grid::GRID_WIDTH + 1) * Grid::BLOCK_SIZE), y, gfx);
+	renderNextBlocks(_x + ((Grid::GRID_WIDTH - 2) * Grid::BLOCK_SIZE / 2), 0);
 
 	++_timer;
 

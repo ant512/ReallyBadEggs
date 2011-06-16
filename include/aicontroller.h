@@ -7,7 +7,6 @@
 #include "hardware.h"
 #include "grid.h"
 
-
 /**
  * AI that plays the game.
  */

@@ -23,11 +23,13 @@ public:
 	 * @param blockServer The block server to use to produce next blocks for the
 	 * grid.
 	 * @param playerNumber The unique number of the player using this runner.
+	 * @param x The x co-ordinate to render at.
 	 */
 	GridRunner(const ControllerBase* controller,
 			   Grid* grid,
 			   BlockServer* blockServer,
-			   s32 playerNumber);
+			   s32 playerNumber,
+			   s32 x);
 
 	/**
 	 * Destructor.
@@ -38,19 +40,16 @@ public:
 	 * Process a single iteration of the state machine/grid logic.  This model
 	 * enables other code to be run between iterations of the grid (for example,
 	 * if two grids are running because we've got a two-player game).
-	 * @param x The x co-ordinate to draw to.
-	 * @param y The y co-ordinate to draw to.
-	 * @param gfx The graphics object to draw with.
 	 */
-	void iterate(s32 x, s32 y, WoopsiGfx::Graphics* gfx);
+	void iterate();
 
 	/**
-	 * Draws the two next blocks at the specified co-ordinates.
+	 * Draws the two next blocks at the specified co-ordinates to the lower
+	 * screen.
 	 * @param x The x co-ordinate to draw at.
 	 * @param y The y co-ordinate to draw at.
-	 * @param gfx The graphics object to draw with.
 	 */
-	void renderNextBlocks(s32 x, s32 y, WoopsiGfx::Graphics* gfx);
+	void renderNextBlocks(s32 x, s32 y);
 
 private:
 
@@ -74,6 +73,7 @@ private:
 	BlockServer* _blockServer;				/**< Produces next blocks for the grid. */
 	BlockBase** _nextBlocks;				/**< Array of 2 blocks that will be placed next. */
 	s32 _playerNumber;						/**< Unique number of the player using this runner. */
+	s32 _x;									/**< The x co-ordinate to render at. */
 };
 
 #endif
