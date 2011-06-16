@@ -88,6 +88,10 @@ void Hardware::waitForVBlank() {
 
 	_topBuffer->flipBuffer();
 
+	// Manually flip the background control register.  There must be a better
+	// way of doing this, but all documentation around double buffering is
+	// several versions out of date and the example provided with libnds is
+	// weird.
 	_topBackgroundBase = _topBackgroundBase == 0 ? 6 : 0;
 	REG_BG3CNT = BG_BMP16_256x256 | BG_BMP_BASE(_topBackgroundBase);
 
