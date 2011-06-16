@@ -72,7 +72,11 @@ private:
     
 #ifdef USING_SDL
     
-    static SDL_Surface* _surface;			/**< SDL surface for visual output. */
+	static SDL_Surface* _surface;			/**< SDL surface for visual output. */
+
+#else
+
+	static s32 _topBackgroundBase;
 	
 #endif
 

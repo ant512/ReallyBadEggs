@@ -10,7 +10,13 @@ WoopsiGfx::Graphics* Hardware::_topGfx = NULL;
 WoopsiGfx::Graphics* Hardware::_bottomGfx = NULL;
 
 #ifdef USING_SDL
+
 SDL_Surface* Hardware::_surface = NULL;
+
+#else
+
+s32 Hardware::_topBackgroundBase = 0;
+
 #endif
 
 void Hardware::init() {
@@ -19,17 +25,18 @@ void Hardware::init() {
 
 	powerOn(POWER_ALL_2D);
 
-	videoSetMode( MODE_5_2D | DISPLAY_BG3_ACTIVE );
-	videoSetModeSub( MODE_5_2D | DISPLAY_BG3_ACTIVE );
+	videoSetMode(MODE_5_2D | DISPLAY_BG3_ACTIVE);
+	videoSetModeSub(MODE_5_2D | DISPLAY_BG3_ACTIVE);
 
-	vramSetBankA( VRAM_A_MAIN_BG );
-	vramSetBankC( VRAM_C_SUB_BG );
+	vramSetBankA(VRAM_A_MAIN_BG_0x06000000);
+	vramSetBankB(VRAM_B_MAIN_BG_0x06020000);
+	vramSetBankC(VRAM_C_SUB_BG);
 
 	// Initialise backgrounds
 	bgInit(3, BgType_Bmp16, BgSize_B16_256x256, 0, 0);
 	bgInitSub(3, BgType_Bmp16, BgSize_B16_256x256, 0, 0);
 
-	_topBuffer = new SDLFrameBuffer((u16*)BG_BMP_RAM(0), SCREEN_WIDTH, SCREEN_HEIGHT);
+	_topBuffer = new SDLFrameBuffer((u16*)BG_BMP_RAM(6), (u16*)BG_BMP_RAM(0), SCREEN_WIDTH, SCREEN_HEIGHT);
 	_bottomBuffer = new SDLFrameBuffer((u16*)BG_BMP_RAM_SUB(0), SCREEN_WIDTH, SCREEN_HEIGHT);
 
 #else
@@ -78,6 +85,11 @@ void Hardware::waitForVBlank() {
 
 	swiWaitForVBlank();
 	scanKeys();
+
+	_topBuffer->flipBuffer();
+
+	_topBackgroundBase = _topBackgroundBase == 0 ? 6 : 0;
+	REG_BG3CNT = BG_BMP16_256x256 | BG_BMP_BASE(_topBackgroundBase);
 
 #else
 

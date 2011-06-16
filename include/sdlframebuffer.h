@@ -57,7 +57,7 @@ public:
 	const u16* getData() const;
 #else
 	// DS version
-	
+
 	/**
 	 * Constructor.
 	 * @param data Pointer to the raw bitmap data.
@@ -65,6 +65,14 @@ public:
 	 * @param height The height of the bitmap.
 	 */
 	SDLFrameBuffer(u16* data, u16 width, u16 height);
+	
+	/**
+	 * Constructor.
+	 * @param data Pointer to the raw bitmap data.
+	 * @param width The width of the bitmap.
+	 * @param height The height of the bitmap.
+	 */
+	SDLFrameBuffer(u16* data, u16* backBuffer, u16 width, u16 height);
 
 	/**
 	 * Destructor.
@@ -140,6 +148,12 @@ public:
 	 */
 	inline const u16 getHeight() const { return _height; };
 
+	inline void flipBuffer() {
+		u16* tmp = _bitmap;
+		_bitmap = _backBuffer;
+		_backBuffer = tmp;
+	}
+
 protected:
 	
 #ifdef USING_SDL
@@ -175,6 +189,8 @@ protected:
 
 	u16 _width;									/**< Width of the bitmap */
 	u16 _height;								/**< Height of the bitmap */
+
+	u16* _backBuffer __attribute__ ((aligned (4)));
 };
 
 #endif

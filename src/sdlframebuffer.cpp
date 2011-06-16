@@ -200,6 +200,14 @@ SDLFrameBuffer::SDLFrameBuffer(u16* data, u16 width, u16 height) {
 	_width = width;
 	_height = height;
 	_bitmap = data;
+	_backBuffer = NULL;
+}
+
+SDLFrameBuffer::SDLFrameBuffer(u16* data, u16* backBuffer, u16 width, u16 height) {
+	_width = width;
+	_height = height;
+	_bitmap = data;
+	_backBuffer = backBuffer;
 }
 
 // Get a single pixel from the bitmap
