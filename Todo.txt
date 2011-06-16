@@ -20,7 +20,25 @@ To do
  - Options screen.
  - Title screen.
  - Can the single-player mode be enhanced?  Tetris-style speed increases, levels
-   and scores?
+   and scores?  Some way to represent the number of blocks exploded/chains as a
+   score.  Perhaps:
+
+   - Each block in a chain is a fixed score.
+   - Multiply the score by the number of chains to give the score for that
+     single group of chains.
+   - Multiply the group score by the current group number to give the total
+     score for that move.
+
+   So if a player explodes 4 red blocks and 5 green blocks simultaneously, he
+   gets block score * (4 + 5) * 2.  Assume block score is 10, giving 180 points.
+   The grid drops down and he explodes 4 blue blocks.  The score for that group
+   is 40.  However, this is the second group of chains exploded in this move,
+   which means we multiply the score by 2.  That gives us a score of 80 for this
+   group.  The total score for the move is 180 + 80 = 260 points.
+ - Levels advance when n chains have been exploded.  Groups are not relevant.
+   In the previous example, the player managed to explode 3 chains in the move
+   so his chain count increases by 3.  When he reaches 10 chains (for example),
+   the level increases.
  - Mode where everything on the screen must be removed?
  - Additional block colours - orange and green.
  - Block auto drop speed change option.
