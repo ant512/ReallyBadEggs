@@ -484,6 +484,12 @@ void Grid::rotateLiveBlocksClockwise() {
 		// Cannot swap if the block below the block on the right is populated
 		if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 1) != NULL) return;
 
+		// Cannot swap if the block 2 below the block on the right is populated
+		// if we've dropped a half block
+		if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y)->hasDroppedHalfBlock()) {
+			if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 2) != NULL) return;
+		}
+
 		// Perform the rotation
 
 		// Move the right block down one place
@@ -503,6 +509,12 @@ void Grid::rotateLiveBlocksClockwise() {
 
 		// Cannot swap if the block to the left of the block at the top is populated
 		if (getBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y) != NULL) return;
+
+		// Cannot swap if the block below the block on the left of the top block
+		// is populated if we've dropped a half block
+		if (getBlockAt(_liveBlocks[0].x, _liveBlocks[0].y)->hasDroppedHalfBlock()) {
+			if (getBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y + 1) != NULL) return;
+		}
 
 		// Perform the rotation
 
@@ -531,6 +543,12 @@ void Grid::rotateLiveBlocksAntiClockwise() {
 		// Cannot swap if the block below the block on the right is populated
 		if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 1) != NULL) return;
 
+		// Cannot swap if the block 2 below the block on the right is populated
+		// if we've dropped a half block
+		if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y)->hasDroppedHalfBlock()) {
+			if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 2) != NULL) return;
+		}
+
 		// Perform the rotation
 
 		// Move the left block down and right
@@ -550,6 +568,12 @@ void Grid::rotateLiveBlocksAntiClockwise() {
 
 		// Cannot swap if the block to the left of the block at the top is populated
 		if (getBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y) != NULL) return;
+
+		// Cannot swap if the block below the block on the left of the top block
+		// is populated if we've dropped a half block
+		if (getBlockAt(_liveBlocks[0].x, _liveBlocks[0].y)->hasDroppedHalfBlock()) {
+			if (getBlockAt(_liveBlocks[0].x - 1, _liveBlocks[0].y + 1) != NULL) return;
+		}
 
 		// Perform the rotation
 
