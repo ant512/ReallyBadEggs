@@ -11,8 +11,12 @@ To do
    vertical pixels.  Part of the animation process needs to be moving the row
    back to its correct location.  Does the row bounce?
  - Sound effects.
- - Background graphics.
- - AI, displayed on lower screen.
+ - Background graphics:
+   - 1 brick on the left hand side of the screen;
+   - 1 brick on the right hand side of the screen;
+   - 2 bricks in the middle of the screen.
+ - AI, displayed on right-hand side of the screen.
+ - Score, level, etc, on bottom screen.
  - Options screen.
  - Title screen.
  - Can the single-player mode be enhanced?  Tetris-style speed increases, levels
