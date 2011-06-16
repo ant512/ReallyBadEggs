@@ -97,7 +97,7 @@ bool Grid::explodeChains(s32& score, s32& chainCount) {
 
 	for (s32 i = 0; i < chains.size(); ++i) {
 
-		score += chains[i]->size() * BLOCK_EXPLODE_SCORE * i;
+		score += chains[i]->size() * BLOCK_EXPLODE_SCORE * (i + 1);
 		chainCount += chains[i]->size();
 
 		for (s32 j = 0; j < chains[i]->size(); ++j) {
