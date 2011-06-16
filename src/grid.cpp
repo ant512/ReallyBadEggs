@@ -102,7 +102,6 @@ s32 Grid::explodeChains() {
 			Point& point = chains[i]->at(j);
 
 			getBlockAt(point.x, point.y)->explode();
-			//setBlockAt(point.x, point.y, NULL);
 
 			// Remove any adjacent greys
 
@@ -110,25 +109,21 @@ s32 Grid::explodeChains() {
 			GreyBlock* grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x - 1, point.y));
 			if (grey != NULL) {
 				getBlockAt(point.x - 1, point.y)->explode();
-				//setBlockAt(point.x - 1, point.y, NULL);
 			}
 
 			grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x + 1, point.y));
 			if (grey != NULL) {
 				getBlockAt(point.x + 1, point.y)->explode();
-				//setBlockAt(point.x + 1, point.y, NULL);
 			}
 
 			grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x, point.y - 1));
 			if (grey != NULL) {
 				getBlockAt(point.x, point.y - 1)->explode();
-				//setBlockAt(point.x, point.y - 1, NULL);
 			}
 
 			grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x, point.y + 1));
 			if (grey != NULL) {
 				getBlockAt(point.x, point.y + 1)->explode();
-				//setBlockAt(point.x, point.y + 1, NULL);
 			}
 		}
 
