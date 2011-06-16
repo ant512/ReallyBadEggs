@@ -77,6 +77,7 @@ private:
 
 	s32 _score;								/**< Current score. */
 	s32 _level;								/**< Current level. */
+	s32 _chains;							/**< Number of chains exploded. */
 };
 
 #endif

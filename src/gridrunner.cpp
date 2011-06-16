@@ -17,6 +17,7 @@ GridRunner::GridRunner(const ControllerBase* controller,
 
 	_score = 0;
 	_level = 0;
+	_chains = 0;
 
 	_nextBlocks = new BlockBase*[2];
 
