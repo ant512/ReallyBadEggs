@@ -21,6 +21,9 @@ public:
 	 * movement of live blocks.
 	 * @param startingHeight Number of rows that are filled with grey blocks at
 	 * the start of the game.
+	 * @param blockServer The block server to use to produce next blocks for the
+	 * grid.
+	 * @param playerNumber The unique number of the player using this runner.
 	 */
 	GridRunner(const ControllerBase* controller,
 			   s32 startingHeight,
@@ -69,9 +72,9 @@ private:
 	GridRunnerState _state;					/**< The state of the state machine. */
 	s32 _timer;								/**< Frames since the last event took place. */
 	const ControllerBase* _controller;		/**< Controller that feeds user input to live blocks. */
-	BlockServer* _blockServer;
+	BlockServer* _blockServer;				/**< Produces next blocks for the grid. */
 	BlockBase** _nextBlocks;				/**< Array of 2 blocks that will be placed next. */
-	s32 _playerNumber;
+	s32 _playerNumber;						/**< Unique number of the player using this runner. */
 };
 
 #endif
