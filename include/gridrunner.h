@@ -64,7 +64,7 @@ private:
 	};
 
 	static const s32 AUTO_DROP_TIME = 2;	/**< Frames between drops when blocks are automatically dropping. */
-	static const s32 LIVE_DROP_TIME = 30;	/**< Frames between forced drops of live blocks. */
+	static const s32 LIVE_DROP_TIME = 40;	/**< Frames between forced drops of live blocks. */
 
 	Grid* _grid;							/**< The grid the runner controls. */
 	GridRunnerState _state;					/**< The state of the state machine. */
@@ -74,6 +74,9 @@ private:
 	BlockBase** _nextBlocks;				/**< Array of 2 blocks that will be placed next. */
 	s32 _playerNumber;						/**< Unique number of the player using this runner. */
 	s32 _x;									/**< The x co-ordinate to render at. */
+
+	s32 _score;								/**< Current score. */
+	s32 _level;								/**< Current level. */
 };
 
 #endif

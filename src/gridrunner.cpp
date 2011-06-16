@@ -15,6 +15,9 @@ GridRunner::GridRunner(const ControllerBase* controller,
 	_playerNumber = playerNumber;
 	_x = x;
 
+	_score = 0;
+	_level = 0;
+
 	_nextBlocks = new BlockBase*[2];
 
 	// Ensure we have some initial blocks to add to the grid
@@ -93,6 +96,9 @@ void GridRunner::iterate() {
 				// between blocks now that they have settled
 				_grid->connectBlocks();
 
+				// TODO: Increase score based on value returned by
+				// explodeChains()
+
 				// Attempt to explode any chains that exist in the grid
 				if (_grid->explodeChains()) {
 
@@ -136,7 +142,7 @@ void GridRunner::iterate() {
 				bool dropped = false;
 
 				// Drop the block to the next row if the timer has expired
-				if (_timer == LIVE_DROP_TIME) {
+				if (_timer == LIVE_DROP_TIME - _level) {
 					_timer = 0;
 					
 					// Only force blocks down when player is not doing it
