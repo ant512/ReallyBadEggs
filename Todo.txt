@@ -1,8 +1,6 @@
 To do
 -----
 
- - Live blocks drop in half grid squares, which means they need to be removed
-   from the grid and controlled by the grid runner instead.
  - Add all bitmaps for blocks.
  - GridRunner needs to get number of blocks exploded in chains and buffer it
    somewhere.  It might be useful if the grid spat out the number of blocks in
@@ -27,4 +25,3 @@ To do
    entire rows be added and any left-overs be added randomly?
  - Can the GridRunner.iterate() method be split so that rendering is a separate
    method?  Is this desirable?
- - When falling, do blocks fall in fractions of a grid square?
