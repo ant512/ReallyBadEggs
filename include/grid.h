@@ -42,6 +42,14 @@ public:
 	void clear();
 
 	/**
+	 * Gets the block at the specified co-ordinates.
+	 * @param x The x co-ordinate of the block.
+	 * @param y The y co-ordinate of the block.
+	 * @return A pointer to the block, or NULL if no block exists.
+	 */
+	BlockBase* getBlockAt(s32 x, s32 y) const;
+
+	/**
 	 * Sets all blocks that are part of a chain of minimum length CHAIN_LENGTH
 	 * to exploding.
 	 * TODO: Fix the output of this.
@@ -108,14 +116,6 @@ private:
 	Point* _liveBlocks;			/**< Array of 2 Point objects that track the location of the live blocks. */
 	bool _hasLiveBlocks;		/**< True if there are any live blocks in the grid. */
 	
-	/**
-	 * Gets the block at the specified co-ordinates.
-	 * @param x The x co-ordinate of the block.
-	 * @param y The y co-ordinate of the block.
-	 * @return A pointer to the block, or NULL if no block exists.
-	 */
-	BlockBase* getBlockAt(s32 x, s32 y) const;
-
 	/**
 	 * Inserts the supplied block at the specified co-ordinates.  If a block
 	 * already exists at those co-ordinates it is deleted.  Note that the block

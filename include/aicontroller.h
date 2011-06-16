@@ -17,7 +17,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	AIController(Grid* grid) {
+	AIController(const Grid* grid) {
 		_grid = grid;
 	};
 
@@ -67,7 +67,7 @@ public:
 	};
 
 private:
-	Grid* _grid;
+	const Grid* _grid;
 };
 
 #endif
