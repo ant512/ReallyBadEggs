@@ -60,26 +60,27 @@ private:
 	 * List of all block types that the class can serve.
 	 */
 	enum BlockType {
-		BLOCK_RED = 0,
-		BLOCK_BLUE = 1,
-		BLOCK_YELLOW = 2,
-		BLOCK_PURPLE = 3,
-		BLOCK_GREEN = 4,
-		BLOCK_ORANGE = 5
+		BLOCK_RED = 0,			/**< Red block. */
+		BLOCK_BLUE = 1,			/**< Blue block. */
+		BLOCK_YELLOW = 2,		/**< Yellow block. */
+		BLOCK_PURPLE = 3,		/**< Purple block. */
+		BLOCK_GREEN = 4,		/**< Green block. */
+		BLOCK_ORANGE = 5		/**< Orange block. */
 	};
 
 	/**
 	 * A pair of block types.
 	 */
 	typedef struct {
-		BlockType block1;
-		BlockType block2;
+		BlockType block1;		/**< Left-hand block in the pair. */
+		BlockType block2;		/**< Right-hand block in the pair. */
 	} BlockPair;
 
-	WoopsiArray<BlockPair> _blockList;
-	s32* _playerBlockListIndices;
-	s32 _blockColourCount;
-	s32 _playerCount;
+	WoopsiArray<BlockPair> _blockList;	/**< List of blocks that get served to players. */
+	s32* _playerBlockListIndices;		/**< Each item in the array represents the index within
+											 _blockList that each player is currently using. */
+	s32 _blockColourCount;				/**< Number of colours that the server can produce. */
+	s32 _playerCount;					/**< Number of players in the game. */
 
 	/**
 	 * Adds a new pair of random blocks to the block list.
