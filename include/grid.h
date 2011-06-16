@@ -11,10 +11,11 @@
 class Grid {
 public:
 
-	static const s32 GRID_WIDTH = 6;		/**< Width of the grid. */
-	static const s32 GRID_HEIGHT = 12;		/**< Height of the grid. */
-	static const s32 CHAIN_LENGTH = 4;		/**< Minimum length for a chain of blocks to be removed. */
-	static const s32 BLOCK_SIZE = 16;		/**< Size of each block in the grid. */
+	static const s32 GRID_WIDTH = 6;			/**< Width of the grid. */
+	static const s32 GRID_HEIGHT = 12;			/**< Height of the grid. */
+	static const s32 CHAIN_LENGTH = 4;			/**< Minimum length for a chain of blocks to be removed. */
+	static const s32 BLOCK_SIZE = 16;			/**< Size of each block in the grid. */
+	static const s32 BLOCK_EXPLODE_SCORE = 10;	/**< Points for exploding a block. */
 
 	/**
 	 * Constructor.
@@ -55,7 +56,7 @@ public:
 	 * TODO: Fix the output of this.
 	 * @return A value representing the number of chains/blocks exploded.
 	 */
-	s32 explodeChains();
+	bool explodeChains(s32& score, s32& chainCount);
 
 	/**
 	 * Drops the live blocks down one row if possible.

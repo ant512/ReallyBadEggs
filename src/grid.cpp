@@ -86,16 +86,19 @@ bool Grid::isValidCoordinate(s32 x, s32 y) const {
 	return true;
 }
 
-s32 Grid::explodeChains() {
-	s32 score = 0;
+bool Grid::explodeChains(s32& score, s32& chainCount) {
+
 	WoopsiArray<WoopsiArray<Point>*> chains;
+	
+	score = 0;
+	chainCount = 0;
 
 	getChains(chains);
 
 	for (s32 i = 0; i < chains.size(); ++i) {
 
-		// TODO: Fix scoring to use correct values and include greys
-		score += chains[i]->size() * 10;
+		score += chains[i]->size() * BLOCK_EXPLODE_SCORE * i;
+		chainCount += chains[i]->size();
 
 		for (s32 j = 0; j < chains[i]->size(); ++j) {
 
@@ -109,28 +112,36 @@ s32 Grid::explodeChains() {
 			GreyBlock* grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x - 1, point.y));
 			if (grey != NULL) {
 				getBlockAt(point.x - 1, point.y)->explode();
+
+				score += BLOCK_EXPLODE_SCORE * i;
 			}
 
 			grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x + 1, point.y));
 			if (grey != NULL) {
 				getBlockAt(point.x + 1, point.y)->explode();
+
+				score += BLOCK_EXPLODE_SCORE * i;
 			}
 
 			grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x, point.y - 1));
 			if (grey != NULL) {
 				getBlockAt(point.x, point.y - 1)->explode();
+
+				score += BLOCK_EXPLODE_SCORE * i;
 			}
 
 			grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x, point.y + 1));
 			if (grey != NULL) {
 				getBlockAt(point.x, point.y + 1)->explode();
+
+				score += BLOCK_EXPLODE_SCORE * i;
 			}
 		}
 
 		delete chains[i];
 	}
 
-	return score;
+	return score > 0;
 }
 
 void Grid::getChains(WoopsiArray<WoopsiArray<Point>*>& chains) const {

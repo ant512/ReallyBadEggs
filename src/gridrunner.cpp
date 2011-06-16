@@ -97,11 +97,20 @@ void GridRunner::iterate() {
 				// between blocks now that they have settled
 				_grid->connectBlocks();
 
-				// TODO: Increase score based on value returned by
-				// explodeChains()
+				s32 score = 0;
+				s32 chains = 0;
 
 				// Attempt to explode any chains that exist in the grid
-				if (_grid->explodeChains()) {
+				if (_grid->explodeChains(score, chains)) {
+
+					_score += score;
+					_chains += chains;
+
+					// Increase the level every time chains passes a multiple of
+					// 10
+					if (_chains > 0 && _chains % 10 == 0) {
+						++_level;
+					}
 
 					// We need to run the explosion animations next
 					_state = GRID_RUNNER_STATE_EXPLODING;
