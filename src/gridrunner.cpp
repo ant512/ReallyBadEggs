@@ -104,11 +104,15 @@ void GridRunner::iterate() {
 				if (_grid->explodeChains(score, chains)) {
 
 					_score += score;
+
+					// Score required to reach the next level
+					s32 nextLevelScore = ((_chains / 10) + 1) * 10;
+
 					_chains += chains;
 
 					// Increase the level every time chains passes a multiple of
 					// 10
-					if (_chains > 0 && _chains % 10 == 0) {
+					if (_chains > nextLevelScore) {
 						++_level;
 					}
 
