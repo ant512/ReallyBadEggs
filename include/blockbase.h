@@ -6,8 +6,18 @@
 #include <graphics.h>
 #include <nds.h>
 
+/**
+ * Abstract base class for all blocks that appear in the grid.
+ */
 class BlockBase {
 public:
+
+	/**
+	 * Constructor.
+	 * @param colour The colour of the block.  This should be unique to the
+	 * inheriting class so that blocks can be compared without resorting to
+	 * RTTI.
+	 */
 	BlockBase(u16 colour);
 
 	/**
@@ -15,20 +25,70 @@ public:
 	 */
 	virtual ~BlockBase();
 
+	/**
+	 * Gets the colour of the block. 
+	 * @return The colour of the block.
+	 */
 	u16 getColour() const;
 
+	/**
+	 * Check if the block is connected to the block on its left.
+	 * @return True if a connection exists; false if not.
+	 */
 	bool hasLeftConnection() const;
+
+	/**
+	 * Check if the block is connected to the block on its right.
+	 * @return True if a connection exists; false if not.
+	 */
 	bool hasRightConnection() const;
+
+	/**
+	 * Check if the block is connected to the block above.
+	 * @return True if a connection exists; false if not.
+	 */
 	bool hasTopConnection() const;
+
+	/**
+	 * Check if the block is connected to the block below.
+	 * @return True if a connection exists; false if not.
+	 */
 	bool hasBottomConnection() const;
 
+	/**
+	 * Check if the block is currently landing.
+	 * @return True if the block is landing.
+	 */
 	bool isLanding() const;
+
+	/**
+	 * Check if the block is currently falling.
+	 * @return True if the block is falling.
+	 */
 	bool isFalling() const;
+
+	/**
+	 * Check if the block is currently exploding.
+	 * @return True if the block is exploding.
+	 */
 	bool isExploding() const;
+
+	/**
+	 * Check if the block has finished exploding and needs to be removed from
+	 * the grid.
+	 * @return True if the block has exploded.
+	 */
 	bool isExploded() const;
 
+	/**
+	 * Check if the block can establish connections.
+	 * @return True if the block can establish connections.
+	 */
 	bool isConnectable() const;
 
+	/**
+	 * Inform the block that it is falling.
+	 */
 	void fall();
 	void explode();
 	void land();
