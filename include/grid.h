@@ -8,6 +8,9 @@
 #include "blockbase.h"
 #include "point.h"
 
+/**
+ * The playing field.  Controls the behaviour of the blocks on screen.
+ */
 class Grid {
 public:
 

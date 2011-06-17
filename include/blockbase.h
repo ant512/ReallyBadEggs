@@ -110,8 +110,21 @@ public:
 	 */
 	void animate();
 
+	/**
+	 * Check if the block has dropped a half block.  The grid is designed so
+	 * that each item in its array represents a whole block, but blocks can drop
+	 * half-way.  To represent this, the blocks include a bit that indicates
+	 * that they have dropped half-way through a grid square.  They only
+	 * actually move when they are examined and the bit is already set.  The bit
+	 * is flipped each time an attempt is made to drop the block.
+	 * @return True if the block has dropped half a grid square.
+	 */
 	bool hasDroppedHalfBlock() const { return _hasDroppedHalfBlock; };
 
+	/**
+	 * Inform the block that it has dropped half a grid square.
+	 * @return True if the block has dropped half a grid square.
+	 */
 	void dropHalfBlock() { _hasDroppedHalfBlock = !_hasDroppedHalfBlock; };
 
 	/**
@@ -124,9 +137,14 @@ public:
 	 */
 	virtual void connect(const BlockBase* top, const BlockBase* right, const BlockBase* bottom, const BlockBase* left) = 0;
 
+	/**
+	 * Draws the block to the supplied graphics object at the specified
+	 * co-ordinates.
+	 * @param x The x co-ordinate to draw at.
+	 * @param y The y co-ordinate to draw at.
+	 * @param gfx The graphics object to draw to.
+	 */
 	void render(s32 x, s32 y, WoopsiGfx::Graphics* gfx);
-
-	const WoopsiGfx::BitmapBase* getBitmap() const;
 
 protected:
 
@@ -134,11 +152,11 @@ protected:
 	 * Bitmask of possible connections.
 	 */
 	enum ConnectionDirection {
-		CONNECTION_NONE = 0,
-		CONNECTION_TOP = 1,
-		CONNECTION_LEFT = 2,
-		CONNECTION_RIGHT = 4,
-		CONNECTION_BOTTOM = 8
+		CONNECTION_NONE = 0,				/**< No connections. */
+		CONNECTION_TOP = 1,					/**< Top connection. */
+		CONNECTION_LEFT = 2,				/**< Left connection. */
+		CONNECTION_RIGHT = 4,				/**< Right connection. */
+		CONNECTION_BOTTOM = 8				/**< Bottom connection. */
 	};
 
 	u8 _connections;						/**< Bitmask of active connections. */
@@ -146,13 +164,26 @@ protected:
 	bool _isExploding;						/**< True if the block is exploding. */
 	bool _isLanding;						/**< True if the block is landing. */
 	bool _isFalling;						/**< True if the block is falling. */
-	bool _hasDroppedHalfBlock;
+	bool _hasDroppedHalfBlock;				/**< True if the block has dropped half a grid square. */
 
 	WoopsiGfx::BitmapBase** _bitmaps;		/**< Array of bitmaps showing all possible connections. */
 	WoopsiGfx::Animation* _landingAnim;		/**< Animation that plays when the block is landing. */
 	WoopsiGfx::Animation* _explodingAnim;	/**< Animation that plays when the block is exploding. */
 
+	/**
+	 * Sets the connections that the block has to the supplied parameters.
+	 * @param top The state of the top connection.
+	 * @param right The state of the right connection.
+	 * @param bottom The state of the bottom connection.
+	 * @param left The state of the left connection.
+	 */
 	void setConnections(bool top, bool right, bool bottom, bool left);
+
+	/**
+	 * Gets the current bitmap based on the block's state.
+	 * @return The current bitmap.
+	 */
+	const WoopsiGfx::BitmapBase* getBitmap() const;
 };
 
 #endif

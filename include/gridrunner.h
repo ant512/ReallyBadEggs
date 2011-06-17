@@ -44,7 +44,18 @@ public:
 	 */
 	void iterate();
 
+	/**
+	 * Gets the number of outgoing grey blocks (ie. blocks to be given to
+	 * opponent).
+	 * @return The number of outgoing grey blocks.
+	 */
 	s32 getOutgoingGreyBlockCount() const;
+
+	/**
+	 * Gets the number of incoming grey blocks (ie. blocks to add to the grid
+	 * when the live blocks have landed).
+	 * @param The number of incoming grey blocks.
+	 */
 	s32 getIncomingGreyBlockCount() const;
 
 private:

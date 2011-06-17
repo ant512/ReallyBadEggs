@@ -89,6 +89,17 @@ public:
 	 */
 	inline const u16* getData() const { return _bitmap; };
 
+	/**
+	 * Flips the buffers so that future writes are drawn to the back buffer
+	 * (which becomes the main buffer).
+	 */
+	void flipBuffer();
+
+	/**
+	 * Copies the front buffer to the back buffer.
+	 */
+	void buffer();
+
 #endif
 
 	/**
@@ -152,14 +163,6 @@ public:
 	 * @return The bitmap's height.
 	 */
 	inline const u16 getHeight() const { return _height; };
-
-	/**
-	 * Flips the buffers so that future writes are drawn to the back buffer
-	 * (which becomes the main buffer).
-	 */
-	void flipBuffer();
-
-	void buffer();
 
 protected:
 	
