@@ -12,7 +12,7 @@ To do
    back to its correct location.  Does the row bounce?
  - Sound effects.
  - Smart AI.
- - Score, level, next block, etc, on bottom screen.
+ - Design layout of bottom screen.
  - Options screen.
  - Title screen.
  - Can the single-player mode be enhanced?  Tetris-style speed increases, levels

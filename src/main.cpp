@@ -1,14 +1,16 @@
 #include <nds.h>
 
 #include <graphics.h>
+#include <pad.h>
 #include <woopsiarray.h>
+#include <woopsistring.h>
 
 #include "aicontroller.h"
 #include "blockserver.h"
+#include "gamefont.h"
 #include "grid.h"
 #include "gridrunner.h"
 #include "hardware.h"
-#include "pad.h"
 #include "playercontroller.h"
 #include "twoplayerbgbmp.h"
 
@@ -22,19 +24,58 @@ int main(int argc, char* argv[]) {
 
 	BlockServer* blockServer = new BlockServer(2, 4);
 
+	s32 runnerX = Grid::BLOCK_SIZE;
+	s32 aiRunnerX = SCREEN_WIDTH - (Grid::GRID_WIDTH * Grid::BLOCK_SIZE) - Grid::BLOCK_SIZE;
+	s32 runnerWidth = Grid::GRID_WIDTH * Grid::BLOCK_SIZE;
+	s32 runnerHeight = Grid::GRID_HEIGHT * Grid::BLOCK_SIZE;
+
 	// Player 1
 	Grid* grid = new Grid(3);
 	ControllerBase* controller = new PlayerController();
-	GridRunner runner(controller, grid, blockServer, 0, Grid::BLOCK_SIZE);
+	GridRunner runner(controller, grid, blockServer, 0, runnerX);
 	
 	// Player 2
 	Grid* aiGrid = new Grid(3);
 	ControllerBase* aiController = new AIController(aiGrid);
-	GridRunner aiRunner(aiController, aiGrid, blockServer, 1, SCREEN_WIDTH - (Grid::GRID_WIDTH * Grid::BLOCK_SIZE) - Grid::BLOCK_SIZE);
+	GridRunner aiRunner(aiController, aiGrid, blockServer, 1, aiRunnerX);
 
 	while (1) {
-		runner.iterate();
-		aiRunner.iterate();
+
+		// Check for pause mode
+		const Pad& pad = Hardware::getPad();
+
+		if (pad.isStartNewPress()) {
+
+			// Pause mode
+
+			WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
+			gfx->drawFilledRect(runnerX, 0, runnerWidth, runnerHeight, woopsiRGB(0, 0, 0));
+			gfx->drawFilledRect(aiRunnerX, 0, runnerWidth, runnerHeight, woopsiRGB(0, 0, 0));
+
+			WoopsiGfx::WoopsiString str("Paused");
+			GameFont font;
+
+			s32 textX = (runnerWidth - font.getStringWidth(str)) / 2;
+			s32 textY = (runnerHeight - font.getHeight()) / 2;
+
+			gfx->drawText(runnerX + textX, textY, &font, str, 0, str.getLength(), woopsiRGB(31, 31, 0));
+			gfx->drawText(aiRunnerX + textX, textY, &font, str, 0, str.getLength(), woopsiRGB(31, 31, 0));
+
+			// Need to wait for another vblank so that the newpress state of the
+			// Start button is cleared
+			Hardware::waitForVBlank();
+
+			while (!pad.isStartNewPress()) {
+				Hardware::waitForVBlank();
+			}
+
+		} else {
+
+			// Standard mode
+			runner.iterate();
+			aiRunner.iterate();
+		}
+
 		Hardware::waitForVBlank();
 	}
 

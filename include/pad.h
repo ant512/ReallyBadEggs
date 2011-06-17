@@ -132,22 +132,22 @@ private:
 	 * Each value represents the amount of time (jn VBLs) that the button has
 	 * been held.  Therefore:
 	 *   0 = not held;
-	 *   1 = newly NewPress;
+	 *   1 = newly held;
 	 *  >1 = held for n frames.
 	 */
 
-	s32 _up;		/**< Is up NewPress? */
-	s32 _down;		/**< Is down NewPress? */
-	s32 _left;		/**< Is left NewPress? */
-	s32 _right;		/**< Is right NewPress? */
-	s32 _a;			/**< Is a NewPress? */
-	s32 _b;			/**< Is b NewPress? */
-	s32 _x;			/**< Is x NewPress? */
-	s32 _y;			/**< Is y NewPress? */
-	s32 _l;			/**< Is l NewPress? */
-	s32 _r;			/**< Is r NewPress? */
-	s32 _start;		/**< Is start NewPress? */
-	s32 _select;	/**< Is select NewPress? */
+	s32 _up;		/**< Is up held? */
+	s32 _down;		/**< Is down held? */
+	s32 _left;		/**< Is left held? */
+	s32 _right;		/**< Is right held? */
+	s32 _a;			/**< Is a held? */
+	s32 _b;			/**< Is b held? */
+	s32 _x;			/**< Is x held? */
+	s32 _y;			/**< Is y held? */
+	s32 _l;			/**< Is l held? */
+	s32 _r;			/**< Is r held? */
+	s32 _start;		/**< Is start held? */
+	s32 _select;	/**< Is select held? */
 };
 
 #endif
