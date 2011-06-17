@@ -58,6 +58,12 @@ public:
 	 */
 	s32 getIncomingGreyBlockCount() const;
 
+	/**
+	 * Gets the grid that the runner is controlling.
+	 * @return The grid.
+	 */
+	const Grid* getGrid() const;
+
 private:
 
 	/**

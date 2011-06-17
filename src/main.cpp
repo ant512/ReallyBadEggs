@@ -31,13 +31,18 @@ int main(int argc, char* argv[]) {
 
 	// Player 1
 	Grid* grid = new Grid(3);
-	ControllerBase* controller = new PlayerController();
+	PlayerController* controller = new PlayerController();
 	GridRunner runner(controller, grid, blockServer, 0, runnerX);
 	
 	// Player 2
 	Grid* aiGrid = new Grid(3);
-	ControllerBase* aiController = new AIController(aiGrid);
+	AIController* aiController = new AIController();
 	GridRunner aiRunner(aiController, aiGrid, blockServer, 1, aiRunnerX);
+
+	// We have to set the aiController's GridRunner after constructing the
+	// runner because the runner needs a pointer to the controller and the
+	// controller needs a pointer to the runner - argh
+	aiController->setGridRunner(&aiRunner);
 
 	while (1) {
 

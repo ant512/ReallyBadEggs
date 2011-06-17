@@ -6,6 +6,7 @@
 #include "controllerbase.h"
 #include "hardware.h"
 #include "grid.h"
+#include "gridrunner.h"
 
 /**
  * AI that plays the game.
@@ -15,15 +16,20 @@ public:
 
 	/**
 	 * Constructor.
+	 * @param gridRunner The GridRunner that the AI is controlling.
 	 */
-	AIController(const Grid* grid) {
-		_grid = grid;
+	AIController() {
+		_gridRunner = NULL;
 	};
 
 	/**
 	 * Destructor.
 	 */
 	~AIController() { };
+
+	void setGridRunner(const GridRunner* gridRunner) {
+		_gridRunner = gridRunner;
+	};
 
 	/**
 	 * Is the left control active?
@@ -66,7 +72,7 @@ public:
 	};
 
 private:
-	const Grid* _grid;
+	const GridRunner* _gridRunner;	/**< The GridRunner that the AI is controlling. */
 };
 
 #endif

@@ -240,3 +240,7 @@ s32 GridRunner::getIncomingGreyBlockCount() const {
 	if (_pendingGreyBlockCount < 0) return 0;
 	return _pendingGreyBlockCount;
 }
+
+const Grid* GridRunner::getGrid() const {
+	return _grid;
+}
