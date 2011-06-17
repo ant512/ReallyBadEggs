@@ -44,6 +44,9 @@ public:
 	 */
 	void iterate();
 
+	s32 getOutgoingGreyBlockCount() const;
+	s32 getIncomingGreyBlockCount() const;
+
 private:
 
 	/**
@@ -72,6 +75,9 @@ private:
 	s32 _level;								/**< Current level. */
 	s32 _chains;							/**< Number of chains exploded. */
 	s32 _scoreMultiplier;					/**< Increases when multiple chains are exploded in one move. */
+
+	s32 _pendingGreyBlockCount;				/**< Number of incoming/outgoing grey blocks.  Negative indicates
+												 outgoing; positive indicates incoming. */
 
 	GameFont _font;							/**< Font used for rendering text. */
 

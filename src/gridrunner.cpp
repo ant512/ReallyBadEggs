@@ -131,16 +131,22 @@ void GridRunner::iterate() {
 
 				s32 score = 0;
 				s32 chains = 0;
-				s32 blocks = 0;
 
 				// Attempt to explode any chains that exist in the grid
-				if (_grid->explodeChains(score, chains, blocks)) {
+				if (_grid->explodeChains(score, chains)) {
 					
 					++_scoreMultiplier;
 
 					_score += score * _scoreMultiplier;
 					_chains += chains;
 					_level = _chains / 10;
+
+					// Subtract from the number of incoming grey blocks.  If
+					// this value becomes negative it is treated as the number
+					// of outgoing blocks, which means that we automatically
+					// reduce incoming blocks first before increasing outgoing
+					// blocks
+					_pendingGreyBlockCount -= (score * _scoreMultiplier) / (Grid::CHAIN_LENGTH * Grid::BLOCK_EXPLODE_SCORE);
 
 					renderScore(_x, 0);
 					renderLevelNumber(_x, 8);
@@ -223,4 +229,14 @@ void GridRunner::iterate() {
 
 			break;	
 	}
+}
+
+s32 GridRunner::getOutgoingGreyBlockCount() const {
+	if (_pendingGreyBlockCount > 0) return 0;
+	return 0 - _pendingGreyBlockCount;
+}
+
+s32 GridRunner::getIncomingGreyBlockCount() const {
+	if (_pendingGreyBlockCount < 0) return 0;
+	return _pendingGreyBlockCount;
 }

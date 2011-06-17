@@ -57,11 +57,9 @@ public:
 	 * populated by the method.
 	 * @param chainCount The number of chains (joined sets of blocks) exploded.
 	 * This will be populated by the method.
-	 * @param blockCount The number of blocks exploded.  This will be populated
-	 * by the method.
 	 * @return True if any blocks are exploded.
 	 */
-	bool explodeChains(s32& score, s32& chainCount, s32& blockCount);
+	bool explodeChains(s32& score, s32& chainCount);
 
 	/**
 	 * Drops the live blocks down one row if possible.

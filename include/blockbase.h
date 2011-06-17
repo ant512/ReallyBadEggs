@@ -90,9 +90,24 @@ public:
 	 * Inform the block that it is falling.
 	 */
 	void fall();
+
+	/**
+	 * Explode the block.  Starts the explosion animation.
+	 */
 	void explode();
+
+	/**
+	 * Inform the block that it has landed.
+	 */
 	void land();
 
+	/**
+	 * If any animations - landing or exploding - the animations run.  If the
+	 * block is landing and the landing animation has finished, the isLanding()
+	 * property is set to false.  Alternatively, if the block is exploding and
+	 * the explosion animation has finished, the isExploded() property is set to
+	 * true.
+	 */
 	void animate();
 
 	bool hasDroppedHalfBlock() const { return _hasDroppedHalfBlock; };

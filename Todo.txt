@@ -30,7 +30,8 @@ To do
  - Tetris-style level increases should only occur in the single-player game.
    Level indicator should be turned off in the two-player game.
  - Additional block colours - orange and green.
- - Way to add n grey blocks into random columns in the grid.  Are the columns
-   always random?  If we have more blocks to add than there are columns, should
-   entire rows be added and any left-overs be added randomly?  How many greys
-   should be added?
+ - Way to add n grey blocks into random columns in the grid.  Grey blocks
+   should fall into the columns with the lowest heights first.
+ - Way to represent grey blocks waiting to fall into grid.
+ - Grey blocks fall before new live blocks are selected.
+ - Check grey block generation algorithm - is it giving too many blocks?
