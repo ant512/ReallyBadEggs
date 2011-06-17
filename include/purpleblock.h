@@ -34,8 +34,15 @@
 #include "blockexplode4bmp.h"
 #include "blockexplode5bmp.h"
 
+/**
+ * A purple block.
+ */
 class PurpleBlock : public NormalBlock {
 public:
+
+	/**
+	 * Constructor.
+	 */
 	PurpleBlock() : NormalBlock(woopsiRGB(31, 0, 31)) {
 		_bitmaps[CONNECTION_NONE] = new PurpleBlockBmp();
 		_bitmaps[CONNECTION_TOP] = new PurpleBlockBmp();
@@ -68,19 +75,22 @@ public:
 		_landingAnim->addFrame(&_bounceBmp1, 0);
 	};
 
+	/**
+	 * Destructor.
+	 */
 	~PurpleBlock() { };
 
 private:
-	PurpleBlockExplodeBmp _explodeBmp1;
-	BlockExplode1Bmp _explodeBmp2;
-	BlockExplode2Bmp _explodeBmp3;
-	BlockExplode3Bmp _explodeBmp4;
-	BlockExplode4Bmp _explodeBmp5;
-	BlockExplode5Bmp _explodeBmp6;
+	PurpleBlockExplodeBmp _explodeBmp1;	/**< First explosion bitmap. */
+	BlockExplode1Bmp _explodeBmp2;		/**< Second explosion bitmap. */
+	BlockExplode2Bmp _explodeBmp3;		/**< Third explosion bitmap. */
+	BlockExplode3Bmp _explodeBmp4;		/**< Fourth explosion bitmap. */
+	BlockExplode4Bmp _explodeBmp5;		/**< Fifth explosion bitmap. */
+	BlockExplode5Bmp _explodeBmp6;		/**< Sixth explosion bitmap. */
 
-	PurpleBlockBounce1Bmp _bounceBmp1;
-	PurpleBlockBounce2Bmp _bounceBmp2;
-	PurpleBlockBmp _bounceBmp3;
+	PurpleBlockBounce1Bmp _bounceBmp1;	/**< First block bounce bitmap. */
+	PurpleBlockBounce2Bmp _bounceBmp2;	/**< Second block bounce bitmap. */
+	PurpleBlockBmp _bounceBmp3;			/**< Third block bounce bitmap. */
 };
 
 #endif

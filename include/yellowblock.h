@@ -34,8 +34,15 @@
 #include "blockexplode4bmp.h"
 #include "blockexplode5bmp.h"
 
+/**
+ * A yellow block.
+ */
 class YellowBlock : public NormalBlock {
 public:
+
+	/**
+	 * Constructor.
+	 */
 	YellowBlock() : NormalBlock(woopsiRGB(31, 31, 0)) {
 		_bitmaps[CONNECTION_NONE] = new YellowBlockBmp();
 		_bitmaps[CONNECTION_TOP] = new YellowBlockBmp();
@@ -55,6 +62,9 @@ public:
 		_bitmaps[CONNECTION_LEFT | CONNECTION_RIGHT] = new YellowBlockBmp();
 	};
 
+	/**
+	 * Destructor.
+	 */
 	~YellowBlock() { };
 };
 

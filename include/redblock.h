@@ -34,8 +34,15 @@
 #include "blockexplode4bmp.h"
 #include "blockexplode5bmp.h"
 
+/**
+ * A red block.
+ */
 class RedBlock : public NormalBlock {
 public:
+
+	/**
+	 * Constructor.
+	 */
 	RedBlock() : NormalBlock(woopsiRGB(31, 0, 0)) {
 		_bitmaps[CONNECTION_NONE] = new RedBlockBmp();
 		_bitmaps[CONNECTION_TOP] = new RedBlockTopBmp();
@@ -68,19 +75,22 @@ public:
 		_landingAnim->addFrame(&_bounceBmp1, 0);
 	};
 
+	/**
+	 * Destructor.
+	 */
 	~RedBlock() { };
 
 private:
-	RedBlockExplodeBmp _explodeBmp1;
-	BlockExplode1Bmp _explodeBmp2;
-	BlockExplode2Bmp _explodeBmp3;
-	BlockExplode3Bmp _explodeBmp4;
-	BlockExplode4Bmp _explodeBmp5;
-	BlockExplode5Bmp _explodeBmp6;
+	RedBlockExplodeBmp _explodeBmp1;	/**< First explosion bitmap. */
+	BlockExplode1Bmp _explodeBmp2;		/**< Second explosion bitmap. */
+	BlockExplode2Bmp _explodeBmp3;		/**< Third explosion bitmap. */
+	BlockExplode3Bmp _explodeBmp4;		/**< Fourth explosion bitmap. */
+	BlockExplode4Bmp _explodeBmp5;		/**< Fifth explosion bitmap. */
+	BlockExplode5Bmp _explodeBmp6;		/**< Sixth explosion bitmap. */
 
-	RedBlockBounce1Bmp _bounceBmp1;
-	RedBlockBounce2Bmp _bounceBmp2;
-	RedBlockBmp _bounceBmp3;
+	RedBlockBounce1Bmp _bounceBmp1;		/**< First block bounce bitmap. */
+	RedBlockBounce2Bmp _bounceBmp2;		/**< Second block bounce bitmap. */
+	RedBlockBmp _bounceBmp3;			/**< Third block bounce bitmap. */
 };
 
 #endif

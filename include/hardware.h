@@ -62,7 +62,20 @@ public:
 	 */
 	static void waitForVBlank();
 
+	/**
+	 * Get a pointer to the SDLFrameBuffer object that wraps around the top
+	 * frame buffer VRAM.
+	 * @return A pointer to a SDLFrameBuffer object that wraps around the top
+	 * frame buffer VRAM.
+	 */
 	static inline SDLFrameBuffer* getTopBuffer() { return _topBuffer; };
+
+	/**
+	 * Get a pointer to the SDLFrameBuffer object that wraps around the bottom
+	 * frame buffer VRAM.
+	 * @return A pointer to a SDLFrameBuffer object that wraps around the bottom
+	 * frame buffer VRAM.
+	 */
 	static inline SDLFrameBuffer* getBottomBuffer() { return _bottomBuffer; };
 
 private:
@@ -79,7 +92,8 @@ private:
 
 #else
 
-	static s32 _topBackgroundBase;
+	static s32 _topBackgroundBase;			/**< Stores the base for the current top
+												 background; used when double-buffering. */
 	
 #endif
 

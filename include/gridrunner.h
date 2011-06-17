@@ -54,7 +54,7 @@ public:
 	/**
 	 * Gets the number of incoming grey blocks (ie. blocks to add to the grid
 	 * when the live blocks have landed).
-	 * @param The number of incoming grey blocks.
+	 * @return The number of incoming grey blocks.
 	 */
 	s32 getIncomingGreyBlockCount() const;
 

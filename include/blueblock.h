@@ -34,8 +34,15 @@
 #include "blockexplode4bmp.h"
 #include "blockexplode5bmp.h"
 
+/**
+ * A blue block.
+ */
 class BlueBlock : public NormalBlock {
 public:
+
+	/**
+	 * Constructor.
+	 */
 	BlueBlock() : NormalBlock(woopsiRGB(0, 0, 31)) {
 		_bitmaps[CONNECTION_NONE] = new BlueBlockBmp();
 		_bitmaps[CONNECTION_TOP] = new BlueBlockTopBmp();
@@ -62,15 +69,18 @@ public:
 		_explodingAnim->addFrame(&_explodeBmp6, 0);
 	};
 
+	/**
+	 * Destructor.
+	 */
 	~BlueBlock() { };
 
 private:
-	BlueBlockExplodeBmp _explodeBmp1;
-	BlockExplode1Bmp _explodeBmp2;
-	BlockExplode2Bmp _explodeBmp3;
-	BlockExplode3Bmp _explodeBmp4;
-	BlockExplode4Bmp _explodeBmp5;
-	BlockExplode5Bmp _explodeBmp6;
+	BlueBlockExplodeBmp _explodeBmp1;	/**< First explosion bitmap. */
+	BlockExplode1Bmp _explodeBmp2;		/**< Second explosion bitmap. */
+	BlockExplode2Bmp _explodeBmp3;		/**< Third explosion bitmap. */
+	BlockExplode3Bmp _explodeBmp4;		/**< Fourth explosion bitmap. */
+	BlockExplode4Bmp _explodeBmp5;		/**< Fifth explosion bitmap. */
+	BlockExplode5Bmp _explodeBmp6;		/**< Sixth explosion bitmap. */
 };
 
 #endif
