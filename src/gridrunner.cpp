@@ -18,6 +18,7 @@ GridRunner::GridRunner(const ControllerBase* controller,
 	_score = 0;
 	_level = 20;
 	_chains = 0;
+	_scoreMultiplier = 0;
 
 	_nextBlocks = new BlockBase*[2];
 
@@ -99,22 +100,16 @@ void GridRunner::iterate() {
 
 				s32 score = 0;
 				s32 chains = 0;
+				s32 blocks = 0;
 
 				// Attempt to explode any chains that exist in the grid
-				if (_grid->explodeChains(score, chains)) {
+				if (_grid->explodeChains(score, chains, blocks)) {
+					
+					++_scoreMultiplier;
 
-					_score += score;
-
-					// Score required to reach the next level
-					s32 nextLevelScore = ((_chains / 10) + 1) * 10;
-
+					_score += score * _scoreMultiplier;
 					_chains += chains;
-
-					// Increase the level every time chains passes a multiple of
-					// 10
-					if (_chains > nextLevelScore) {
-						++_level;
-					}
+					_level = _chains / 10;
 
 					// We need to run the explosion animations next
 					_state = GRID_RUNNER_STATE_EXPLODING;
@@ -127,6 +122,8 @@ void GridRunner::iterate() {
 					// Fetch the next blocks from the block server and remember
 					// them
 					_blockServer->getNextBlocks(_playerNumber, &_nextBlocks[0], &_nextBlocks[1]);
+
+					_scoreMultiplier = 0;
 
 					_state = GRID_RUNNER_STATE_LIVE;
 				}

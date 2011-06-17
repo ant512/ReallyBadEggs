@@ -86,19 +86,21 @@ bool Grid::isValidCoordinate(s32 x, s32 y) const {
 	return true;
 }
 
-bool Grid::explodeChains(s32& score, s32& chainCount) {
+bool Grid::explodeChains(s32& score, s32& chainCount, s32& blockCount) {
 
 	WoopsiArray<WoopsiArray<Point>*> chains;
 	
 	score = 0;
-	chainCount = 0;
+	blockCount = 0;
 
 	getChains(chains);
 
+	chainCount = chains.size();
+
 	for (s32 i = 0; i < chains.size(); ++i) {
 
-		score += chains[i]->size() * BLOCK_EXPLODE_SCORE * (i + 1);
-		chainCount += chains[i]->size();
+		score += chains[i]->size() * BLOCK_EXPLODE_SCORE;
+		blockCount += chains[i]->size();
 
 		for (s32 j = 0; j < chains[i]->size(); ++j) {
 

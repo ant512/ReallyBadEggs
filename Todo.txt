@@ -11,11 +11,7 @@ To do
    vertical pixels.  Part of the animation process needs to be moving the row
    back to its correct location.  Does the row bounce?
  - Sound effects.
- - Background graphics:
-   - 1 brick on the left hand side of the screen;
-   - 1 brick on the right hand side of the screen;
-   - 2 bricks in the middle of the screen.
- - AI, displayed on right-hand side of the screen.
+ - Smart AI.
  - Score, level, next block, etc, on bottom screen.
  - Options screen.
  - Title screen.
@@ -45,5 +41,3 @@ To do
  - Way to add n grey blocks into random columns in the grid.  Are the columns
    always random?  If we have more blocks to add than there are columns, should
    entire rows be added and any left-overs be added randomly?
- - Can the GridRunner.iterate() method be split so that rendering is a separate
-   method?  Is this desirable?

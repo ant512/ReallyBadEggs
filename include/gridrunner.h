@@ -78,6 +78,7 @@ private:
 	s32 _score;								/**< Current score. */
 	s32 _level;								/**< Current level. */
 	s32 _chains;							/**< Number of chains exploded. */
+	s32 _scoreMultiplier;					/**< Increases when multiple chains are exploded in one move. */
 };
 
 #endif

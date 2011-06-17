@@ -56,7 +56,7 @@ public:
 	 * TODO: Fix the output of this.
 	 * @return A value representing the number of chains/blocks exploded.
 	 */
-	bool explodeChains(s32& score, s32& chainCount);
+	bool explodeChains(s32& score, s32& chainCount, s32& blockCount);
 
 	/**
 	 * Drops the live blocks down one row if possible.
