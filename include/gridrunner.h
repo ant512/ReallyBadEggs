@@ -59,6 +59,17 @@ public:
 	s32 getIncomingGreyBlockCount() const;
 
 	/**
+	 * Increase the amount of incoming grey blocks by the specified amount.
+	 * @param count The number of incoming grey blocks to increase by.
+	 */
+	void addIncomingGreyBlocks(s32 count);
+
+	/**
+	 * Resets the number of outgoing grey blocks to 0.
+	 */
+	void clearOutgoingGreyBlockCount();
+
+	/**
 	 * Gets the grid that the runner is controlling.
 	 * @return The grid.
 	 */

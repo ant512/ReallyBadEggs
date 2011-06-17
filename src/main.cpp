@@ -79,6 +79,16 @@ int main(int argc, char* argv[]) {
 			// Standard mode
 			runner.iterate();
 			aiRunner.iterate();
+
+			if (aiRunner.getOutgoingGreyBlocks() > 0) {
+				runner.addIncomingGreyBlocks(aiRunner.getOutgoingGreyBlocks());
+				aiRunner.clearOutgoingGreyBlockCount();
+			}
+
+			if (runner.getOutgoingGreyBlocks() > 0) {
+				aiRunner.addIncomingGreyBlocks(runner.getOutgoingGreyBlocks());
+				runner.clearOutgoingGreyBlockCount();
+			}
 		}
 
 		Hardware::waitForVBlank();

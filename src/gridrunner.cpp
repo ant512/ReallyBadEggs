@@ -156,6 +156,11 @@ void GridRunner::iterate() {
 					_state = GRID_RUNNER_STATE_EXPLODING;
 				} else {
 
+					// TODO: Grey blocks should be added at this point.  Create
+					// a new status and add grey blocks in rows to the lowest
+					// columns until there are no more greys to add, dropping
+					// each time a new row is added
+
 					// Nothing exploded, so we can put a new live block into
 					// the grid
 					_grid->addLiveBlocks(_nextBlocks[0], _nextBlocks[1]);
@@ -243,4 +248,12 @@ s32 GridRunner::getIncomingGreyBlockCount() const {
 
 const Grid* GridRunner::getGrid() const {
 	return _grid;
+}
+
+void GridRunner::addIncomingGreyBlocks(s32 count) {
+	_pendingGreyBlockCount += count;
+}
+
+void GridRunner::clearOutgoingGreyBlockCount() {
+	if (_pendingGreyBlockCount > 0) _pendingGreyBlockCount = 0;
 }
