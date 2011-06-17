@@ -11,9 +11,9 @@
  * can be drawn to with setPixel(), blit() and blitFill() methods, and
  * it can produce a Graphics object for more complex drawing functions.
  *
- * The FrameBuffer class automatically switches from using the DS'
+ * The SDLFrameBuffer class automatically switches from using the DS'
  * framebuffer (more accurately, a 16-bit background) to using an SDL
- * surface if Woopsi is compiled in SDL mode.
+ * surface if the project is compiled in SDL mode.
  */
 class SDLFrameBuffer : public WoopsiGfx::MutableBitmapBase {
 public:
