@@ -156,10 +156,34 @@ void GridRunner::iterate() {
 					_state = GRID_RUNNER_STATE_EXPLODING;
 				} else {
 
-					// TODO: Grey blocks should be added at this point.  Create
-					// a new status and add grey blocks in rows to the lowest
-					// columns until there are no more greys to add, dropping
-					// each time a new row is added
+					// Add any incoming grey blocks
+					if (_pendingGreyBlockCount > 0) {
+
+						// Work out the heights of all columns in the grid
+						u8 columnHeights[Grid::GRID_WIDTH];
+
+						for (s32 x = 0; x < Grid::GRID_WIDTH; ++x) {
+							columnHeights[x] = _grid->getColumnHeight(x);
+						}
+
+						// TODO: Add grey blocks to the first available row at
+						// the top of the columns trying to ensure that all
+						// columns reach an average height (so the shortest
+						// column will get the most blocks).  This means that
+						// we add a block at (0,0), then (0,1), then (0,2) if
+						// column 0 is the shortest block (for example).  All
+						// greys are thus added simultaneously, not buffered
+						// off-screen and added row-by-row.  This makes the
+						// logic easier.  Each time a block is added to a column
+						// that column's height needs to be increased
+
+						while (_pendingGreyBlockCount > 0) {
+							--_pendingGreyBlockCount;
+						}
+
+						// Switch back to the drop state
+						_state = GRID_RUNNER_STATE_DROP;
+					}
 
 					// Nothing exploded, so we can put a new live block into
 					// the grid

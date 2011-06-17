@@ -80,13 +80,13 @@ int main(int argc, char* argv[]) {
 			runner.iterate();
 			aiRunner.iterate();
 
-			if (aiRunner.getOutgoingGreyBlocks() > 0) {
-				runner.addIncomingGreyBlocks(aiRunner.getOutgoingGreyBlocks());
+			if (aiRunner.getOutgoingGreyBlockCount() > 0) {
+				runner.addIncomingGreyBlocks(aiRunner.getOutgoingGreyBlockCount());
 				aiRunner.clearOutgoingGreyBlockCount();
 			}
 
-			if (runner.getOutgoingGreyBlocks() > 0) {
-				aiRunner.addIncomingGreyBlocks(runner.getOutgoingGreyBlocks());
+			if (runner.getOutgoingGreyBlockCount() > 0) {
+				aiRunner.addIncomingGreyBlocks(runner.getOutgoingGreyBlockCount());
 				runner.clearOutgoingGreyBlockCount();
 			}
 		}

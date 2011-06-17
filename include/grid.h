@@ -117,6 +117,13 @@ public:
 	 */
 	bool animate();
 
+	/**
+	 * Get the height of the specified column.
+	 * @param column The column to get the height of.
+	 * @return The height of the column.
+	 */
+	s32 getColumnHeight(s32 column) const;
+
 private:
 
 	BlockBase** _data;			/**< Grid of blocks. */
