@@ -84,7 +84,6 @@ void Hardware::waitForVBlank() {
 #ifndef USING_SDL
 
 	swiWaitForVBlank();
-	scanKeys();
 
 	_topBuffer->flipBuffer();
 

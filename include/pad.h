@@ -34,45 +34,227 @@ public:
 	 */
 	inline ~Pad() { };
 
+	/**
+	 * Check if up is newly pressed since the last call to update().
+	 * @return True if newly pressed.
+	 */
 	inline bool isUpNewPress() const { return _up == 1; };
+
+	/**
+	 * Check if down is newly pressed since the last call to update().
+	 * @return True if newly pressed.
+	 */
 	inline bool isDownNewPress() const { return _down == 1; };
+
+	/**
+	 * Check if left is newly pressed since the last call to update().
+	 * @return True if newly pressed.
+	 */
 	inline bool isLeftNewPress() const { return _left == 1; };
+
+	/**
+	 * Check if right is newly pressed since the last call to update().
+	 * @return True if newly pressed.
+	 */
 	inline bool isRightNewPress() const { return _right == 1; };
+
+	/**
+	 * Check if A is newly pressed since the last call to update().
+	 * @return True if newly pressed.
+	 */
 	inline bool isANewPress() const { return _a == 1; };
+
+	/**
+	 * Check if B is newly pressed since the last call to update().
+	 * @return True if newly pressed.
+	 */
 	inline bool isBNewPress() const { return _b == 1; };
+
+	/**
+	 * Check if X is newly pressed since the last call to update().
+	 * @return True if newly pressed.
+	 */
 	inline bool isXNewPress() const { return _x == 1; };
+
+	/**
+	 * Check if Y is newly pressed since the last call to update().
+	 * @return True if newly pressed.
+	 */
 	inline bool isYNewPress() const { return _y == 1; };
+
+	/**
+	 * Check if L is newly pressed since the last call to update().
+	 * @return True if newly pressed.
+	 */
 	inline bool isLNewPress() const { return _l == 1; };
+
+	/**
+	 * Check if R is newly pressed since the last call to update().
+	 * @return True if newly pressed.
+	 */
 	inline bool isRNewPress() const { return _r == 1; };
+
+	/**
+	 * Check if start is newly pressed since the last call to update().
+	 * @return True if newly pressed.
+	 */
 	inline bool isStartNewPress() const { return _start == 1; };
+
+	/**
+	 * Check if select is newly pressed since the last call to update().
+	 * @return True if newly pressed.
+	 */
 	inline bool isSelectNewPress() const { return _select == 1; };
 
+	/**
+	 * Check if up is held down.
+	 * @return True if held down.
+	 */
 	inline bool isUpHeld() const { return _up > 0; };
+
+	/**
+	 * Check if down is held down.
+	 * @return True if held down.
+	 */
 	inline bool isDownHeld() const { return _down > 0; };
+
+	/**
+	 * Check if left is held down.
+	 * @return True if held down.
+	 */
 	inline bool isLeftHeld() const { return _left > 0; };
+
+	/**
+	 * Check if right is held down.
+	 * @return True if held down.
+	 */
 	inline bool isRightHeld() const { return _right > 0; };
+
+	/**
+	 * Check if A is held down.
+	 * @return True if held down.
+	 */
 	inline bool isAHeld() const { return _a > 0; };
+
+	/**
+	 * Check if B is held down.
+	 * @return True if held down.
+	 */
 	inline bool isBHeld() const { return _b > 0; };
+
+	/**
+	 * Check if X is held down.
+	 * @return True if held down.
+	 */
 	inline bool isXHeld() const { return _x > 0; };
+
+	/**
+	 * Check if Y is held down.
+	 * @return True if held down.
+	 */
 	inline bool isYHeld() const { return _y > 0; };
+
+	/**
+	 * Check if L is held down.
+	 * @return True if held down.
+	 */
 	inline bool isLHeld() const { return _l > 0; };
+
+	/**
+	 * Check if R is held down.
+	 * @return True if held down.
+	 */
 	inline bool isRHeld() const { return _r > 0; };
+
+	/**
+	 * Check if start is held down.
+	 * @return True if held down.
+	 */
 	inline bool isStartHeld() const { return _start > 0; };
+
+	/**
+	 * Check if select is held down.
+	 * @return True if held down.
+	 */
 	inline bool isSelectHeld() const { return _select > 0; };
 
+	/**
+	 * Check if up is repeating.
+	 * @return True if repeating.
+	 */
 	inline bool isUpRepeat() const { return _up > 0 && _up % PAD_REPEAT_TIME == 0; };
+
+	/**
+	 * Check if down is repeating.
+	 * @return True if repeating.
+	 */
 	inline bool isDownRepeat() const { return _down > 0 && _down % PAD_REPEAT_TIME == 0; };
+
+	/**
+	 * Check if left is repeating.
+	 * @return True if repeating.
+	 */
 	inline bool isLeftRepeat() const { return _left > 0 && _left % PAD_REPEAT_TIME == 0; };
+
+	/**
+	 * Check if right is repeating.
+	 * @return True if repeating.
+	 */
 	inline bool isRightRepeat() const { return _right > 0 && _right % PAD_REPEAT_TIME == 0; };
+
+	/**
+	 * Check if A is repeating.
+	 * @return True if repeating.
+	 */
 	inline bool isARepeat() const { return _a > 0 && _a % PAD_REPEAT_TIME == 0; };
+
+	/**
+	 * Check if B is repeating.
+	 * @return True if repeating.
+	 */
 	inline bool isBRepeat() const { return _b > 0 && _b % PAD_REPEAT_TIME == 0; };
+
+	/**
+	 * Check if X is repeating.
+	 * @return True if repeating.
+	 */
 	inline bool isXRepeat() const { return _x > 0 && _x % PAD_REPEAT_TIME == 0; };
+
+	/**
+	 * Check if Y is repeating.
+	 * @return True if repeating.
+	 */
 	inline bool isYRepeat() const { return _y > 0 && _y % PAD_REPEAT_TIME == 0; };
+
+	/**
+	 * Check if L is repeating.
+	 * @return True if repeating.
+	 */
 	inline bool isLRepeat() const { return _l > 0 && _l % PAD_REPEAT_TIME == 0; };
+
+	/**
+	 * Check if R is repeating.
+	 * @return True if repeating.
+	 */
 	inline bool isRRepeat() const { return _r > 0 && _r % PAD_REPEAT_TIME == 0; };
+
+	/**
+	 * Check if start is repeating.
+	 * @return True if repeating.
+	 */
 	inline bool isStartRepeat() const { return _start > 0 && _start % PAD_REPEAT_TIME == 0; };
+
+	/**
+	 * Check if select is repeating.
+	 * @return True if repeating.
+	 */
 	inline bool isSelectRepeat() const { return _select > 0 && _select % PAD_REPEAT_TIME == 0; };
 
+	/**
+	 * Check if the most recently pressed direction was vertical or horizontal.
+	 * @return True if the most recently-pressed direction was vertical.  False
+	 * if the most recently-pressed direction was horizontal.
+	 */
 	bool isMostRecentDirectionVertical() const {
 		if (_up > 0 && (_up < _left || _up < _right)) return true;
 		if (_down > 0 && (_down < _left || _down < _right)) return true;
@@ -80,8 +262,7 @@ public:
 	};
 
 	/**
-	 * Update the pad's state to match the latest DS state.  The libnds function
-	 * scanKeys() must be called before this method.
+	 * Update the pad's state to match the latest DS state.
 	 */
 	void update() {
 
