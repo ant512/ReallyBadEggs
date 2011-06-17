@@ -18,13 +18,13 @@ To do
    - Single player, Tetris B style:
      - Grid appears with pre-placed random blocks (determined by height value);
      - Have to earn 25 of chains to complete the level.
-   - Two player (AI);
-   - Auto/manual drop (maybe - I hate auto drop);
+   - Two player (AI):
+     - CPU difficulty option.
    - Initial grid height;
    - Starting level (controls auto drop speed);
    - Enable/disable level increases (enables endless mode as drop speed is
-     static)
-   - Number of block colours (4-6);
+     static);
+   - Number of block colours (4-6).
  - High score screen.
  - Title screen.
  - Tetris-style level increases should only occur in the single-player game.
