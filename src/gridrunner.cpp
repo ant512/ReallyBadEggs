@@ -1,3 +1,5 @@
+#include <woopsistring.h>
+
 #include "gridrunner.h"
 #include "hardware.h"
 
@@ -24,6 +26,10 @@ GridRunner::GridRunner(const ControllerBase* controller,
 
 	// Ensure we have some initial blocks to add to the grid
 	_blockServer->getNextBlocks(_playerNumber, &_nextBlocks[0], &_nextBlocks[1]);
+
+	renderScore(_x, 0);
+	renderLevelNumber(_x, 8);
+	renderChainCount(_x, 16);
 }
 
 GridRunner::~GridRunner() {
@@ -39,7 +45,34 @@ GridRunner::~GridRunner() {
 	delete[] _nextBlocks;
 }
 
-void GridRunner::renderNextBlocks(s32 x, s32 y) {
+void GridRunner::renderScore(s32 x, s32 y) {
+	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
+
+	WoopsiGfx::WoopsiString str;
+	str.format("%d", _score);
+
+	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
+}
+
+void GridRunner::renderLevelNumber(s32 x, s32 y) {
+	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
+
+	WoopsiGfx::WoopsiString str;
+	str.format("%d", _level);
+
+	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
+}
+
+void GridRunner::renderChainCount(s32 x, s32 y) {
+	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
+
+	WoopsiGfx::WoopsiString str;
+	str.format("%d", _chains);
+
+	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
+}
+
+void GridRunner::renderNextBlocks(s32 x, s32 y) const {
 
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
@@ -65,8 +98,6 @@ void GridRunner::iterate() {
 	// Returns true if any blocks have an animation still in progress
 	bool animated = _grid->animate();
 	_grid->render(_x, 0, gfx);
-
-	renderNextBlocks(_x + ((Grid::GRID_WIDTH - 2) * Grid::BLOCK_SIZE / 2), 0);
 
 	++_timer;
 
@@ -111,6 +142,10 @@ void GridRunner::iterate() {
 					_chains += chains;
 					_level = _chains / 10;
 
+					renderScore(_x, 0);
+					renderLevelNumber(_x, 8);
+					renderChainCount(_x, 16);
+
 					// We need to run the explosion animations next
 					_state = GRID_RUNNER_STATE_EXPLODING;
 				} else {
@@ -122,6 +157,8 @@ void GridRunner::iterate() {
 					// Fetch the next blocks from the block server and remember
 					// them
 					_blockServer->getNextBlocks(_playerNumber, &_nextBlocks[0], &_nextBlocks[1]);
+
+					renderNextBlocks(_x + ((Grid::GRID_WIDTH - 2) * Grid::BLOCK_SIZE / 2), 0);
 
 					_scoreMultiplier = 0;
 

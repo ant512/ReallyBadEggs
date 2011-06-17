@@ -5,8 +5,9 @@
 #include <nds.h>
 
 #include "blockserver.h"
-#include "grid.h"
 #include "controllerbase.h"
+#include "gamefont.h"
+#include "grid.h"
 
 /**
  * Controls a grid.  Maintains a state machine that tracks what should happen
@@ -43,14 +44,6 @@ public:
 	 */
 	void iterate();
 
-	/**
-	 * Draws the two next blocks at the specified co-ordinates to the lower
-	 * screen.
-	 * @param x The x co-ordinate to draw at.
-	 * @param y The y co-ordinate to draw at.
-	 */
-	void renderNextBlocks(s32 x, s32 y);
-
 private:
 
 	/**
@@ -79,6 +72,20 @@ private:
 	s32 _level;								/**< Current level. */
 	s32 _chains;							/**< Number of chains exploded. */
 	s32 _scoreMultiplier;					/**< Increases when multiple chains are exploded in one move. */
+
+	GameFont _font;							/**< Font used for rendering text. */
+
+	void renderScore(s32 x, s32 y);
+	void renderLevelNumber(s32 x, s32 y);
+	void renderChainCount(s32 x, s32 y);
+
+	/**
+	 * Draws the two next blocks at the specified co-ordinates to the lower
+	 * screen.
+	 * @param x The x co-ordinate to draw at.
+	 * @param y The y co-ordinate to draw at.
+	 */
+	void renderNextBlocks(s32 x, s32 y) const;
 };
 
 #endif
