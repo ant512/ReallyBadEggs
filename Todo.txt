@@ -34,4 +34,5 @@ To do
    should fall into the columns with the lowest heights first.
  - Way to represent grey blocks waiting to fall into grid.
  - Grey blocks fall before new live blocks are selected.
- - Check grey block generation algorithm - is it giving too many blocks?
+ - Check grey block generation algorithm - is it giving too many blocks?  Should
+   it be divided by 140 instead of 40?
