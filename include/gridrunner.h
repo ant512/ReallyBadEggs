@@ -75,8 +75,28 @@ private:
 
 	GameFont _font;							/**< Font used for rendering text. */
 
+	/**
+	 * Draws the current score at the specified co-ordinates to the lower
+	 * screen.
+	 * @param x The x co-ordinate to draw at.
+	 * @param y The y co-ordinate to draw at.
+	 */
 	void renderScore(s32 x, s32 y);
+
+	/**
+	 * Draws the current level number at the specified co-ordinates to the lower
+	 * screen.
+	 * @param x The x co-ordinate to draw at.
+	 * @param y The y co-ordinate to draw at.
+	 */
 	void renderLevelNumber(s32 x, s32 y);
+
+	/**
+	 * Draws the current chain count at the specified co-ordinates to the lower
+	 * screen.
+	 * @param x The x co-ordinate to draw at.
+	 * @param y The y co-ordinate to draw at.
+	 */
 	void renderChainCount(s32 x, s32 y);
 
 	/**

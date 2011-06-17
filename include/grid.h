@@ -53,8 +53,13 @@ public:
 	/**
 	 * Sets all blocks that are part of a chain of minimum length CHAIN_LENGTH
 	 * to exploding.
-	 * TODO: Fix the output of this.
-	 * @return A value representing the number of chains/blocks exploded.
+	 * @param score The score earned by the exploding blocks.  This will be
+	 * populated by the method.
+	 * @param chainCount The number of chains (joined sets of blocks) exploded.
+	 * This will be populated by the method.
+	 * @param blockCount The number of blocks exploded.  This will be populated
+	 * by the method.
+	 * @return True if any blocks are exploded.
 	 */
 	bool explodeChains(s32& score, s32& chainCount, s32& blockCount);
 
