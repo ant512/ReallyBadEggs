@@ -30,12 +30,12 @@ int main(int argc, char* argv[]) {
 	s32 runnerHeight = Grid::GRID_HEIGHT * Grid::BLOCK_SIZE;
 
 	// Player 1
-	Grid* grid = new Grid(3);
+	Grid* grid = new Grid(0);
 	PlayerController* controller = new PlayerController();
 	GridRunner runner(controller, grid, blockServer, 0, runnerX);
 	
 	// Player 2
-	Grid* aiGrid = new Grid(3);
+	Grid* aiGrid = new Grid(0);
 	AIController* aiController = new AIController();
 	GridRunner aiRunner(aiController, aiGrid, blockServer, 1, aiRunnerX);
 
@@ -52,7 +52,6 @@ int main(int argc, char* argv[]) {
 		if (pad.isStartNewPress()) {
 
 			// Pause mode
-
 			WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 			gfx->drawFilledRect(runnerX, 0, runnerWidth, runnerHeight, woopsiRGB(0, 0, 0));
 			gfx->drawFilledRect(aiRunnerX, 0, runnerWidth, runnerHeight, woopsiRGB(0, 0, 0));
@@ -65,6 +64,8 @@ int main(int argc, char* argv[]) {
 
 			gfx->drawText(runnerX + textX, textY, &font, str, 0, str.getLength(), woopsiRGB(31, 31, 0));
 			gfx->drawText(aiRunnerX + textX, textY, &font, str, 0, str.getLength(), woopsiRGB(31, 31, 0));
+
+			Hardware::getTopBuffer()->buffer();
 
 			// Need to wait for another vblank so that the newpress state of the
 			// Start button is cleared

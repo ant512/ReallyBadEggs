@@ -18,7 +18,7 @@ GridRunner::GridRunner(const ControllerBase* controller,
 	_x = x;
 
 	_score = 0;
-	_level = 20;
+	_level = 0;
 	_chains = 0;
 	_scoreMultiplier = 0;
 	_outgoingGreyBlockCount = 0;
@@ -29,9 +29,11 @@ GridRunner::GridRunner(const ControllerBase* controller,
 	// Ensure we have some initial blocks to add to the grid
 	_blockServer->getNextBlocks(_playerNumber, &_nextBlocks[0], &_nextBlocks[1]);
 
-	renderScore(_x, 0);
-	renderLevelNumber(_x, 8);
-	renderChainCount(_x, 16);
+	renderScore(_x, 16);
+	renderLevelNumber(_x, 24);
+	renderChainCount(_x, 32);
+	renderIncomingGarbage(_x, 40);
+	renderOutgoingGarbage(_x, 48);
 }
 
 GridRunner::~GridRunner() {
@@ -51,7 +53,7 @@ void GridRunner::renderScore(s32 x, s32 y) {
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
 	WoopsiGfx::WoopsiString str;
-	str.format("%d", _score);
+	str.format("%06d", _score);
 
 	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
 	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
@@ -61,7 +63,7 @@ void GridRunner::renderLevelNumber(s32 x, s32 y) {
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
 	WoopsiGfx::WoopsiString str;
-	str.format("%d", _level);
+	str.format("%02d", _level);
 
 	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
 	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
@@ -71,7 +73,27 @@ void GridRunner::renderChainCount(s32 x, s32 y) {
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
 	WoopsiGfx::WoopsiString str;
-	str.format("%d", _chains);
+	str.format("%04d", _chains);
+
+	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
+	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
+}
+
+void GridRunner::renderOutgoingGarbage(s32 x, s32 y) {
+	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
+
+	WoopsiGfx::WoopsiString str;
+	str.format("%02d", _outgoingGreyBlockCount);
+
+	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
+	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
+}
+
+void GridRunner::renderIncomingGarbage(s32 x, s32 y) {
+	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
+
+	WoopsiGfx::WoopsiString str;
+	str.format("%02d", _pendingGreyBlockCount);
 
 	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
 	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
@@ -105,6 +127,11 @@ void GridRunner::iterate() {
 	_grid->render(_x, 0, gfx);
 
 	++_timer;
+
+
+	renderIncomingGarbage(_x, 40);
+	renderOutgoingGarbage(_x, 48);
+
 
 	switch (_state) {
 		case GRID_RUNNER_STATE_DROP:
@@ -148,9 +175,9 @@ void GridRunner::iterate() {
 
 					_outgoingGreyBlockCount += (score * _scoreMultiplier) / (Grid::CHAIN_LENGTH * Grid::BLOCK_EXPLODE_SCORE);
 
-					renderScore(_x, 0);
-					renderLevelNumber(_x, 8);
-					renderChainCount(_x, 16);
+					renderScore(_x, 16);
+					renderLevelNumber(_x, 24);
+					renderChainCount(_x, 32);
 
 					// We need to run the explosion animations next
 					_state = GRID_RUNNER_STATE_EXPLODING;
