@@ -124,6 +124,13 @@ public:
 	 */
 	s32 getColumnHeight(s32 column) const;
 
+	/**
+	 * Adds the specified amount of garbage blocks to the grid.  Blocks are
+	 * placed in the lowest columns first.
+	 * @param count The number of blocks to place.
+	 * @return True if the blocks were all added.  If false is returned, the
+	 * blocks could not be placed which means the grid is full.
+	 */
 	bool addGarbage(s32 count);
 
 private:
