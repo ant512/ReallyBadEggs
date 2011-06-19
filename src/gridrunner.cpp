@@ -53,6 +53,7 @@ void GridRunner::renderScore(s32 x, s32 y) {
 	WoopsiGfx::WoopsiString str;
 	str.format("%d", _score);
 
+	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
 	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
 }
 
@@ -62,6 +63,7 @@ void GridRunner::renderLevelNumber(s32 x, s32 y) {
 	WoopsiGfx::WoopsiString str;
 	str.format("%d", _level);
 
+	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
 	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
 }
 
@@ -71,6 +73,7 @@ void GridRunner::renderChainCount(s32 x, s32 y) {
 	WoopsiGfx::WoopsiString str;
 	str.format("%d", _chains);
 
+	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
 	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
 }
 
