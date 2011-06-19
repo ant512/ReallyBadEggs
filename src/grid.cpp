@@ -704,11 +704,13 @@ bool Grid::addGarbage(s32 count) {
 
 	// Add all garbage
 	s32 activeColumns = 1;
-	s32 y = columnHeights[0] + 1;
+	s32 y = columnHeights[0];
 
 	while (count > 0) {
 
 		s32 oldCount = count;
+
+		while (activeColumns < 6 && columnHeights[activeColumns] <= y) ++activeColumns;
 
 		for (s32 i = 0; i < activeColumns; ++i) {
 
@@ -733,8 +735,6 @@ bool Grid::addGarbage(s32 count) {
 		if (oldCount == count) return false;
 
 		++y;
-
-		while (columnHeights[activeColumns] <= y && activeColumns < 5) ++activeColumns;
 	}
 
 	return true;
