@@ -478,8 +478,11 @@ void Grid::rotateLiveBlocksClockwise() {
 
 		// Swapping to vertical
 
-		// Cannot swap if the blocks are at the bottom of the well
+		// Cannot swap if the blocks are at the bottom of the well or they have
+		// dropped half a block
 		if (_liveBlocks[0].y == GRID_HEIGHT - 1) return;
+		if (_liveBlocks[0].y == GRID_HEIGHT - 2 && getBlockAt(_liveBlocks[0].x, _liveBlocks[0].y)->hasDroppedHalfBlock()) return;
+
 
 		// Cannot swap if the block below the block on the right is populated
 		if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 1) != NULL) return;
@@ -537,8 +540,10 @@ void Grid::rotateLiveBlocksAntiClockwise() {
 
 		// Swapping to vertical
 
-		// Cannot swap if the blocks are at the bottom of the well
+		// Cannot swap if the blocks are at the bottom of the well or they have
+		// dropped half a block
 		if (_liveBlocks[0].y == GRID_HEIGHT - 1) return;
+		if (_liveBlocks[0].y == GRID_HEIGHT - 2 && getBlockAt(_liveBlocks[0].x, _liveBlocks[0].y)->hasDroppedHalfBlock()) return;
 
 		// Cannot swap if the block below the block on the right is populated
 		if (getBlockAt(_liveBlocks[1].x, _liveBlocks[1].y + 1) != NULL) return;
