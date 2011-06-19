@@ -661,3 +661,76 @@ s32 Grid::getColumnHeight(s32 column) const {
 
 	return height;
 }
+
+bool Grid::addGarbage(s32 count) {
+	s32 columnHeights[6];
+	s32 columns[6];
+	s32 items = 0;
+
+	for (s32 i = 0; i < 6; ++i) {
+		columnHeights[i] = -1;
+	}
+
+	// Add all column heights to the array in sorted order
+	for (s32 i = 0; i < 6; ++i) {
+		s32 height = getColumnHeight(i);
+		s32 insertPoint = 0;
+
+		// Locate where to insert this value
+		for (s32 j = 0; j < items; ++j) {
+			if (height < columnHeights[j]) {
+
+				// Shuffle all items back one space to create a gap for the new
+				// value
+				for (s32 k = items; k > j; --k) {
+					columnHeights[k] = columnHeights[k - 1];
+					columns[k] = columns[k - 1];
+				}
+				break;
+			}
+
+			insertPoint++;
+		}
+
+		columnHeights[insertPoint] = height;
+		columns[insertPoint] = i;
+		++items;
+	}
+
+	// Add all garbage
+	s32 activeColumns = 1;
+	s32 y = columnHeights[0] - 1;
+
+	while (count > 0) {
+
+		s32 oldCount = count;
+
+		for (s32 i = 0; i < activeColumns; ++i) {
+
+			// Find a free block
+			s32 greyY = 0;
+			while (getBlockAt(columns[i], greyY) != NULL && greyY < GRID_HEIGHT) {
+				greyY++;
+			}
+
+			// If we couldn't find a free block we'll try it in the next column
+			// instead
+			if (greyY == GRID_HEIGHT) continue;
+
+			setBlockAt(columns[i], greyY, new GreyBlock());
+
+			--count;
+
+			if (count == 0) break;
+		}
+
+		// If we failed to place the block the grid must be full
+		if (oldCount == count) return false;
+
+		++y;
+
+		while (columnHeights[activeColumns] - 1 < y && activeColumns < 5) ++activeColumns;
+	}
+
+	return true;
+}

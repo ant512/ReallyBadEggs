@@ -75,6 +75,8 @@ public:
 	 */
 	const Grid* getGrid() const;
 
+	bool canReceiveGarbage() const;
+
 private:
 
 	/**
@@ -106,6 +108,7 @@ private:
 
 	s32 _pendingGreyBlockCount;				/**< Number of incoming/outgoing grey blocks.  Negative indicates
 												 outgoing; positive indicates incoming. */
+	s32 _outgoingGreyBlockCount;
 
 	GameFont _font;							/**< Font used for rendering text. */
 

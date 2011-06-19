@@ -21,6 +21,8 @@ GridRunner::GridRunner(const ControllerBase* controller,
 	_level = 20;
 	_chains = 0;
 	_scoreMultiplier = 0;
+	_outgoingGreyBlockCount = 0;
+	_pendingGreyBlockCount = 0;
 
 	_nextBlocks = new BlockBase*[2];
 
@@ -141,12 +143,7 @@ void GridRunner::iterate() {
 					_chains += chains;
 					_level = _chains / 10;
 
-					// Subtract from the number of incoming grey blocks.  If
-					// this value becomes negative it is treated as the number
-					// of outgoing blocks, which means that we automatically
-					// reduce incoming blocks first before increasing outgoing
-					// blocks
-					_pendingGreyBlockCount -= (score * _scoreMultiplier) / (Grid::CHAIN_LENGTH * Grid::BLOCK_EXPLODE_SCORE);
+					_outgoingGreyBlockCount += (score * _scoreMultiplier) / (Grid::CHAIN_LENGTH * Grid::BLOCK_EXPLODE_SCORE);
 
 					renderScore(_x, 0);
 					renderLevelNumber(_x, 8);
@@ -154,36 +151,28 @@ void GridRunner::iterate() {
 
 					// We need to run the explosion animations next
 					_state = GRID_RUNNER_STATE_EXPLODING;
-				} else {
+
+				} else if (_pendingGreyBlockCount > 0) {
+
+					if (_outgoingGreyBlockCount > 0) {
+						_pendingGreyBlockCount -= _outgoingGreyBlockCount;
+
+						if (_pendingGreyBlockCount < 0) {
+
+							_outgoingGreyBlockCount = -_pendingGreyBlockCount;
+							_pendingGreyBlockCount = 0;
+						} else {
+							_outgoingGreyBlockCount = 0;
+						}
+					}
 
 					// Add any incoming grey blocks
-					if (_pendingGreyBlockCount > 0) {
+					_grid->addGarbage(_pendingGreyBlockCount);
+					_pendingGreyBlockCount = 0;
 
-						// Work out the heights of all columns in the grid
-						u8 columnHeights[Grid::GRID_WIDTH];
-
-						for (s32 x = 0; x < Grid::GRID_WIDTH; ++x) {
-							columnHeights[x] = _grid->getColumnHeight(x);
-						}
-
-						// TODO: Add grey blocks to the first available row at
-						// the top of the columns trying to ensure that all
-						// columns reach an average height (so the shortest
-						// column will get the most blocks).  This means that
-						// we add a block at (0,0), then (0,1), then (0,2) if
-						// column 0 is the shortest block (for example).  All
-						// greys are thus added simultaneously, not buffered
-						// off-screen and added row-by-row.  This makes the
-						// logic easier.  Each time a block is added to a column
-						// that column's height needs to be increased
-
-						while (_pendingGreyBlockCount > 0) {
-							--_pendingGreyBlockCount;
-						}
-
-						// Switch back to the drop state
-						_state = GRID_RUNNER_STATE_DROP;
-					}
+					// Switch back to the drop state
+					_state = GRID_RUNNER_STATE_DROP;
+				} else {
 
 					// Nothing exploded, so we can put a new live block into
 					// the grid
@@ -196,6 +185,12 @@ void GridRunner::iterate() {
 					renderNextBlocks(_x + ((Grid::GRID_WIDTH - 2) * Grid::BLOCK_SIZE / 2), 0);
 
 					_scoreMultiplier = 0;
+
+					// Queue up outgoing blocks for the other player
+					if (_outgoingGreyBlockCount > 0) {
+						_pendingGreyBlockCount -= _outgoingGreyBlockCount;
+						_outgoingGreyBlockCount = 0;
+					}
 
 					_state = GRID_RUNNER_STATE_LIVE;
 				}
@@ -279,5 +274,9 @@ void GridRunner::addIncomingGreyBlocks(s32 count) {
 }
 
 void GridRunner::clearOutgoingGreyBlockCount() {
-	if (_pendingGreyBlockCount > 0) _pendingGreyBlockCount = 0;
+	if (_pendingGreyBlockCount < 0) _pendingGreyBlockCount = 0;
+}
+
+bool GridRunner::canReceiveGarbage() const {
+	return _state == GRID_RUNNER_STATE_LIVE;
 }

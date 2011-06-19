@@ -124,6 +124,8 @@ public:
 	 */
 	s32 getColumnHeight(s32 column) const;
 
+	bool addGarbage(s32 count);
+
 private:
 
 	BlockBase** _data;			/**< Grid of blocks. */
