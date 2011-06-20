@@ -21,8 +21,8 @@ GridRunner::GridRunner(const ControllerBase* controller,
 	_level = 0;
 	_chains = 0;
 	_scoreMultiplier = 0;
-	_outgoingGreyBlockCount = 0;
-	_pendingGreyBlockCount = 0;
+	_outgoingGarbageCount = 0;
+	_pendingGarbageCount = 0;
 
 	_nextBlocks = new BlockBase*[2];
 
@@ -83,7 +83,7 @@ void GridRunner::renderOutgoingGarbage(s32 x, s32 y) {
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
 	WoopsiGfx::WoopsiString str;
-	str.format("%02d", _outgoingGreyBlockCount);
+	str.format("%02d", _outgoingGarbageCount);
 
 	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
 	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
@@ -93,7 +93,7 @@ void GridRunner::renderIncomingGarbage(s32 x, s32 y) {
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
 	WoopsiGfx::WoopsiString str;
-	str.format("%02d", _pendingGreyBlockCount);
+	str.format("%02d", _pendingGarbageCount);
 
 	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
 	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
@@ -128,8 +128,6 @@ void GridRunner::iterate() {
 
 	++_timer;
 
-
-	renderIncomingGarbage(_x, 40);
 	renderOutgoingGarbage(_x, 48);
 
 
@@ -173,7 +171,7 @@ void GridRunner::iterate() {
 					_chains += chains;
 					_level = _chains / 10;
 
-					_outgoingGreyBlockCount += (score * _scoreMultiplier) / (Grid::CHAIN_LENGTH * Grid::BLOCK_EXPLODE_SCORE);
+					_outgoingGarbageCount += (score * _scoreMultiplier) / (Grid::CHAIN_LENGTH * Grid::BLOCK_EXPLODE_SCORE);
 
 					renderScore(_x, 16);
 					renderLevelNumber(_x, 24);
@@ -182,23 +180,25 @@ void GridRunner::iterate() {
 					// We need to run the explosion animations next
 					_state = GRID_RUNNER_STATE_EXPLODING;
 
-				} else if (_pendingGreyBlockCount > 0) {
+				} else if (_pendingGarbageCount > 0) {
 
-					if (_outgoingGreyBlockCount > 0) {
-						_pendingGreyBlockCount -= _outgoingGreyBlockCount;
+					if (_outgoingGarbageCount > 0) {
+						_pendingGarbageCount -= _outgoingGarbageCount;
 
-						if (_pendingGreyBlockCount < 0) {
+						if (_pendingGarbageCount < 0) {
 
-							_outgoingGreyBlockCount = -_pendingGreyBlockCount;
-							_pendingGreyBlockCount = 0;
+							_outgoingGarbageCount = -_pendingGarbageCount;
+							_pendingGarbageCount = 0;
 						} else {
-							_outgoingGreyBlockCount = 0;
+							_outgoingGarbageCount = 0;
 						}
 					}
 
-					// Add any incoming grey blocks
-					_grid->addGarbage(_pendingGreyBlockCount);
-					_pendingGreyBlockCount = 0;
+					// Add any incoming garbage blocks
+					_grid->addGarbage(_pendingGarbageCount);
+					_pendingGarbageCount = 0;
+
+					renderIncomingGarbage(_x, 40);
 
 					// Switch back to the drop state
 					_state = GRID_RUNNER_STATE_DROP;
@@ -217,9 +217,9 @@ void GridRunner::iterate() {
 					_scoreMultiplier = 0;
 
 					// Queue up outgoing blocks for the other player
-					if (_outgoingGreyBlockCount > 0) {
-						_pendingGreyBlockCount -= _outgoingGreyBlockCount;
-						_outgoingGreyBlockCount = 0;
+					if (_outgoingGarbageCount > 0) {
+						_pendingGarbageCount -= _outgoingGarbageCount;
+						_outgoingGarbageCount = 0;
 					}
 
 					_state = GRID_RUNNER_STATE_LIVE;
@@ -285,26 +285,28 @@ void GridRunner::iterate() {
 	}
 }
 
-s32 GridRunner::getOutgoingGreyBlockCount() const {
-	if (_pendingGreyBlockCount > 0) return 0;
-	return 0 - _pendingGreyBlockCount;
+s32 GridRunner::getOutgoingGarbageCount() const {
+	if (_pendingGarbageCount > 0) return 0;
+	return 0 - _pendingGarbageCount;
 }
 
-s32 GridRunner::getIncomingGreyBlockCount() const {
-	if (_pendingGreyBlockCount < 0) return 0;
-	return _pendingGreyBlockCount;
+s32 GridRunner::getIncomingGarbageCount() const {
+	if (_pendingGarbageCount < 0) return 0;
+	return _pendingGarbageCount;
 }
 
 const Grid* GridRunner::getGrid() const {
 	return _grid;
 }
 
-void GridRunner::addIncomingGreyBlocks(s32 count) {
-	_pendingGreyBlockCount += count;
+void GridRunner::addIncomingGarbage(s32 count) {
+	_pendingGarbageCount += count;
+
+	renderIncomingGarbage(_x, 40);
 }
 
-void GridRunner::clearOutgoingGreyBlockCount() {
-	if (_pendingGreyBlockCount < 0) _pendingGreyBlockCount = 0;
+void GridRunner::clearOutgoingGarbageCount() {
+	if (_pendingGarbageCount < 0) _pendingGarbageCount = 0;
 }
 
 bool GridRunner::canReceiveGarbage() const {

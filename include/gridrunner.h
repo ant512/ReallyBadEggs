@@ -45,29 +45,29 @@ public:
 	void iterate();
 
 	/**
-	 * Gets the number of outgoing grey blocks (ie. blocks to be given to
+	 * Gets the number of outgoing garbage blocks (ie. blocks to be given to
 	 * opponent).
-	 * @return The number of outgoing grey blocks.
+	 * @return The number of outgoing garbage blocks.
 	 */
-	s32 getOutgoingGreyBlockCount() const;
+	s32 getOutgoingGarbageCount() const;
 
 	/**
-	 * Gets the number of incoming grey blocks (ie. blocks to add to the grid
+	 * Gets the number of incoming garbage blocks (ie. blocks to add to the grid
 	 * when the live blocks have landed).
-	 * @return The number of incoming grey blocks.
+	 * @return The number of incoming garbage blocks.
 	 */
-	s32 getIncomingGreyBlockCount() const;
+	s32 getIncomingGarbageCount() const;
 
 	/**
-	 * Increase the amount of incoming grey blocks by the specified amount.
-	 * @param count The number of incoming grey blocks to increase by.
+	 * Increase the amount of incoming garbage blocks by the specified amount.
+	 * @param count The number of incoming garbage blocks to increase by.
 	 */
-	void addIncomingGreyBlocks(s32 count);
+	void addIncomingGarbage(s32 count);
 
 	/**
-	 * Resets the number of outgoing grey blocks to 0.
+	 * Resets the number of outgoing garbage blocks to 0.
 	 */
-	void clearOutgoingGreyBlockCount();
+	void clearOutgoingGarbageCount();
 
 	/**
 	 * Gets the grid that the runner is controlling.
@@ -106,9 +106,9 @@ private:
 	s32 _chains;							/**< Number of chains exploded. */
 	s32 _scoreMultiplier;					/**< Increases when multiple chains are exploded in one move. */
 
-	s32 _pendingGreyBlockCount;				/**< Number of incoming/outgoing grey blocks.  Negative indicates
+	s32 _pendingGarbageCount;				/**< Number of incoming/outgoing garbage blocks.  Negative indicates
 												 outgoing; positive indicates incoming. */
-	s32 _outgoingGreyBlockCount;
+	s32 _outgoingGarbageCount;
 
 	GameFont _font;							/**< Font used for rendering text. */
 

@@ -81,14 +81,14 @@ int main(int argc, char* argv[]) {
 			runner.iterate();
 			aiRunner.iterate();
 
-			if (aiRunner.getOutgoingGreyBlockCount() > 0 && runner.canReceiveGarbage()) {
-				runner.addIncomingGreyBlocks(aiRunner.getOutgoingGreyBlockCount());
-				aiRunner.clearOutgoingGreyBlockCount();
+			if (aiRunner.getOutgoingGarbageCount() > 0 && runner.canReceiveGarbage()) {
+				runner.addIncomingGarbage(aiRunner.getOutgoingGarbageCount());
+				aiRunner.clearOutgoingGarbageCount();
 			}
 
-			if (runner.getOutgoingGreyBlockCount() > 0 && aiRunner.canReceiveGarbage()) {
-				aiRunner.addIncomingGreyBlocks(runner.getOutgoingGreyBlockCount());
-				runner.clearOutgoingGreyBlockCount();
+			if (runner.getOutgoingGarbageCount() > 0 && aiRunner.canReceiveGarbage()) {
+				aiRunner.addIncomingGarbage(runner.getOutgoingGarbageCount());
+				runner.clearOutgoingGarbageCount();
 			}
 		}
 
