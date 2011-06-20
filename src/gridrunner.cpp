@@ -118,6 +118,136 @@ void GridRunner::renderNextBlocks(s32 x, s32 y) const {
 	}
 }
 
+void GridRunner::drop() {
+
+	// Blocks are dropping down the screen automatically
+
+	if (_timer < AUTO_DROP_TIME) return;
+
+	_timer = 0;
+
+	if (!_grid->dropBlocks()) {
+
+		// Blocks have stopped dropping, so we need to run the landing
+		// animations
+		_state = GRID_RUNNER_STATE_LANDING;
+	}
+}
+
+void GridRunner::land() {
+
+	// All animations have finished, so establish connections between blocks now
+	// that they have landed
+	_grid->connectBlocks();
+
+	s32 score = 0;
+	s32 chains = 0;
+
+	// Attempt to explode any chains that exist in the grid
+	if (_grid->explodeChains(score, chains)) {
+		
+		++_scoreMultiplier;
+
+		_score += score * _scoreMultiplier;
+		_chains += chains;
+		_level = _chains / 10;
+
+		_outgoingGarbageCount += (score * _scoreMultiplier) / (Grid::CHAIN_LENGTH * Grid::BLOCK_EXPLODE_SCORE);
+
+		renderScore(_x, 16);
+		renderLevelNumber(_x, 24);
+		renderChainCount(_x, 32);
+
+		// We need to run the explosion animations next
+		_state = GRID_RUNNER_STATE_EXPLODING;
+
+	} else if (_pendingGarbageCount > 0) {
+
+		// Add any incoming garbage blocks
+		if (_outgoingGarbageCount > 0) {
+			_pendingGarbageCount -= _outgoingGarbageCount;
+
+			if (_pendingGarbageCount < 0) {
+
+				_outgoingGarbageCount = -_pendingGarbageCount;
+				_pendingGarbageCount = 0;
+			} else {
+				_outgoingGarbageCount = 0;
+			}
+		}
+
+		_grid->addGarbage(_pendingGarbageCount);
+		_pendingGarbageCount = 0;
+
+		renderIncomingGarbage(_x, 40);
+
+		// Switch back to the drop state
+		_state = GRID_RUNNER_STATE_DROP;
+	} else {
+
+		// Nothing exploded, so we can put a new live block into
+		// the grid
+		_grid->addLiveBlocks(_nextBlocks[0], _nextBlocks[1]);
+
+		// Fetch the next blocks from the block server and remember
+		// them
+		_blockServer->getNextBlocks(_playerNumber, &_nextBlocks[0], &_nextBlocks[1]);
+
+		renderNextBlocks(_x + ((Grid::GRID_WIDTH - 2) * Grid::BLOCK_SIZE / 2), 0);
+
+		_scoreMultiplier = 0;
+
+		// Queue up outgoing blocks for the other player
+		if (_outgoingGarbageCount > 0) {
+			_pendingGarbageCount -= _outgoingGarbageCount;
+			_outgoingGarbageCount = 0;
+		}
+
+		_state = GRID_RUNNER_STATE_LIVE;
+	}
+}
+
+void GridRunner::live() {
+
+	// Player-controllable blocks are in the grid
+
+	if (_grid->hasLiveBlocks()) {
+
+		bool dropped = false;
+
+		// Drop the block to the next row if the timer has expired
+		s32 timeToDrop = LIVE_DROP_TIME - (_level * 2);
+		if (timeToDrop < 0) timeToDrop = 0;
+
+		if (_timer >= timeToDrop) {
+			_timer = 0;
+			
+			// Only force blocks down when player is not doing it
+			_grid->dropLiveBlocks();
+
+			dropped = true;
+		}
+
+		// Process user input
+		if (_controller->left()) {
+			_grid->moveLiveBlocksLeft();
+		} else if (_controller->right()) {
+			_grid->moveLiveBlocksRight();
+		} else if (_controller->down() && (_timer % 2 == 0) && !dropped) {
+			_grid->dropLiveBlocks();
+		} else if (_controller->rotateClockwise()) {
+			_grid->rotateLiveBlocksClockwise();
+		} else if (_controller->rotateAntiClockwise()) {
+			_grid->rotateLiveBlocksAntiClockwise();
+		}
+	} else {
+
+		// At least one of the blocks in the live pair has touched down.
+		// We need to drop the other block automatically
+		_state = GRID_RUNNER_STATE_DROP;
+	}
+}
+
 void GridRunner::iterate() {
 
 	WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
@@ -130,108 +260,23 @@ void GridRunner::iterate() {
 
 	renderOutgoingGarbage(_x, 48);
 
-
 	switch (_state) {
 		case GRID_RUNNER_STATE_DROP:
-
-			// Blocks are dropping down the screen automatically
-
-			if (_timer < AUTO_DROP_TIME) return;
-
-			_timer = 0;
-
-			if (!_grid->dropBlocks()) {
-
-				// Blocks have stopped dropping, so we need to run the landing
-				// animations
-				_state = GRID_RUNNER_STATE_LANDING;
-			}
-
+			drop();
 			break;
 		
 		case GRID_RUNNER_STATE_LANDING:
-
-			// Block landing animations are running
-
+			
+			// Wait until animations stop
 			if (!animated) {
-
-				// All animations have finished, so establish all connections
-				// between blocks now that they have settled
-				_grid->connectBlocks();
-
-				s32 score = 0;
-				s32 chains = 0;
-
-				// Attempt to explode any chains that exist in the grid
-				if (_grid->explodeChains(score, chains)) {
-					
-					++_scoreMultiplier;
-
-					_score += score * _scoreMultiplier;
-					_chains += chains;
-					_level = _chains / 10;
-
-					_outgoingGarbageCount += (score * _scoreMultiplier) / (Grid::CHAIN_LENGTH * Grid::BLOCK_EXPLODE_SCORE);
-
-					renderScore(_x, 16);
-					renderLevelNumber(_x, 24);
-					renderChainCount(_x, 32);
-
-					// We need to run the explosion animations next
-					_state = GRID_RUNNER_STATE_EXPLODING;
-
-				} else if (_pendingGarbageCount > 0) {
-
-					if (_outgoingGarbageCount > 0) {
-						_pendingGarbageCount -= _outgoingGarbageCount;
-
-						if (_pendingGarbageCount < 0) {
-
-							_outgoingGarbageCount = -_pendingGarbageCount;
-							_pendingGarbageCount = 0;
-						} else {
-							_outgoingGarbageCount = 0;
-						}
-					}
-
-					// Add any incoming garbage blocks
-					_grid->addGarbage(_pendingGarbageCount);
-					_pendingGarbageCount = 0;
-
-					renderIncomingGarbage(_x, 40);
-
-					// Switch back to the drop state
-					_state = GRID_RUNNER_STATE_DROP;
-				} else {
-
-					// Nothing exploded, so we can put a new live block into
-					// the grid
-					_grid->addLiveBlocks(_nextBlocks[0], _nextBlocks[1]);
-
-					// Fetch the next blocks from the block server and remember
-					// them
-					_blockServer->getNextBlocks(_playerNumber, &_nextBlocks[0], &_nextBlocks[1]);
-
-					renderNextBlocks(_x + ((Grid::GRID_WIDTH - 2) * Grid::BLOCK_SIZE / 2), 0);
-
-					_scoreMultiplier = 0;
-
-					// Queue up outgoing blocks for the other player
-					if (_outgoingGarbageCount > 0) {
-						_pendingGarbageCount -= _outgoingGarbageCount;
-						_outgoingGarbageCount = 0;
-					}
-
-					_state = GRID_RUNNER_STATE_LIVE;
-				}
+				land();
 			}
 
 			break;
 
 		case GRID_RUNNER_STATE_EXPLODING:
 
-			// Block explosion animations are running
-
+			// Wait until animations stop
 			if (!animated) {
 
 				// All animations have finished - we need to drop any blocks
@@ -242,45 +287,7 @@ void GridRunner::iterate() {
 			break;
 
 		case GRID_RUNNER_STATE_LIVE:
-
-			// Player-controllable blocks are in the grid
-
-			if (_grid->hasLiveBlocks()) {
-
-				bool dropped = false;
-
-				// Drop the block to the next row if the timer has expired
-				s32 timeToDrop = LIVE_DROP_TIME - (_level * 2);
-				if (timeToDrop < 0) timeToDrop = 0;
-
-				if (_timer >= timeToDrop) {
-					_timer = 0;
-					
-					// Only force blocks down when player is not doing it
-					_grid->dropLiveBlocks();
-
-					dropped = true;
-				}
-
-				// Process user input
-				if (_controller->left()) {
-					_grid->moveLiveBlocksLeft();
-				} else if (_controller->right()) {
-					_grid->moveLiveBlocksRight();
-				} else if (_controller->down() && (_timer % 2 == 0) && !dropped) {
-					_grid->dropLiveBlocks();
-				} else if (_controller->rotateClockwise()) {
-					_grid->rotateLiveBlocksClockwise();
-				} else if (_controller->rotateAntiClockwise()) {
-					_grid->rotateLiveBlocksAntiClockwise();
-				}
-			} else {
-
-				// At least one of the blocks in the live pair has touched down.
-				// We need to drop the other block automatically
-				_state = GRID_RUNNER_STATE_DROP;
-			}
-
+			live();
 			break;	
 	}
 }

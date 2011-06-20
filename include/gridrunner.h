@@ -146,6 +146,10 @@ private:
 
 	void renderOutgoingGarbage(s32 x, s32 y);
 	void renderIncomingGarbage(s32 x, s32 y);
+
+	void drop();
+	void land();
+	void live();
 };
 
 #endif
