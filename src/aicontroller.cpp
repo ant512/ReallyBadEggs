@@ -57,14 +57,16 @@ void AIController::analyseGrid() {
 			s32 chainExtraScore = chainLength[0] > Grid::CHAIN_LENGTH ? 1 + chainLength[0] - Grid::CHAIN_LENGTH : 1;
 
 			// Join the chains together if the blocks are the same colour
-			if (grid->getBlockAt(liveBlock1.x, liveBlock1.y)->getColour() == grid->getBlockAt(liveBlock2.x, liveBlock2.y)->getColour()) {
+			if (grid->getBlockAt(liveBlock1.x, liveBlock1.y)->getColour() == grid->getBlockAt(liveBlock2.x, liveBlock2.y)->getColour() &&
+				columnY[i] == columnY[i + 1]) {
+
 				chainExtraScore += chainLength[1];
 			} else {
 				chainExtraScore += chainLength[1] > Grid::CHAIN_LENGTH ? 1 + chainLength[1] - Grid::CHAIN_LENGTH : 1;
 			}
 
 			// Penalise for increasing the height of the target column
-			s32 heightPenalty = columnY[i] + columnY[i + 1];
+			s32 heightPenalty = (Grid::GRID_HEIGHT * 2) - (columnY[i] + columnY[i + 1]);
 
 			s32 score = chainBaseScore * chainExtraScore / heightPenalty;
 
