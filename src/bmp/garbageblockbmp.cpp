@@ -1,7 +1,7 @@
 #include <nds.h>
-#include "greyblockbmp.h"
+#include "garbageblockbmp.h"
 
-static const u16 greyblockbmp_Bitmap[256] __attribute__ ((aligned (4))) = {
+static const u16 garbageblockbmp_Bitmap[256] __attribute__ ((aligned (4))) = {
 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 
 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 
 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 
@@ -28,4 +28,4 @@ static const u16 greyblockbmp_Bitmap[256] __attribute__ ((aligned (4))) = {
 32768, 32768, 32768
 };
 
-GreyBlockBmp::GreyBlockBmp() : WoopsiGfx::BitmapWrapper(greyblockbmp_Bitmap, 16, 16) { };
+GarbageBlockBmp::GarbageBlockBmp() : WoopsiGfx::BitmapWrapper(garbageblockbmp_Bitmap, 16, 16) { };

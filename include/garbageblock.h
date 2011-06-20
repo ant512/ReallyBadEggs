@@ -1,5 +1,5 @@
-#ifndef _GREY_BLOCK_H_
-#define _GREY_BLOCK_H_
+#ifndef _GARBAGE_BLOCK_H_
+#define _GARBAGE_BLOCK_H_
 
 #include <animation.h>
 #include <bitmapbase.h>
@@ -9,21 +9,21 @@
 #include "blockbase.h"
 
 /**
- * Grey blocks cannot connect to any other block.  They are removed from the
+ * Garbage blocks cannot connect to any other block.  They are removed from the
  * grid when they are next to other blocks that explode.
  */
-class GreyBlock : public BlockBase {
+class GarbageBlock : public BlockBase {
 public:
 
 	/**
 	 * Constructor.
 	 */
-	GreyBlock();
+	GarbageBlock();
 
 	/**
 	 * Destructor.
 	 */
-	~GreyBlock();
+	~GarbageBlock();
 
 	/**
 	 * Will not attempt to create any connections.

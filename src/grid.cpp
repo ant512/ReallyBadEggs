@@ -1,5 +1,5 @@
 #include "grid.h"
-#include "greyblock.h"
+#include "garbageblock.h"
 #include "redblock.h"
 #include "purpleblock.h"
 #include "yellowblock.h"
@@ -14,14 +14,14 @@ Grid::Grid(s32 startingHeight) {
 		_data[i] = NULL;
 	}
 
-	// Add rows of greys
+	// Add rows of garbage
 	if (startingHeight > GRID_HEIGHT) startingHeight = GRID_HEIGHT;
 
 	for (s32 row = 0; row < startingHeight; ++row) {
 		for (s32 x = 0; x < GRID_WIDTH; ++x) {
 			s32 y = GRID_HEIGHT - 1 - row;
 
-			setBlockAt(x, y, new GreyBlock());
+			setBlockAt(x, y, new GarbageBlock());
 		}
 	}
 }
@@ -106,32 +106,32 @@ bool Grid::explodeChains(s32& score, s32& chainCount) {
 
 			getBlockAt(point.x, point.y)->explode();
 
-			// Remove any adjacent greys
+			// Remove any adjacent garbage
 
 			// RTII - yuck, but fastest way for me to code it
-			GreyBlock* grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x - 1, point.y));
-			if (grey != NULL) {
+			GarbageBlock* garbage = dynamic_cast<GarbageBlock*>(getBlockAt(point.x - 1, point.y));
+			if (garbage != NULL) {
 				getBlockAt(point.x - 1, point.y)->explode();
 
 				score += BLOCK_EXPLODE_SCORE * i;
 			}
 
-			grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x + 1, point.y));
-			if (grey != NULL) {
+			garbage = dynamic_cast<GarbageBlock*>(getBlockAt(point.x + 1, point.y));
+			if (garbage != NULL) {
 				getBlockAt(point.x + 1, point.y)->explode();
 
 				score += BLOCK_EXPLODE_SCORE * i;
 			}
 
-			grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x, point.y - 1));
-			if (grey != NULL) {
+			garbage = dynamic_cast<GarbageBlock*>(getBlockAt(point.x, point.y - 1));
+			if (garbage != NULL) {
 				getBlockAt(point.x, point.y - 1)->explode();
 
 				score += BLOCK_EXPLODE_SCORE * i;
 			}
 
-			grey = dynamic_cast<GreyBlock*>(getBlockAt(point.x, point.y + 1));
-			if (grey != NULL) {
+			garbage = dynamic_cast<GarbageBlock*>(getBlockAt(point.x, point.y + 1));
+			if (garbage != NULL) {
 				getBlockAt(point.x, point.y + 1)->explode();
 
 				score += BLOCK_EXPLODE_SCORE * i;
@@ -715,16 +715,16 @@ bool Grid::addGarbage(s32 count) {
 		for (s32 i = 0; i < activeColumns; ++i) {
 
 			// Find a free block
-			s32 greyY = 0;
-			while (getBlockAt(columns[i], greyY) != NULL && greyY < GRID_HEIGHT) {
-				greyY++;
+			s32 garbageY = 0;
+			while (getBlockAt(columns[i], garbageY) != NULL && garbageY < GRID_HEIGHT) {
+				garbageY++;
 			}
 
 			// If we couldn't find a free block we'll try it in the next column
 			// instead
-			if (greyY == GRID_HEIGHT) continue;
+			if (garbageY == GRID_HEIGHT) continue;
 
-			setBlockAt(columns[i], greyY, new GreyBlock());
+			setBlockAt(columns[i], garbageY, new GarbageBlock());
 
 			--count;
 
