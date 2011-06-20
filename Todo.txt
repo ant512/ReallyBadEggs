@@ -22,8 +22,6 @@ To do
    - Number of block colours (4-6).
  - High score screen.
  - Title screen.
- - Tetris-style level increases should only occur in the single-player game.
-   Level indicator should be turned off in the two-player game.
  - Additional block colours - orange and green.
  - Way to represent grey blocks waiting to fall into grid.
  - Holding down to drop blocks when grid auto drop is faster than manual drop
