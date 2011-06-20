@@ -27,3 +27,5 @@ To do
    slows down the blocks.  Either:
     - Fix this so that if auto drop is faster, manual is ignored;
     - Make manual drop faster by default.
+ - Game over condition - cannot place new live blocks.
+ - Game over screen.

@@ -97,6 +97,7 @@ void BlockBase::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 	const WoopsiGfx::BitmapBase* bmp = getBitmap();
 
 	gfx->drawBitmap(x, y, bmp->getWidth(), bmp->getHeight(), bmp, 0, 0);
+	//gfx->drawFilledRect(x, y, 3, 3, getColour());
 }
 
 const WoopsiGfx::BitmapBase* BlockBase::getBitmap() const {

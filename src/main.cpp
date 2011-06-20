@@ -6,6 +6,7 @@
 #include <woopsistring.h>
 
 #include "aicontroller.h"
+#include "smartaicontroller.h"
 #include "blockserver.h"
 #include "gamefont.h"
 #include "grid.h"
@@ -36,7 +37,7 @@ int main(int argc, char* argv[]) {
 	
 	// Player 2
 	Grid* aiGrid = new Grid(0);
-	AIController* aiController = new AIController();
+	SmartAIController* aiController = new SmartAIController();
 	GridRunner aiRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, GridRunner::GAME_TYPE_TWO_PLAYER);
 
 	// We have to set the aiController's GridRunner after constructing the
