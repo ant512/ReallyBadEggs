@@ -26,3 +26,7 @@ To do
    Level indicator should be turned off in the two-player game.
  - Additional block colours - orange and green.
  - Way to represent grey blocks waiting to fall into grid.
+ - Holding down to drop blocks when grid auto drop is faster than manual drop
+   slows down the blocks.  Either:
+    - Fix this so that if auto drop is faster, manual is ignored;
+    - Make manual drop faster by default.

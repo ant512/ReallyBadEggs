@@ -12,9 +12,9 @@ Game Mechanics
 
 Coloured eggs drop down the screen in pairs.  They can be rotated in clockwise
 and anticlockwise directions.  The objective is to arrange eggs of the same
-colour so that their edges touch and connect.  When four or more eggs of the
-same colour are connected in a chain, the eggs disappear from the grid and any
-eggs above them drop down.  Scores increase dramatically if:
+colour so that their edges touch and the eggs connect.  When four or more eggs
+of the same colour are connected in a chain, the eggs disappear from the grid
+and any eggs above them drop down.  Scores increase dramatically if:
 
  - More than four eggs are connected in a single chain;
  - Several chains are removed at once;
