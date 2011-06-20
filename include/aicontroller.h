@@ -68,9 +68,8 @@ public:
 				s32 chainLength = grid->getPotentialChainLength(i, columnY[i], grid->getBlockAt(liveBlock1.x, liveBlock1.y));
 				chainLength += grid->getPotentialChainLength(i, columnY[i], grid->getBlockAt(liveBlock2.x, liveBlock2.y));
 
-				// TODO: Penalty for increasing column height
-
-				s32 score = chainLength;
+				// Apply penalty for height of columns
+				s32 score = (chainLength * 20) / (columnY[i] + columnY[i + 1]);
 
 				if (score > bestScore) {
 					bestScore = score;
