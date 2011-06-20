@@ -115,21 +115,21 @@ bool Grid::explodeChains(s32& score, s32& chainCount) {
 				score += BLOCK_EXPLODE_SCORE * i;
 			}
 
-			garbage = getBlockAt(point.x - 1, point.y);
+			garbage = getBlockAt(point.x + 1, point.y);
 			if (garbage != NULL && garbage->getColour() == GarbageBlock::COLOUR) {
 				getBlockAt(point.x + 1, point.y)->explode();
 
 				score += BLOCK_EXPLODE_SCORE * i;
 			}
 
-			garbage = getBlockAt(point.x - 1, point.y);
+			garbage = getBlockAt(point.x, point.y - 1);
 			if (garbage != NULL && garbage->getColour() == GarbageBlock::COLOUR) {
 				getBlockAt(point.x, point.y - 1)->explode();
 
 				score += BLOCK_EXPLODE_SCORE * i;
 			}
 
-			garbage = getBlockAt(point.x - 1, point.y);
+			garbage = getBlockAt(point.x, point.y + 1);
 			if (garbage != NULL && garbage->getColour() == GarbageBlock::COLOUR) {
 				getBlockAt(point.x, point.y + 1)->explode();
 
