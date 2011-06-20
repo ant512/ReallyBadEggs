@@ -30,6 +30,11 @@ public:
 	 */
 	~AIController() { };
 
+	/**
+	 * Decides where to move the current live block.  Checks the state of the
+	 * grid and works out how many points are given from landing the current
+	 * block at each possible location without rotating it.
+	 */
 	void analyseGrid() {
 
 		const Grid* grid = _gridRunner->getGrid();
@@ -44,9 +49,9 @@ public:
 		if (_lastLiveBlockY > liveBlock1.y) {
 
 			// Get the y co-ords of the topmost blank block in each column
-			s32 columnY[6];
+			s32 columnY[Grid::GRID_WIDTH];
 
-			for (s32 i = 0; i < 6; ++i) {
+			for (s32 i = 0; i < Grid::GRID_WIDTH; ++i) {
 				columnY[i] = (Grid::GRID_HEIGHT - grid->getColumnHeight(i));
 			}
 
@@ -57,7 +62,7 @@ public:
 			// - We never rotate a block;
 			// - There is nothing to stop us moving a block (ie. no filled
 			//   columns).
-			for (s32 i = 0; i < 5; ++i) {
+			for (s32 i = 0; i <  Grid::GRID_WIDTH - 1; ++i) {
 
 				// Chain lengths
 				s32 chainLength = grid->getPotentialChainLength(i, columnY[i], grid->getBlockAt(liveBlock1.x, liveBlock1.y));
@@ -155,8 +160,8 @@ public:
 
 private:
 	const GridRunner* _gridRunner;	/**< The GridRunner that the AI is controlling. */
-	s32 _lastLiveBlockY;
-	s32 _targetX;
+	s32 _lastLiveBlockY;			/**< The last observed y co-ordinate of the first live block. */
+	s32 _targetX;					/**< The x co-ordinate the AI is trying to move the live block to. */
 };
 
 #endif
