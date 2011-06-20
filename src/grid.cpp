@@ -108,30 +108,29 @@ bool Grid::explodeChains(s32& score, s32& chainCount) {
 
 			// Remove any adjacent garbage
 
-			// RTII - yuck, but fastest way for me to code it
-			GarbageBlock* garbage = dynamic_cast<GarbageBlock*>(getBlockAt(point.x - 1, point.y));
-			if (garbage != NULL) {
+			BlockBase* garbage = getBlockAt(point.x - 1, point.y);
+			if (garbage != NULL && garbage->getColour() == GarbageBlock::COLOUR) {
 				getBlockAt(point.x - 1, point.y)->explode();
 
 				score += BLOCK_EXPLODE_SCORE * i;
 			}
 
-			garbage = dynamic_cast<GarbageBlock*>(getBlockAt(point.x + 1, point.y));
-			if (garbage != NULL) {
+			garbage = getBlockAt(point.x - 1, point.y);
+			if (garbage != NULL && garbage->getColour() == GarbageBlock::COLOUR) {
 				getBlockAt(point.x + 1, point.y)->explode();
 
 				score += BLOCK_EXPLODE_SCORE * i;
 			}
 
-			garbage = dynamic_cast<GarbageBlock*>(getBlockAt(point.x, point.y - 1));
-			if (garbage != NULL) {
+			garbage = getBlockAt(point.x - 1, point.y);
+			if (garbage != NULL && garbage->getColour() == GarbageBlock::COLOUR) {
 				getBlockAt(point.x, point.y - 1)->explode();
 
 				score += BLOCK_EXPLODE_SCORE * i;
 			}
 
-			garbage = dynamic_cast<GarbageBlock*>(getBlockAt(point.x, point.y + 1));
-			if (garbage != NULL) {
+			garbage = getBlockAt(point.x - 1, point.y);
+			if (garbage != NULL && garbage->getColour() == GarbageBlock::COLOUR) {
 				getBlockAt(point.x, point.y + 1)->explode();
 
 				score += BLOCK_EXPLODE_SCORE * i;

@@ -12,7 +12,7 @@ To do
    - Single player, Tetris A style;
    - Single player, Tetris B style:
      - Grid appears with pre-placed random blocks (determined by height value);
-     - Have to earn 25 of chains to complete the level.
+     - Have to earn 25 chains to complete the level.
    - Two player (AI):
      - CPU difficulty option.
    - Initial grid height;

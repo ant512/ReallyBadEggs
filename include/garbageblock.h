@@ -15,6 +15,8 @@
 class GarbageBlock : public BlockBase {
 public:
 
+	static const u16 COLOUR = 42281;	/**< Block colour; woopsiRGB(9, 9, 9) */
+
 	/**
 	 * Constructor.
 	 */

@@ -1,7 +1,7 @@
 #include "garbageblock.h"
 #include "garbageblockbmp.h"
 
-GarbageBlock::GarbageBlock() : BlockBase(woopsiRGB(9, 9, 9)) {
+GarbageBlock::GarbageBlock() : BlockBase(COLOUR) {
 	_bitmaps[CONNECTION_NONE] = new GarbageBlockBmp();
 }
 
