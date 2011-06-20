@@ -7,7 +7,8 @@ GridRunner::GridRunner(const ControllerBase* controller,
 					   Grid* grid,
 					   BlockServer* blockServer,
 					   s32 playerNumber,
-					   s32 x) {
+					   s32 x,
+					   GameType gameType) {
 
 	_state = GRID_RUNNER_STATE_DROP;
 	_timer = 0;
@@ -16,10 +17,11 @@ GridRunner::GridRunner(const ControllerBase* controller,
 	_blockServer = blockServer;
 	_playerNumber = playerNumber;
 	_x = x;
+	_gameType = gameType;
 
 	_score = 0;
 	_level = 0;
-	_chains = 0;
+	_chains = _gameType == GAME_TYPE_B ? GAME_TYPE_B_START_CHAINS : 0;
 	_scoreMultiplier = 0;
 	_outgoingGarbageCount = 0;
 	_pendingGarbageCount = 0;
@@ -149,10 +151,21 @@ void GridRunner::land() {
 		++_scoreMultiplier;
 
 		_score += score * _scoreMultiplier;
-		_chains += chains;
-		_level = _chains / 10;
 
-		_outgoingGarbageCount += (score * _scoreMultiplier) / (Grid::CHAIN_LENGTH * Grid::BLOCK_EXPLODE_SCORE);
+		switch (_gameType) {
+			case GAME_TYPE_A:
+				_chains += chains;
+				_level = _chains / 10;
+				break;
+			case GAME_TYPE_B:
+				_chains -= chains;
+				break;
+			case GAME_TYPE_TWO_PLAYER:
+				_chains += chains;
+
+				_outgoingGarbageCount += (score * _scoreMultiplier) / (Grid::CHAIN_LENGTH * Grid::BLOCK_EXPLODE_SCORE);
+				break;
+		}
 
 		renderScore(_x, 16);
 		renderLevelNumber(_x, 24);

@@ -16,6 +16,14 @@
 class GridRunner {
 public:
 
+	static const s32 GAME_TYPE_B_START_CHAINS = 25;
+
+	enum GameType {
+		GAME_TYPE_TWO_PLAYER = 0,
+		GAME_TYPE_A = 1,
+		GAME_TYPE_B = 2
+	};
+
 	/**
 	 * Constructor.
 	 * @param controller A controller object that will provide input for the
@@ -30,7 +38,8 @@ public:
 			   Grid* grid,
 			   BlockServer* blockServer,
 			   s32 playerNumber,
-			   s32 x);
+			   s32 x,
+			   GameType gameType);
 
 	/**
 	 * Destructor.
@@ -109,6 +118,8 @@ private:
 	s32 _pendingGarbageCount;				/**< Number of incoming/outgoing garbage blocks.  Negative indicates
 												 outgoing; positive indicates incoming. */
 	s32 _outgoingGarbageCount;
+
+	GameType _gameType;
 
 	GameFont _font;							/**< Font used for rendering text. */
 
