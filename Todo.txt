@@ -6,7 +6,6 @@ To do
    vertical pixels.  Part of the animation process needs to be moving the row
    back to its correct location.  Does the row bounce?
  - Sound effects.
- - Smart AI.
  - Design layout of bottom screen.
  - Options screen:
    - Single player, Tetris A style;
