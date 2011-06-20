@@ -176,6 +176,43 @@ void Grid::getChains(WoopsiArray<WoopsiArray<Point>*>& chains) const {
 	delete[] checkedData;
 }
 
+s32 Grid::getPotentialChainLength(s32 x, s32 y, BlockBase* block) const {
+	
+	bool* checkedData = new bool[GRID_WIDTH * GRID_HEIGHT];
+
+	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
+		checkedData[i] = false;
+	}
+
+	checkedData[x + (y * GRID_WIDTH)] = true;
+
+	WoopsiArray<Point> chain;
+
+	BlockBase* gridBlock = getBlockAt(x - 1, y);
+	if (gridBlock != NULL && gridBlock->getColour() == block->getColour()) {
+		getChain(x - 1, y, chain, checkedData);
+	}
+
+	gridBlock = getBlockAt(x + 1, y);
+	if (gridBlock != NULL && gridBlock->getColour() == block->getColour()) {
+		getChain(x + 1, y, chain, checkedData);
+	}
+
+	gridBlock = getBlockAt(x, y - 1);
+	if (gridBlock != NULL && gridBlock->getColour() == block->getColour()) {
+		getChain(x, y - 1, chain, checkedData);
+	}
+
+	gridBlock = getBlockAt(x, y + 1);
+	if (gridBlock != NULL && gridBlock->getColour() == block->getColour()) {
+		getChain(x, y + 1, chain, checkedData);
+	}
+
+	delete[] checkedData;
+
+	return chain.size() + 1;
+}
+
 void Grid::getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) const {
 
 	// Stop if we've checked this block already

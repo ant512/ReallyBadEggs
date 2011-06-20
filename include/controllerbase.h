@@ -24,31 +24,31 @@ public:
 	 * Is the left control active?
 	 * @return True if the left control is active.
 	 */
-	virtual bool left() const = 0;
+	virtual bool left() = 0;
 
 	/**
 	 * Is the right control active?
 	 * @return True if the right control is active.
 	 */
-	virtual bool right() const = 0;
+	virtual bool right() = 0;
 
 	/**
 	 * Is the down control active?
 	 * @return True if the down control is active.
 	 */
-	virtual bool down() const = 0;
+	virtual bool down() = 0;
 
 	/**
 	 * Is the clockwise rotation control active?
 	 * @return True if the clockwise rotation control is active.
 	 */
-	virtual bool rotateClockwise() const = 0;
+	virtual bool rotateClockwise() = 0;
 
 	/**
 	 * Is the anticlockwise rotation control active?
 	 * @return True if the anticlockwise rotation control is active.
 	 */
-	virtual bool rotateAntiClockwise() const = 0;
+	virtual bool rotateAntiClockwise() = 0;
 };
 
 #endif

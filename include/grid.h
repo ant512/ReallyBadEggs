@@ -133,6 +133,21 @@ public:
 	 */
 	bool addGarbage(s32 count);
 
+	/**
+	 * Gets the length of chain created if the specified block is placed at the
+	 * supplied co-ordinates.
+	 * @param x The x co-ordinate of the block.
+	 * @param y The y co-ordinate of the block.
+	 * @param block The block to place.
+	 * @return The length of the chain created.
+	 */
+	s32 getPotentialChainLength(s32 x, s32 y, BlockBase* block) const;
+
+	void getLiveBlockPoints(Point& liveBlock1, Point& liveBlock2) const {
+		liveBlock1 = _liveBlocks[0];
+		liveBlock2 = _liveBlocks[1];
+	};
+
 private:
 
 	BlockBase** _data;			/**< Grid of blocks. */

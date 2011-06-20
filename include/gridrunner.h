@@ -34,7 +34,7 @@ public:
 	 * @param playerNumber The unique number of the player using this runner.
 	 * @param x The x co-ordinate to render at.
 	 */
-	GridRunner(const ControllerBase* controller,
+	GridRunner(ControllerBase* controller,
 			   Grid* grid,
 			   BlockServer* blockServer,
 			   s32 playerNumber,
@@ -104,7 +104,7 @@ private:
 	Grid* _grid;							/**< The grid the runner controls. */
 	GridRunnerState _state;					/**< The state of the state machine. */
 	s32 _timer;								/**< Frames since the last event took place. */
-	const ControllerBase* _controller;		/**< Controller that feeds user input to live blocks. */
+	ControllerBase* _controller;			/**< Controller that feeds user input to live blocks. */
 	BlockServer* _blockServer;				/**< Produces next blocks for the grid. */
 	BlockBase** _nextBlocks;				/**< Array of 2 blocks that will be placed next. */
 	s32 _playerNumber;						/**< Unique number of the player using this runner. */

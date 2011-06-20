@@ -3,7 +3,7 @@
 #include "gridrunner.h"
 #include "hardware.h"
 
-GridRunner::GridRunner(const ControllerBase* controller,
+GridRunner::GridRunner(ControllerBase* controller,
 					   Grid* grid,
 					   BlockServer* blockServer,
 					   s32 playerNumber,
