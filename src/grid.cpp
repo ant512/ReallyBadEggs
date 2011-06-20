@@ -176,6 +176,11 @@ void Grid::getChains(WoopsiArray<WoopsiArray<Point>*>& chains) const {
 	delete[] checkedData;
 }
 
+void Grid::getLiveBlockPoints(Point& liveBlock1, Point& liveBlock2) const {
+	liveBlock1 = _liveBlocks[0];
+	liveBlock2 = _liveBlocks[1];
+}
+
 s32 Grid::getPotentialChainLength(s32 x, s32 y, BlockBase* block) const {
 	
 	bool* checkedData = new bool[GRID_WIDTH * GRID_HEIGHT];

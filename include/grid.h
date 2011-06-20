@@ -143,10 +143,13 @@ public:
 	 */
 	s32 getPotentialChainLength(s32 x, s32 y, BlockBase* block) const;
 
-	void getLiveBlockPoints(Point& liveBlock1, Point& liveBlock2) const {
-		liveBlock1 = _liveBlocks[0];
-		liveBlock2 = _liveBlocks[1];
-	};
+	/**
+	 * Populates the supplied Point references with the co-ordinates of the live
+	 * blocks.
+	 * @param liveBlock1 The first live block Point reference.
+	 * @param liveBlock1 The second live block Point reference.
+	 */
+	void getLiveBlockPoints(Point& liveBlock1, Point& liveBlock2) const;
 
 private:
 
