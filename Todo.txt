@@ -2,11 +2,6 @@ To do
 -----
 
  - Add all bitmaps for blocks.
- - GridRunner needs to get number of blocks exploded in chains and buffer it
-   somewhere.  It might be useful if the grid spat out the number of blocks in
-   each chain so that an overall array of chain sets can be created (ie. chain
-   set 1 contained 2 chains of 4 blocks each).  This allows us to apply
-   multipliers when figuring out how many blocks to dump on the opponent.
  - When grey blocks land on a column that column needs to offset itself by n
    vertical pixels.  Part of the animation process needs to be moving the row
    back to its correct location.  Does the row bounce?
@@ -30,9 +25,4 @@ To do
  - Tetris-style level increases should only occur in the single-player game.
    Level indicator should be turned off in the two-player game.
  - Additional block colours - orange and green.
- - Way to add n grey blocks into random columns in the grid.  Grey blocks
-   should fall into the columns with the lowest heights first.
  - Way to represent grey blocks waiting to fall into grid.
- - Grey blocks fall before new live blocks are selected.
- - Check grey block generation algorithm - is it giving too many blocks?  Should
-   it be divided by 140 instead of 40?
