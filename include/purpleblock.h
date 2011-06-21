@@ -19,10 +19,10 @@
 #include "purpleblockleftbmp.h"
 //#include "purpleblockleftrightbmp.h"
 #include "purpleblockrightbmp.h"
-//#include "purpleblocktopbmp.h"
+#include "purpleblocktopbmp.h"
 #include "purpleblocktopbottombmp.h"
-#//include "purpleblocktopleftbmp.h"
-#//include "purpleblocktopleftbottombmp.h"
+#include "purpleblocktopleftbmp.h"
+//#include "purpleblocktopleftbottombmp.h"
 //#include "purpleblocktopleftrightbmp.h"
 //#include "purpleblocktopleftrightbottombmp.h"
 #include "purpleblocktoprightbmp.h"
@@ -45,10 +45,10 @@ public:
 	 */
 	PurpleBlock() : NormalBlock(woopsiRGB(31, 0, 31)) {
 		_bitmaps[CONNECTION_NONE] = new PurpleBlockBmp();
-		_bitmaps[CONNECTION_TOP] = new PurpleBlockBmp();
+		_bitmaps[CONNECTION_TOP] = new PurpleBlockTopBmp();
 		_bitmaps[CONNECTION_BOTTOM] = new PurpleBlockBottomBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM] = new PurpleBlockTopBottomBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT] = new PurpleBlockBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT] = new PurpleBlockTopLeftBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_RIGHT] = new PurpleBlockTopRightBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT | CONNECTION_RIGHT] = new PurpleBlockBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT] = new PurpleBlockBmp();
