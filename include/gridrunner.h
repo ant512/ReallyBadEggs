@@ -17,6 +17,7 @@ class GridRunner {
 public:
 
 	static const s32 GAME_TYPE_B_START_CHAINS = 25;
+	static const s32 CHAIN_SEQUENCE_GARBAGE = 6;
 
 	enum GameType {
 		GAME_TYPE_TWO_PLAYER = 0,

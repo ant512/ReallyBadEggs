@@ -148,9 +148,10 @@ void GridRunner::land() {
 
 	s32 score = 0;
 	s32 chains = 0;
+	s32 blocks = 0;
 
 	// Attempt to explode any chains that exist in the grid
-	if (_grid->explodeChains(score, chains)) {
+	if (_grid->explodeChains(score, chains, blocks)) {
 		
 		++_scoreMultiplier;
 
@@ -167,7 +168,25 @@ void GridRunner::land() {
 			case GAME_TYPE_TWO_PLAYER:
 				_chains += chains;
 
-				_outgoingGarbageCount += (score * _scoreMultiplier) / (Grid::CHAIN_LENGTH * Grid::BLOCK_EXPLODE_SCORE);
+				s32 garbage = 0;
+
+				if (_scoreMultiplier == 1) {
+
+					// One block for the chain and one block for each block on
+					// top of the required minimum number
+					garbage = blocks - (Grid::CHAIN_LENGTH - 1);
+				} else {
+
+					// If we're in a sequence of chains, we add 6 blocks each
+					// sequence
+					garbage = CHAIN_SEQUENCE_GARBAGE;
+
+					// Add any additional blocks on top of the standard
+					// chain length
+					garbage += blocks - Grid::CHAIN_LENGTH;
+				}
+
+				_outgoingGarbageCount += garbage;
 				break;
 		}
 
