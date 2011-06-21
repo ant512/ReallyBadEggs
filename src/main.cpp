@@ -16,6 +16,7 @@
 #include "twoplayerbgbmp.h"
 
 int main(int argc, char* argv[]) {
+
 	Hardware::init();
 
 	TwoPlayerBgBmp background;

@@ -10,23 +10,23 @@
 
 #include "purpleblockbmp.h"
 #include "purpleblockbottombmp.h"
-//#include "purpleblockbottomleftbmp.h"
-//#include "purpleblockbottomleftrightbmp.h"
-//#include "purpleblockbottomrightbmp.h"
+#include "purpleblockbottomleftbmp.h"
+#include "purpleblockbottomleftrightbmp.h"
+#include "purpleblockbottomrightbmp.h"
 #include "purpleblockbounce1bmp.h"
 #include "purpleblockbounce2bmp.h"
 #include "purpleblockexplodebmp.h"
 #include "purpleblockleftbmp.h"
-//#include "purpleblockleftrightbmp.h"
+#include "purpleblockleftrightbmp.h"
 #include "purpleblockrightbmp.h"
 #include "purpleblocktopbmp.h"
 #include "purpleblocktopbottombmp.h"
 #include "purpleblocktopleftbmp.h"
-//#include "purpleblocktopleftbottombmp.h"
-//#include "purpleblocktopleftrightbmp.h"
-//#include "purpleblocktopleftrightbottombmp.h"
+#include "purpleblocktopleftbottombmp.h"
+#include "purpleblocktopleftrightbmp.h"
+#include "purpleblocktopleftrightbottombmp.h"
 #include "purpleblocktoprightbmp.h"
-//#include "purpleblocktoprightbottombmp.h"
+#include "purpleblocktoprightbottombmp.h"
 
 #include "blockexplode1bmp.h"
 #include "blockexplode2bmp.h"
@@ -50,16 +50,16 @@ public:
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM] = new PurpleBlockTopBottomBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT] = new PurpleBlockTopLeftBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_RIGHT] = new PurpleBlockTopRightBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT | CONNECTION_RIGHT] = new PurpleBlockBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT] = new PurpleBlockBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_RIGHT] = new PurpleBlockBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new PurpleBlockBmp();
-		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT] = new PurpleBlockBmp();
-		_bitmaps[CONNECTION_BOTTOM | CONNECTION_RIGHT] = new PurpleBlockBmp();
-		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new PurpleBlockBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT | CONNECTION_RIGHT] = new PurpleBlockTopLeftRightBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT] = new PurpleBlockTopLeftBottomBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_RIGHT] = new PurpleBlockTopRightBottomBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new PurpleBlockTopLeftRightBottomBmp();
+		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT] = new PurpleBlockBottomLeftBmp();
+		_bitmaps[CONNECTION_BOTTOM | CONNECTION_RIGHT] = new PurpleBlockBottomRightBmp();
+		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new PurpleBlockBottomLeftRightBmp();
 		_bitmaps[CONNECTION_LEFT] = new PurpleBlockLeftBmp();
 		_bitmaps[CONNECTION_RIGHT] = new PurpleBlockRightBmp();
-		_bitmaps[CONNECTION_LEFT | CONNECTION_RIGHT] = new PurpleBlockBmp();
+		_bitmaps[CONNECTION_LEFT | CONNECTION_RIGHT] = new PurpleBlockLeftRightBmp();
 
 		_explodingAnim->addFrame(&_explodeBmp1, 0);
 		_explodingAnim->addFrame(&_explodeBmp2, 0);
