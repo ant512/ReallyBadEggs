@@ -26,3 +26,5 @@ To do
     - Make manual drop faster by default.
  - Game over condition - cannot place new live blocks.
  - Game over screen.
+ - Remove defensive garbage creation (ie. remove incoming before increasing
+   outgoing) or make it an option?
