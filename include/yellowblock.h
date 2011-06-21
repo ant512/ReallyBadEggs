@@ -10,21 +10,21 @@
 
 #include "yellowblockbmp.h"
 #include "yellowblockbottombmp.h"
-//#include "yellowblockbottomleftbmp.h"
+#include "yellowblockbottomleftbmp.h"
 #include "yellowblockbottomleftrightbmp.h"
-	//#include "yellowblockbottomrightbmp.h"
+#include "yellowblockbottomrightbmp.h"
 #include "yellowblockbounce1bmp.h"
 #include "yellowblockbounce2bmp.h"
 #include "yellowblockexplodebmp.h"
 #include "yellowblockleftbmp.h"
-//#include "yellowblockleftrightbmp.h"
+#include "yellowblockleftrightbmp.h"
 #include "yellowblockrightbmp.h"
 #include "yellowblocktopbmp.h"
 #include "yellowblocktopbottombmp.h"
 #include "yellowblocktopleftbmp.h"
-//#include "yellowblocktopleftbottombmp.h"
-//#include "yellowblocktopleftrightbmp.h"
-//#include "yellowblocktopleftrightbottombmp.h"
+#include "yellowblocktopleftbottombmp.h"
+#include "yellowblocktopleftrightbmp.h"
+#include "yellowblocktopleftrightbottombmp.h"
 #include "yellowblocktoprightbmp.h"
 #include "yellowblocktoprightbottombmp.h"
 
@@ -45,21 +45,21 @@ public:
 	 */
 	YellowBlock() : NormalBlock(woopsiRGB(31, 31, 0)) {
 		_bitmaps[CONNECTION_NONE] = new YellowBlockBmp();
-		_bitmaps[CONNECTION_TOP] = new YellowBlockBmp();
+		_bitmaps[CONNECTION_TOP] = new YellowBlockTopBmp();
 		_bitmaps[CONNECTION_BOTTOM] = new YellowBlockBottomBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM] = new YellowBlockTopBottomBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT] = new YellowBlockTopLeftBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_RIGHT] = new YellowBlockTopRightBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT | CONNECTION_RIGHT] = new YellowBlockBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT] = new YellowBlockBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT | CONNECTION_RIGHT] = new YellowBlockTopLeftRightBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT] = new YellowBlockTopLeftBottomBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_RIGHT] = new YellowBlockTopRightBottomBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new YellowBlockBmp();
-		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT] = new YellowBlockBmp();
-		_bitmaps[CONNECTION_BOTTOM | CONNECTION_RIGHT] = new YellowBlockBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new YellowBlockTopLeftRightBottomBmp();
+		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT] = new YellowBlockBottomLeftBmp();
+		_bitmaps[CONNECTION_BOTTOM | CONNECTION_RIGHT] = new YellowBlockBottomRightBmp();
 		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new YellowBlockBottomLeftRightBmp();
 		_bitmaps[CONNECTION_LEFT] = new YellowBlockLeftBmp();
 		_bitmaps[CONNECTION_RIGHT] = new YellowBlockRightBmp();
-		_bitmaps[CONNECTION_LEFT | CONNECTION_RIGHT] = new YellowBlockBmp();
+		_bitmaps[CONNECTION_LEFT | CONNECTION_RIGHT] = new YellowBlockLeftRightBmp();
 
 		_explodingAnim->addFrame(&_explodeBmp1, 0);
 		_explodingAnim->addFrame(&_explodeBmp2, 0);
