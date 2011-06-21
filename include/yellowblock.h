@@ -11,7 +11,7 @@
 #include "yellowblockbmp.h"
 #include "yellowblockbottombmp.h"
 //#include "yellowblockbottomleftbmp.h"
-	//#include "yellowblockbottomleftrightbmp.h"
+#include "yellowblockbottomleftrightbmp.h"
 	//#include "yellowblockbottomrightbmp.h"
 #include "yellowblockbounce1bmp.h"
 #include "yellowblockbounce2bmp.h"
@@ -26,7 +26,7 @@
 //#include "yellowblocktopleftrightbmp.h"
 //#include "yellowblocktopleftrightbottombmp.h"
 #include "yellowblocktoprightbmp.h"
-	//#include "yellowblocktoprightbottombmp.h"
+#include "yellowblocktoprightbottombmp.h"
 
 #include "blockexplode1bmp.h"
 #include "blockexplode2bmp.h"
@@ -52,11 +52,11 @@ public:
 		_bitmaps[CONNECTION_TOP | CONNECTION_RIGHT] = new YellowBlockTopRightBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT | CONNECTION_RIGHT] = new YellowBlockBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT] = new YellowBlockBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_RIGHT] = new YellowBlockBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_RIGHT] = new YellowBlockTopRightBottomBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new YellowBlockBmp();
 		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT] = new YellowBlockBmp();
 		_bitmaps[CONNECTION_BOTTOM | CONNECTION_RIGHT] = new YellowBlockBmp();
-		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new YellowBlockBmp();
+		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new YellowBlockBottomLeftRightBmp();
 		_bitmaps[CONNECTION_LEFT] = new YellowBlockLeftBmp();
 		_bitmaps[CONNECTION_RIGHT] = new YellowBlockRightBmp();
 		_bitmaps[CONNECTION_LEFT | CONNECTION_RIGHT] = new YellowBlockBmp();
