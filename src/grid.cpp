@@ -24,12 +24,19 @@ Grid::Grid(s32 startingHeight) {
 			setBlockAt(x, y, new GarbageBlock());
 		}
 	}
+
+	_columnOffsets = new s32[GRID_WIDTH];
+
+	for (s32 i = 0; i < GRID_WIDTH; ++i) {
+		_columnOffsets[i] = 0;
+	}
 }
 
 Grid::~Grid() {
 	clear();
 	delete[] _data;
 	delete[] _liveBlocks;
+	delete[] _columnOffsets;
 }
 
 void Grid::clear() {
@@ -40,6 +47,10 @@ void Grid::clear() {
 			delete _data[i];
 			_data[i] = NULL;
 		}
+	}
+
+	for (s32 i = 0; i < GRID_WIDTH; ++i) {
+		_columnOffsets[i] = 0;
 	}
 }
 
@@ -374,6 +385,12 @@ bool Grid::dropBlocks() {
 		BlockBase* block = getBlockAt(x, GRID_HEIGHT - 1);
 
 		if (block->isFalling()) {
+
+			// Shake the column
+			if (block->getColour() == GarbageBlock::COLOUR) {
+				_columnOffsets[x] = GARBAGE_LAND_OFFSET;
+			}
+
 			block->land();
 		}
 	}
@@ -400,7 +417,15 @@ bool Grid::dropBlocks() {
 
 				hasDropped = true;
 			} else if (block->isFalling()) {
-				block->land();
+
+				if (!getBlockAt(x, y + 1)->isFalling()) {
+					block->land();
+
+					// Shake the column
+					if (block->getColour() == GarbageBlock::COLOUR) {
+						_columnOffsets[x] = GARBAGE_LAND_OFFSET;
+					}
+				}
 			}
 		}
 	}
@@ -417,7 +442,7 @@ void Grid::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 		for (s32 blockY = GRID_HEIGHT - 1; blockY >= 0; --blockY) {
 		
 			renderX = x + (blockX * BLOCK_SIZE);
-			renderY = y + (blockY * BLOCK_SIZE);
+			renderY = y + (blockY * BLOCK_SIZE) + _columnOffsets[blockX];
 
 			BlockBase* block = getBlockAt(blockX, blockY);
 
@@ -689,6 +714,13 @@ bool Grid::animate() {
 		}
 
 		if (_data[i] != NULL) _data[i]->animate();
+	}
+
+	for (s32 i = 0; i < GRID_WIDTH; ++i) {
+		if (_columnOffsets[i] > 0) {
+			--_columnOffsets[i];
+			result = true;
+		}
 	}
 
 	return result;

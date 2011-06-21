@@ -68,6 +68,7 @@ bool BlockBase::isConnectable() const {
 
 void BlockBase::fall() {
 	_isFalling = true;
+	_isLanding = false;
 }
 
 void BlockBase::land() {

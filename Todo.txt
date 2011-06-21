@@ -2,9 +2,6 @@ To do
 -----
 
  - Add all bitmaps for blocks.
- - When grey blocks land on a column that column needs to offset itself by n
-   vertical pixels.  Part of the animation process needs to be moving the row
-   back to its correct location.  Does the row bounce?
  - Sound effects.
  - Design layout of bottom screen.
  - Options screen:

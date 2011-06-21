@@ -19,6 +19,7 @@ public:
 	static const s32 CHAIN_LENGTH = 4;			/**< Minimum length for a chain of blocks to be removed. */
 	static const s32 BLOCK_SIZE = 16;			/**< Size of each block in the grid. */
 	static const s32 BLOCK_EXPLODE_SCORE = 10;	/**< Points for exploding a block. */
+	static const s32 GARBAGE_LAND_OFFSET = 5;	/**< Column pixel offset when a garbage block lands. */
 
 	/**
 	 * Constructor.
@@ -156,6 +157,7 @@ private:
 	BlockBase** _data;			/**< Grid of blocks. */
 	Point* _liveBlocks;			/**< Array of 2 Point objects that track the location of the live blocks. */
 	bool _hasLiveBlocks;		/**< True if there are any live blocks in the grid. */
+	s32* _columnOffsets;
 	
 	/**
 	 * Inserts the supplied block at the specified co-ordinates.  If a block
