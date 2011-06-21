@@ -11,7 +11,7 @@
 #include "blueblockbmp.h"
 #include "blueblockbottombmp.h"
 #include "blueblockbottomleftbmp.h"
-//#include "blueblockbottomleftrightbmp.h"
+#include "blueblockbottomleftrightbmp.h"
 #include "blueblockbottomrightbmp.h"
 #include "blueblockbounce1bmp.h"
 #include "blueblockbounce2bmp.h"
@@ -20,13 +20,13 @@
 #include "blueblockleftrightbmp.h"
 #include "blueblockrightbmp.h"
 #include "blueblocktopbmp.h"
-//#include "blueblocktopbottombmp.h"
+#include "blueblocktopbottombmp.h"
 #include "blueblocktopleftbmp.h"
 #include "blueblocktopleftbottombmp.h"
-//#include "blueblocktopleftrightbmp.h"
-//#include "blueblocktopleftrightbottombmp.h"
+#include "blueblocktopleftrightbmp.h"
+#include "blueblocktopleftrightbottombmp.h"
 #include "blueblocktoprightbmp.h"
-//#include "blueblocktoprightbottombmp.h"
+#include "blueblocktoprightbottombmp.h"
 
 #include "blockexplode1bmp.h"
 #include "blockexplode2bmp.h"
@@ -47,16 +47,16 @@ public:
 		_bitmaps[CONNECTION_NONE] = new BlueBlockBmp();
 		_bitmaps[CONNECTION_TOP] = new BlueBlockTopBmp();
 		_bitmaps[CONNECTION_BOTTOM] = new BlueBlockBottomBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM] = new BlueBlockBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM] = new BlueBlockTopBottomBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT] = new BlueBlockTopLeftBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_RIGHT] = new BlueBlockTopRightBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockTopLeftRightBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT] = new BlueBlockTopLeftBottomBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_RIGHT] = new BlueBlockBmp();
-		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_RIGHT] = new BlueBlockTopRightBottomBmp();
+		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockTopLeftRightBottomBmp();
 		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT] = new BlueBlockBottomLeftBmp();
 		_bitmaps[CONNECTION_BOTTOM | CONNECTION_RIGHT] = new BlueBlockBottomRightBmp();
-		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockBmp();
+		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockBottomLeftRightBmp();
 		_bitmaps[CONNECTION_LEFT] = new BlueBlockLeftBmp();
 		_bitmaps[CONNECTION_RIGHT] = new BlueBlockRightBmp();
 		_bitmaps[CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockLeftRightBmp();
