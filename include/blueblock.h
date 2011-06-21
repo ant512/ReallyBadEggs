@@ -10,15 +10,15 @@
 
 #include "blueblockbmp.h"
 #include "blueblockbottombmp.h"
-//#include "blueblockbottomleftbmp.h"
+#include "blueblockbottomleftbmp.h"
 //#include "blueblockbottomleftrightbmp.h"
 #include "blueblockbottomrightbmp.h"
-//#include "blueblockbounce1bmp.h"
-//#include "blueblockbounce2bmp.h"
+#include "blueblockbounce1bmp.h"
+#include "blueblockbounce2bmp.h"
 #include "blueblockexplodebmp.h"
 #include "blueblockleftbmp.h"
-//#include "blueblockleftrightbmp.h"
-//#include "blueblockrightbmp.h"
+#include "blueblockleftrightbmp.h"
+#include "blueblockrightbmp.h"
 #include "blueblocktopbmp.h"
 //#include "blueblocktopbottombmp.h"
 #include "blueblocktopleftbmp.h"
@@ -54,12 +54,12 @@ public:
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT] = new BlueBlockTopLeftBottomBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_RIGHT] = new BlueBlockBmp();
 		_bitmaps[CONNECTION_TOP | CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockBmp();
-		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT] = new BlueBlockBmp();
+		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT] = new BlueBlockBottomLeftBmp();
 		_bitmaps[CONNECTION_BOTTOM | CONNECTION_RIGHT] = new BlueBlockBottomRightBmp();
 		_bitmaps[CONNECTION_BOTTOM | CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockBmp();
 		_bitmaps[CONNECTION_LEFT] = new BlueBlockLeftBmp();
-		_bitmaps[CONNECTION_RIGHT] = new BlueBlockBmp();
-		_bitmaps[CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockBmp();
+		_bitmaps[CONNECTION_RIGHT] = new BlueBlockRightBmp();
+		_bitmaps[CONNECTION_LEFT | CONNECTION_RIGHT] = new BlueBlockLeftRightBmp();
 
 		_explodingAnim->addFrame(&_explodeBmp1, 0);
 		_explodingAnim->addFrame(&_explodeBmp2, 0);
@@ -67,6 +67,12 @@ public:
 		_explodingAnim->addFrame(&_explodeBmp4, 0);
 		_explodingAnim->addFrame(&_explodeBmp5, 0);
 		_explodingAnim->addFrame(&_explodeBmp6, 0);
+
+		_landingAnim->addFrame(&_bounceBmp1, 0);
+		_landingAnim->addFrame(&_bounceBmp2, 0);
+		_landingAnim->addFrame(&_bounceBmp1, 0);
+		_landingAnim->addFrame(&_bounceBmp3, 0);
+		_landingAnim->addFrame(&_bounceBmp1, 0);
 	};
 
 	/**
@@ -81,6 +87,10 @@ private:
 	BlockExplode3Bmp _explodeBmp4;		/**< Fourth explosion bitmap. */
 	BlockExplode4Bmp _explodeBmp5;		/**< Fifth explosion bitmap. */
 	BlockExplode5Bmp _explodeBmp6;		/**< Sixth explosion bitmap. */
+
+	BlueBlockBounce1Bmp _bounceBmp1;	/**< First block bounce bitmap. */
+	BlueBlockBounce2Bmp _bounceBmp2;	/**< Second block bounce bitmap. */
+	BlueBlockBmp _bounceBmp3;			/**< Third block bounce bitmap. */
 };
 
 #endif
