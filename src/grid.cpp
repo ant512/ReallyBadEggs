@@ -386,7 +386,7 @@ bool Grid::dropBlocks() {
 	for (s32 x = 0; x < GRID_WIDTH; ++x) {
 		BlockBase* block = getBlockAt(x, GRID_HEIGHT - 1);
 
-		if (block->isFalling()) {
+		if (block != NULL && block->isFalling()) {
 
 			// Shake the column
 			if (block->getColour() == GarbageBlock::COLOUR) {

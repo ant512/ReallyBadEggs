@@ -95,12 +95,12 @@ public:
 	 */
 	void flipBuffer();
 
+#endif
+
 	/**
 	 * Copies the front buffer to the back buffer.
 	 */
 	void buffer();
-
-#endif
 
 	/**
 	 * Get the colour of the pixel at the specified co-ordinates

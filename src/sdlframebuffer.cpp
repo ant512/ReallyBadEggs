@@ -192,6 +192,8 @@ Uint32 SDLFrameBuffer::getSDLPixel(int x, int y) {
 	}
 }
 
+void SDLFrameBuffer::buffer() { }
+
 #else
 
 // DS mode
