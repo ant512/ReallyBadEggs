@@ -153,14 +153,13 @@ public:
 
 private:
 
-	static const s32 BLOCK_EXPLODE_SCORE = 10;	/**< Points for exploding a block. */
-	static const s32 GARBAGE_LAND_OFFSET = 5;	/**< Column pixel offset when a garbage block lands. */
+	static const s32 BLOCK_EXPLODE_SCORE = 10;			/**< Points for exploding a block. */
+	static const s32 GARBAGE_LAND_OFFSET = 5;			/**< Column pixel offset when a garbage block lands. */
 
 	BlockBase** _data;			/**< Grid of blocks. */
 	Point* _liveBlocks;			/**< Array of 2 Point objects that track the location of the live blocks. */
 	bool _hasLiveBlocks;		/**< True if there are any live blocks in the grid. */
 	s32* _columnOffsets;		/**< Y Offset of all columns caused by dropping garbage blocks. */
-	u8* _damagedBlocks;
 	
 	/**
 	 * Inserts the supplied block at the specified co-ordinates.  If a block
