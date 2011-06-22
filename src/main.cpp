@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
 	
 	// Player 2
 	Grid* aiGrid = new Grid(0);
-	SmartAIController* aiController = new SmartAIController();
+	SmartAIController* aiController = new SmartAIController(false);
 	GridRunner aiRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, GridRunner::GAME_TYPE_TWO_PLAYER);
 
 	// We have to set the aiController's GridRunner after constructing the
