@@ -35,3 +35,4 @@ Presentation
  - High score screen.
  - Title screen.
  - Game over screen.
+ - ROM icon.
