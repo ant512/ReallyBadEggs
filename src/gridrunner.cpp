@@ -179,7 +179,7 @@ void GridRunner::land() {
 
 					// If we're in a sequence of chains, we add 6 blocks each
 					// sequence
-					garbage = CHAIN_SEQUENCE_GARBAGE;
+					garbage = CHAIN_SEQUENCE_GARBAGE_BONUS;
 
 					// Add any additional blocks on top of the standard
 					// chain length

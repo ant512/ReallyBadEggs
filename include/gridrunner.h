@@ -16,13 +16,13 @@
 class GridRunner {
 public:
 
-	static const s32 GAME_TYPE_B_START_CHAINS = 25;
-	static const s32 CHAIN_SEQUENCE_GARBAGE = 6;
-
+	/**
+	 * All types of game that can be played.
+	 */
 	enum GameType {
-		GAME_TYPE_TWO_PLAYER = 0,
-		GAME_TYPE_A = 1,
-		GAME_TYPE_B = 2
+		GAME_TYPE_TWO_PLAYER = 0,						/**< Player vs AI. */
+		GAME_TYPE_A = 1,								/**< Endless with advancing levels. */
+		GAME_TYPE_B = 2									/**< Get 25 chains to win. */
 	};
 
 	/**
@@ -34,6 +34,7 @@ public:
 	 * grid.
 	 * @param playerNumber The unique number of the player using this runner.
 	 * @param x The x co-ordinate to render at.
+	 * @param gameType The type of game to play.
 	 */
 	GridRunner(ControllerBase* controller,
 			   Grid* grid,
@@ -101,6 +102,8 @@ private:
 
 	static const s32 AUTO_DROP_TIME = 2;	/**< Frames between drops when blocks are automatically dropping. */
 	static const s32 LIVE_DROP_TIME = 40;	/**< Frames between forced drops of live blocks. */
+	static const s32 GAME_TYPE_B_START_CHAINS = 25;		/**< Number of chains to remove in game type B. */
+	static const s32 CHAIN_SEQUENCE_GARBAGE_BONUS = 6;	/**< Bonus garbage blocks added for each chain sequence. */
 
 	Grid* _grid;							/**< The grid the runner controls. */
 	GridRunnerState _state;					/**< The state of the state machine. */
@@ -118,9 +121,11 @@ private:
 
 	s32 _pendingGarbageCount;				/**< Number of incoming/outgoing garbage blocks.  Negative indicates
 												 outgoing; positive indicates incoming. */
-	s32 _outgoingGarbageCount;
+	s32 _outgoingGarbageCount;				/**< Outgoing garbage blocks that accumulate during chain
+												 sequences.  At the end of a sequence they are moved to the
+												 _pendingGarbageCount member. */
 
-	GameType _gameType;
+	GameType _gameType;						/**< The type of game being played. */
 
 	GameFont _font;							/**< Font used for rendering text. */
 
