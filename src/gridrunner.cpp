@@ -249,32 +249,30 @@ void GridRunner::live() {
 
 	if (_grid->hasLiveBlocks()) {
 
-		bool dropped = false;
-
-		// Drop the block to the next row if the timer has expired
+		// Work out how many more frames we need to wait until the blocks drop
+		// automatically
 		s32 timeToDrop = LIVE_DROP_TIME - (_level * 2);
 		if (timeToDrop < 0) timeToDrop = 0;
-
-		if (_timer >= timeToDrop) {
-			_timer = 0;
-			
-			// Only force blocks down when player is not doing it
-			_grid->dropLiveBlocks();
-
-			dropped = true;
-		}
 
 		// Process user input
 		if (_controller->left()) {
 			_grid->moveLiveBlocksLeft();
 		} else if (_controller->right()) {
 			_grid->moveLiveBlocksRight();
-		} else if (_controller->down() && (_timer % 2 == 0) && !dropped) {
-			_grid->dropLiveBlocks();
+		} else if (_controller->down() && (_timer % 2 == 0)) {
+
+			// Force blocks to drop
+			_timer = timeToDrop;
 		} else if (_controller->rotateClockwise()) {
 			_grid->rotateLiveBlocksClockwise();
 		} else if (_controller->rotateAntiClockwise()) {
 			_grid->rotateLiveBlocksAntiClockwise();
+		}
+
+		// Drop live blocks if the timer has expired
+		if (_timer >= timeToDrop) {
+			_timer = 0;
+			_grid->dropLiveBlocks();
 		}
 	} else {
 
