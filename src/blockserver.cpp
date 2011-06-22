@@ -3,6 +3,8 @@
 #include "blockserver.h"
 
 #include "blueblock.h"
+#include "greenblock.h"
+#include "orangeblock.h"
 #include "purpleblock.h"
 #include "redblock.h"
 #include "yellowblock.h"
@@ -63,9 +65,9 @@ BlockBase* BlockServer::newBlockFromType(BlockServer::BlockType type) const {
 		case BLOCK_BLUE:
 			return new BlueBlock();
 		case BLOCK_GREEN:
-			return new RedBlock();
+			return new GreenBlock();
 		case BLOCK_ORANGE:
-			return new RedBlock();
+			return new OrangeBlock();
 	}
 
 	// Included to silence compiler warning

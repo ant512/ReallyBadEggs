@@ -3,7 +3,6 @@ To do
 
 Engine
 
- - Additional block colours - orange and green.
  - Add all bitmaps for blocks.
  - Represent grey blocks waiting to fall into grid with boulders.  1 block =
    small boulder, 6 blocks = big boulder, 24 blocks = face boulder.
