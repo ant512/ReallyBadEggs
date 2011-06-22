@@ -7,11 +7,14 @@
 
 Grid::Grid(s32 startingHeight) {
 	_data = new BlockBase*[GRID_WIDTH * GRID_HEIGHT];
+	_damagedBlocks = new u8[GRID_WIDTH * GRID_HEIGHT];
+
 	_liveBlocks = new Point[2];
 	_hasLiveBlocks = false;
 
 	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
 		_data[i] = NULL;
+		_damagedBlocks[i] = 0;
 	}
 
 	// Add rows of garbage
@@ -35,6 +38,7 @@ Grid::Grid(s32 startingHeight) {
 Grid::~Grid() {
 	clear();
 	delete[] _data;
+	delete[] _damagedBlocks;
 	delete[] _liveBlocks;
 	delete[] _columnOffsets;
 }
@@ -46,6 +50,7 @@ void Grid::clear() {
 		if (_data[i] != NULL) {
 			delete _data[i];
 			_data[i] = NULL;
+			_damagedBlocks[i] = 0;
 		}
 	}
 
@@ -70,6 +75,7 @@ void Grid::setBlockAt(s32 x, s32 y, BlockBase* block) {
 	}
 
 	_data[index] = block;
+	_damagedBlocks[index] = 2;
 }
 
 void Grid::moveBlock(s32 srcX, s32 srcY, s32 destX, s32 destY) {
@@ -86,6 +92,9 @@ void Grid::moveBlock(s32 srcX, s32 srcY, s32 destX, s32 destY) {
 
 	_data[destIndex] = _data[srcIndex];
 	_data[srcIndex] = NULL;
+
+	_damagedBlocks[destIndex] = 2;
+	_damagedBlocks[srcIndex] = 2;
 }
 
 bool Grid::isValidCoordinate(s32 x, s32 y) const {
@@ -371,6 +380,7 @@ void Grid::dropLiveBlocks() {
 			}
 			
 			liveBlock->dropHalfBlock();
+			_damagedBlocks[_liveBlocks[i].x + (_liveBlocks[i].y * GRID_WIDTH)] = 2;
 		}
 	}
 }
@@ -417,6 +427,8 @@ bool Grid::dropBlocks() {
 				block->dropHalfBlock();
 				block->fall();
 
+				_damagedBlocks[x + (y * GRID_WIDTH)] = 2;
+
 				hasDropped = true;
 			} else if (block->isFalling()) {
 
@@ -442,6 +454,13 @@ void Grid::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 
 	for (s32 blockX = 0; blockX < GRID_WIDTH; ++blockX) {
 		for (s32 blockY = GRID_HEIGHT - 1; blockY >= 0; --blockY) {
+
+			s32 index = blockX + (blockY * GRID_WIDTH);
+
+			// Only render damaged blocks
+			if (_damagedBlocks[index] == 0) continue;
+
+			--_damagedBlocks[index];
 		
 			renderX = x + (blockX * BLOCK_SIZE);
 			renderY = y + (blockY * BLOCK_SIZE) + _columnOffsets[blockX];
@@ -708,10 +727,14 @@ bool Grid::animate() {
 			delete _data[i];
 			_data[i] = NULL;
 
+			_damagedBlocks[i] = 2;
+
 			result = true;
 		} else if (_data[i]->isExploding()) {
+			_damagedBlocks[i] = 2;
 			result = true;
 		} else if (_data[i]->isLanding()) {
+			_damagedBlocks[i] = 2;
 			result = true;
 		}
 
@@ -722,6 +745,11 @@ bool Grid::animate() {
 		if (_columnOffsets[i] > 0) {
 			--_columnOffsets[i];
 			result = true;
+
+			// Damage all blocks in the column
+			for (s32 y = 0; y < GRID_HEIGHT; ++i) {
+				_damagedBlocks[i + (y * GRID_HEIGHT)] = 2;
+			}
 		}
 	}
 
