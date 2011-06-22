@@ -43,7 +43,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	GreenBlock() : NormalBlock(woopsiRGB(31, 15, 0)) {
+	GreenBlock() : NormalBlock(woopsiRGB(0, 31, 0)) {
 		//_bitmaps[CONNECTION_NONE] = new GreenBlockBmp();
 		//_bitmaps[CONNECTION_TOP] = new GreenBlockTopBmp();
 		//_bitmaps[CONNECTION_BOTTOM] = new GreenBlockBottomBmp();
