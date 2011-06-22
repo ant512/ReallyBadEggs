@@ -158,7 +158,7 @@ private:
 	BlockBase** _data;			/**< Grid of blocks. */
 	Point* _liveBlocks;			/**< Array of 2 Point objects that track the location of the live blocks. */
 	bool _hasLiveBlocks;		/**< True if there are any live blocks in the grid. */
-	s32* _columnOffsets;
+	s32* _columnOffsets;		/**< Y Offset of all columns caused by dropping garbage blocks. */
 	
 	/**
 	 * Inserts the supplied block at the specified co-ordinates.  If a block
