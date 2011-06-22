@@ -71,9 +71,11 @@ public:
 
 	/**
 	 * Increase the amount of incoming garbage blocks by the specified amount.
+	 * Garbage can only be added when the grid runner is in its "live" state.
 	 * @param count The number of incoming garbage blocks to increase by.
+	 * @return True if the garbage was added; false if not.
 	 */
-	void addIncomingGarbage(s32 count);
+	bool addIncomingGarbage(s32 count);
 
 	/**
 	 * Resets the number of outgoing garbage blocks to 0.
@@ -85,8 +87,6 @@ public:
 	 * @return The grid.
 	 */
 	const Grid* getGrid() const;
-
-	bool canReceiveGarbage() const;
 
 private:
 
@@ -167,6 +167,15 @@ private:
 	void drop();
 	void land();
 	void live();
+
+	/**
+	 * Check if the grid can receive garbage.  Grid can only receive garbage
+	 * whilst in the live state.  If garbage is received at other times it is
+	 * possible that the player will forever be stuck watching garbage dropping
+	 * down the screen.
+	 * @return True if the grid can receive garbage.
+	 */
+	bool canReceiveGarbage() const;
 };
 
 #endif

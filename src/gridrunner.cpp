@@ -342,10 +342,15 @@ const Grid* GridRunner::getGrid() const {
 	return _grid;
 }
 
-void GridRunner::addIncomingGarbage(s32 count) {
+bool GridRunner::addIncomingGarbage(s32 count) {
+	if (!canReceiveGarbage()) return false;
+	if (count < 1) return false;
+
 	_pendingGarbageCount += count;
 
 	renderIncomingGarbage(_x, 40);
+
+	return true;
 }
 
 void GridRunner::clearOutgoingGarbageCount() {

@@ -83,13 +83,11 @@ int main(int argc, char* argv[]) {
 			runner.iterate();
 			aiRunner.iterate();
 
-			if (aiRunner.getOutgoingGarbageCount() > 0 && runner.canReceiveGarbage()) {
-				runner.addIncomingGarbage(aiRunner.getOutgoingGarbageCount());
+			if (runner.addIncomingGarbage(aiRunner.getOutgoingGarbageCount())) {
 				aiRunner.clearOutgoingGarbageCount();
 			}
 
-			if (runner.getOutgoingGarbageCount() > 0 && aiRunner.canReceiveGarbage()) {
-				aiRunner.addIncomingGarbage(runner.getOutgoingGarbageCount());
+			if (aiRunner.addIncomingGarbage(runner.getOutgoingGarbageCount())) {
 				runner.clearOutgoingGarbageCount();
 			}
 		}

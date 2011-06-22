@@ -1,8 +1,24 @@
 To do
 -----
 
+Engine
+
+ - Additional block colours - orange and green.
  - Add all bitmaps for blocks.
+ - Represent grey blocks waiting to fall into grid with boulders.  1 block =
+   small boulder, 6 blocks = big boulder, 24 blocks = face boulder.
+ - Game over condition - cannot place new live blocks.
+ - Holding down to drop blocks when grid auto drop is faster than manual drop
+   slows down the blocks.  Either:
+    - Fix this so that if auto drop is faster, manual is ignored;
+    - Make manual drop faster by default.
+ - Remove defensive garbage creation (ie. remove incoming before increasing
+   outgoing) or make it an option?
+
  - Sound effects.
+
+Presentation
+
  - Design layout of bottom screen.
  - Options screen:
    - Single player, Tetris A style;
@@ -18,13 +34,4 @@ To do
    - Number of block colours (4-6).
  - High score screen.
  - Title screen.
- - Additional block colours - orange and green.
- - Way to represent grey blocks waiting to fall into grid.
- - Holding down to drop blocks when grid auto drop is faster than manual drop
-   slows down the blocks.  Either:
-    - Fix this so that if auto drop is faster, manual is ignored;
-    - Make manual drop faster by default.
- - Game over condition - cannot place new live blocks.
  - Game over screen.
- - Remove defensive garbage creation (ie. remove incoming before increasing
-   outgoing) or make it an option?
