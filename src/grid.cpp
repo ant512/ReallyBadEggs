@@ -7,6 +7,7 @@
 
 Grid::Grid(s32 startingHeight) {
 	_data = new BlockBase*[GRID_WIDTH * GRID_HEIGHT];
+
 	_liveBlocks = new Point[2];
 	_hasLiveBlocks = false;
 
@@ -707,7 +708,6 @@ bool Grid::animate() {
 		if (_data[i]->isExploded()) {
 			delete _data[i];
 			_data[i] = NULL;
-
 			result = true;
 		} else if (_data[i]->isExploding()) {
 			result = true;

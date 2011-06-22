@@ -5,7 +5,6 @@
 #include <woopsiarray.h>
 #include <woopsistring.h>
 
-#include "aicontroller.h"
 #include "smartaicontroller.h"
 #include "blockserver.h"
 #include "gamefont.h"
