@@ -377,3 +377,15 @@ bool GridRunner::canReceiveGarbage() const {
 bool GridRunner::isDead() const {
 	return _state == GRID_RUNNER_STATE_DEAD;
 }
+
+s32 GridRunner::getScore() const {
+	return _score;
+}
+
+s32 GridRunner::getChains() const {
+	return _chains;
+}
+
+s32 GridRunner::getLevel() const {
+	return _level;
+}

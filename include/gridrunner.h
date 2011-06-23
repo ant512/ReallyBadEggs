@@ -94,6 +94,24 @@ public:
 	 */
 	bool isDead() const;
 
+	/**
+	 * Get the current score.
+	 * @return The current score.
+	 */
+	s32 getScore() const;
+
+	/**
+	 * Get the number of chains created.
+	 * @return The number of chains created.
+	 */
+	s32 getChains() const;
+
+	/**
+	 * Get the current level.
+	 * @return The current level.
+	 */
+	s32 getLevel() const;
+
 private:
 
 	/**
