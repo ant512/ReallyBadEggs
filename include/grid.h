@@ -147,7 +147,7 @@ public:
 	 * Populates the supplied Point references with the co-ordinates of the live
 	 * blocks.
 	 * @param liveBlock1 The first live block Point reference.
-	 * @param liveBlock1 The second live block Point reference.
+	 * @param liveBlock2 The second live block Point reference.
 	 */
 	void getLiveBlockPoints(Point& liveBlock1, Point& liveBlock2) const;
 
