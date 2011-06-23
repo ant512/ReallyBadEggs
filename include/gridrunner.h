@@ -88,6 +88,12 @@ public:
 	 */
 	const Grid* getGrid() const;
 
+	/**
+	 * Check if the game is over for this grid runner.
+	 * @return True if the game is over.
+	 */
+	bool isDead() const;
+
 private:
 
 	/**
@@ -97,7 +103,9 @@ private:
 		GRID_RUNNER_STATE_DROP = 0,			/**< Blocks are dropping automatically. */
 		GRID_RUNNER_STATE_LIVE = 1,			/**< Live, user-controlled blocks are in play. */
 		GRID_RUNNER_STATE_LANDING = 2,		/**< Blocks are running their landing animations. */
-		GRID_RUNNER_STATE_EXPLODING = 3		/**< Blocks are running their exploding animations. */
+		GRID_RUNNER_STATE_EXPLODING = 3,	/**< Blocks are running their exploding animations. */
+		GRID_RUNNER_STATE_DEAD = 4,			/**< Game is over; player has lost. */
+		GRID_RUNNER_STATE_WON = 5			/**< Game is over; player has won. */
 	};
 
 	static const s32 AUTO_DROP_TIME = 2;	/**< Frames between drops when blocks are automatically dropping. */

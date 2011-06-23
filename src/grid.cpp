@@ -661,10 +661,16 @@ void Grid::rotateLiveBlocksAntiClockwise() {
 	}
 }
 
-void Grid::addLiveBlocks(BlockBase* block1, BlockBase* block2) {
+bool Grid::addLiveBlocks(BlockBase* block1, BlockBase* block2) {
 
-	// Do not add more live blocks if we have blocks already
-	if (_hasLiveBlocks) return;
+	// Do not add more live blocks if we have blocks already.  However, return
+	// true because we don't want to treat this as a special case; as far as
+	// any other code is concerned it did its job - live blocks are in play
+	if (_hasLiveBlocks) return true;
+
+	// Cannot add live blocks if the grid positions already contain blocks
+	if (getBlockAt(2, 0) != NULL) return false;
+	if (getBlockAt(3, 0) != NULL) return false;
 
 	// Live blocks always appear at the same co-ordinates
 	setBlockAt(2, 0, block1);
@@ -677,6 +683,8 @@ void Grid::addLiveBlocks(BlockBase* block1, BlockBase* block2) {
 	_liveBlocks[1].y = 0;
 
 	_hasLiveBlocks = true;
+
+	return true;
 }
 
 void Grid::connectBlocks() {

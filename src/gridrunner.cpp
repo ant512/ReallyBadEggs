@@ -223,23 +223,28 @@ void GridRunner::land() {
 
 		// Nothing exploded, so we can put a new live block into
 		// the grid
-		_grid->addLiveBlocks(_nextBlocks[0], _nextBlocks[1]);
+		if (!_grid->addLiveBlocks(_nextBlocks[0], _nextBlocks[1])) {
 
-		// Fetch the next blocks from the block server and remember
-		// them
-		_blockServer->getNextBlocks(_playerNumber, &_nextBlocks[0], &_nextBlocks[1]);
+			// Cannot add more blocks - game is over
+			_state = GRID_RUNNER_STATE_DEAD;
+		} else {
 
-		renderNextBlocks(_x + ((Grid::GRID_WIDTH - 2) * Grid::BLOCK_SIZE / 2), 0);
+			// Fetch the next blocks from the block server and remember
+			// them
+			_blockServer->getNextBlocks(_playerNumber, &_nextBlocks[0], &_nextBlocks[1]);
 
-		_scoreMultiplier = 0;
+			renderNextBlocks(_x + ((Grid::GRID_WIDTH - 2) * Grid::BLOCK_SIZE / 2), 0);
 
-		// Queue up outgoing blocks for the other player
-		if (_outgoingGarbageCount > 0) {
-			_pendingGarbageCount -= _outgoingGarbageCount;
-			_outgoingGarbageCount = 0;
+			_scoreMultiplier = 0;
+
+			// Queue up outgoing blocks for the other player
+			if (_outgoingGarbageCount > 0) {
+				_pendingGarbageCount -= _outgoingGarbageCount;
+				_outgoingGarbageCount = 0;
+			}
+
+			_state = GRID_RUNNER_STATE_LIVE;
 		}
-
-		_state = GRID_RUNNER_STATE_LIVE;
 	}
 }
 
@@ -323,6 +328,16 @@ void GridRunner::iterate() {
 		case GRID_RUNNER_STATE_LIVE:
 			live();
 			break;	
+
+		case GRID_RUNNER_STATE_DEAD:
+			
+			// TODO: Show loser message here
+			break;
+		
+		case GRID_RUNNER_STATE_WON:
+
+			// TODO: Show winner message here
+			break;
 	}
 }
 
@@ -357,4 +372,8 @@ void GridRunner::clearOutgoingGarbageCount() {
 
 bool GridRunner::canReceiveGarbage() const {
 	return _state == GRID_RUNNER_STATE_LIVE;
+}
+
+bool GridRunner::isDead() const {
+	return _state == GRID_RUNNER_STATE_DEAD;
 }

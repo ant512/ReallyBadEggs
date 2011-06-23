@@ -104,7 +104,7 @@ public:
 	/**
 	 * Adds the next live blocks into the grid.
 	 */
-	void addLiveBlocks(BlockBase* block1, BlockBase* block2);
+	bool addLiveBlocks(BlockBase* block1, BlockBase* block2);
 
 	/**
 	 * Establishes connections between blocks.

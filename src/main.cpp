@@ -82,6 +82,14 @@ int main(int argc, char* argv[]) {
 			runner.iterate();
 			aiRunner.iterate();
 
+			if (runner.isDead()) {
+				// Game over, man!  Game over!
+			}
+
+			if (aiRunner.isDead()) {
+				// Ditto
+			}
+
 			if (runner.addIncomingGarbage(aiRunner.getOutgoingGarbageCount())) {
 				aiRunner.clearOutgoingGarbageCount();
 			}
