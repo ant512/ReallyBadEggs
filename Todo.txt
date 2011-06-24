@@ -6,10 +6,6 @@ Engine
  - Add all bitmaps for blocks.
  - Represent grey blocks waiting to fall into grid with boulders.  1 block =
    small boulder, 6 blocks = big boulder, 24 blocks = face boulder.
- - Holding down to drop blocks when grid auto drop is faster than manual drop
-   slows down the blocks.  Either:
-    - Fix this so that if auto drop is faster, manual is ignored;
-    - Make manual drop faster by default.
  - Remove defensive garbage creation (ie. remove incoming before increasing
    outgoing) or make it an option?
  - When game is over:

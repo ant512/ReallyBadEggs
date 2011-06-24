@@ -127,9 +127,11 @@ private:
 	};
 
 	static const s32 AUTO_DROP_TIME = 2;	/**< Frames between drops when blocks are automatically dropping. */
-	static const s32 LIVE_DROP_TIME = 40;	/**< Frames between forced drops of live blocks. */
 	static const s32 GAME_TYPE_B_START_CHAINS = 25;		/**< Number of chains to remove in game type B. */
 	static const s32 CHAIN_SEQUENCE_GARBAGE_BONUS = 6;	/**< Bonus garbage blocks added for each chain sequence. */
+
+	static const s32 LEVEL_SPEED_COUNT = 20;			/**< Number of items in the drop speed array. */
+	static const s32 LEVEL_SPEEDS[LEVEL_SPEED_COUNT];	/**< Array of auto drop speeds for each level. */
 
 	Grid* _grid;							/**< The grid the runner controls. */
 	GridRunnerState _state;					/**< The state of the state machine. */

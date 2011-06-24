@@ -3,6 +3,11 @@
 #include "gridrunner.h"
 #include "hardware.h"
 
+// Hard-coded lookup list for level speeds.  The speed increase between each
+// levels 0 to 10 is larger than the increase between levels 11 to 19 as the
+// increase becomes more significant as the wait period gets shorter
+const s32 GridRunner::LEVEL_SPEEDS[20] = { 30, 28, 26, 24, 22, 20, 18, 16, 14, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+
 GridRunner::GridRunner(ControllerBase* controller,
 					   Grid* grid,
 					   BlockServer* blockServer,
@@ -20,8 +25,8 @@ GridRunner::GridRunner(ControllerBase* controller,
 	_gameType = gameType;
 
 	_score = 0;
-	_level = 0;
-	_chains = _gameType == GAME_TYPE_B ? GAME_TYPE_B_START_CHAINS : 0;
+	_level = 21;
+	_chains = 210;//_gameType == GAME_TYPE_B ? GAME_TYPE_B_START_CHAINS : 0;
 	_scoreMultiplier = 0;
 	_outgoingGarbageCount = 0;
 	_pendingGarbageCount = 0;
@@ -254,10 +259,9 @@ void GridRunner::live() {
 
 	if (_grid->hasLiveBlocks()) {
 
-		// Work out how many more frames we need to wait until the blocks drop
+		// Work out how many frames we need to wait until the blocks drop
 		// automatically
-		s32 timeToDrop = LIVE_DROP_TIME - (_level * 2);
-		if (timeToDrop < 0) timeToDrop = 0;
+		s32 timeToDrop = LEVEL_SPEEDS[_level < 20 ? _level : 19];
 
 		// Process user input
 		if (_controller->left()) {
