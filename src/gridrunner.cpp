@@ -25,8 +25,8 @@ GridRunner::GridRunner(ControllerBase* controller,
 	_gameType = gameType;
 
 	_score = 0;
-	_level = 21;
-	_chains = 210;//_gameType == GAME_TYPE_B ? GAME_TYPE_B_START_CHAINS : 0;
+	_level = 0;
+	_chains = _gameType == GAME_TYPE_B ? GAME_TYPE_B_START_CHAINS : 0;
 	_scoreMultiplier = 0;
 	_outgoingGarbageCount = 0;
 	_pendingGarbageCount = 0;
