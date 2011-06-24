@@ -103,15 +103,9 @@ void GridRunner::renderOutgoingGarbage(s32 x, s32 y) {
 }
 
 void GridRunner::renderIncomingGarbage(s32 x, s32 y) {
+
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
-	WoopsiGfx::WoopsiString str;
-	str.format("%02d", _incomingGarbageCount);
-
-	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
-	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
-
-	// TODO: Replace the above with bitmaps
 	s32 garbage = _incomingGarbageCount;
 	
 	s32 faceBoulders = garbage / GARBAGE_FACE_BOULDER_VALUE;
@@ -120,14 +114,30 @@ void GridRunner::renderIncomingGarbage(s32 x, s32 y) {
 	s32 largeBoulders = _incomingGarbageCount / GARBAGE_LARGE_BOULDER_VALUE;
 	garbage -= largeBoulders * GARBAGE_LARGE_BOULDER_VALUE;
 
-	//s32 bmpX = x;
+	s32 bmpY = y;
+
+	// TODO: Erase old boulders
+	
 	// Draw face boulders
-	// bmpX += height of face boulder * faceBoulders
+	for (s32 i = 0; i < faceBoulders; ++i) {
+		gfx->drawFilledRect(x, bmpY, 20, 20, woopsiRGB(31, 0, 0));
+
+		bmpY += 20;
+	}
 
 	// Draw large boulders
-	// bmpX += height of large boulder * largeBoulders
+	for (s32 i = 0; i < largeBoulders; ++i) {
+		gfx->drawFilledRect(x, bmpY, 10, 10, woopsiRGB(0, 31, 0));
+
+		bmpY += 10;
+	}
 
 	// Draw small boulders
+	for (s32 i = 0; i < garbage; ++i) {
+		gfx->drawFilledRect(x, bmpY, 5, 5, woopsiRGB(0, 0, 31));
+
+		bmpY += 5;
+	}
 }
 
 void GridRunner::renderNextBlocks(s32 x, s32 y) const {

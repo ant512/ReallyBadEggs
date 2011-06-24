@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
 	s32 runnerHeight = Grid::GRID_HEIGHT * Grid::BLOCK_SIZE;
 	s32 startLevel = 0;
 	s32 startHeight = 0;
-	s32 smartAI = false;
+	s32 smartAI = true;
 	GridRunner::GameType gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
 	GameState state = GAME_STATE_ACTIVE;
 
