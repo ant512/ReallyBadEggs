@@ -442,9 +442,11 @@ void Grid::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 	s32 renderY = 0;
 
 	for (s32 blockX = 0; blockX < GRID_WIDTH; ++blockX) {
+
+		renderX = x + (blockX * BLOCK_SIZE);
+
 		for (s32 blockY = GRID_HEIGHT - 1; blockY >= 0; --blockY) {
-		
-			renderX = x + (blockX * BLOCK_SIZE);
+			
 			renderY = y + (blockY * BLOCK_SIZE) + _columnOffsets[blockX];
 
 			BlockBase* block = getBlockAt(blockX, blockY);
