@@ -14,10 +14,47 @@
 #include "playercontroller.h"
 #include "twoplayerbgbmp.h"
 
+enum GameState {
+	GAME_STATE_ACTIVE = 0,
+	GAME_STATE_PAUSED = 1,
+	GAME_STATE_GAME_OVER = 2
+};
+
+void showText(s32 x, s32 y, s32 width, s32 height, const WoopsiGfx::WoopsiString& text) {
+
+	WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
+	gfx->drawFilledRect(x, y, width, height, woopsiRGB(0, 0, 0));
+
+	GameFont font;
+
+	s32 textX = (width - font.getStringWidth(text)) / 2;
+	s32 textY = (height - font.getHeight()) / 2;
+
+	gfx->drawText(x + textX, textY, &font, text, 0, text.getLength(), woopsiRGB(31, 31, 0));
+
+	Hardware::getTopBuffer()->buffer();
+}
+
+void showPauseScreen(s32 x1, s32 x2, s32 y, s32 width, s32 height) {
+	showText(x1, y, width, height, "Paused");
+	showText(x2, y, width, height, "Paused");
+}
+
 int main(int argc, char* argv[]) {
 
 	Hardware::init();
 
+	s32 runnerX = Grid::BLOCK_SIZE;
+	s32 aiRunnerX = SCREEN_WIDTH - (Grid::GRID_WIDTH * Grid::BLOCK_SIZE) - Grid::BLOCK_SIZE;
+	s32 runnerWidth = Grid::GRID_WIDTH * Grid::BLOCK_SIZE;
+	s32 runnerHeight = Grid::GRID_HEIGHT * Grid::BLOCK_SIZE;
+	s32 startLevel = 0;
+	s32 startHeight = 0;
+	s32 smartAI = false;
+	GridRunner::GameType gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
+	GameState state = GAME_STATE_ACTIVE;
+
+	// Set up background graphic
 	TwoPlayerBgBmp background;
 	WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 	gfx->drawBitmap(0, 0, background.getWidth(), background.getHeight(), &background, 0, 0);
@@ -25,78 +62,69 @@ int main(int argc, char* argv[]) {
 
 	BlockServer* blockServer = new BlockServer(2, 4);
 
-	s32 runnerX = Grid::BLOCK_SIZE;
-	s32 aiRunnerX = SCREEN_WIDTH - (Grid::GRID_WIDTH * Grid::BLOCK_SIZE) - Grid::BLOCK_SIZE;
-	s32 runnerWidth = Grid::GRID_WIDTH * Grid::BLOCK_SIZE;
-	s32 runnerHeight = Grid::GRID_HEIGHT * Grid::BLOCK_SIZE;
-
 	// Player 1
-	Grid* grid = new Grid(0);
+	Grid* grid = new Grid(startHeight);
 	PlayerController* controller = new PlayerController();
-	GridRunner runner(controller, grid, blockServer, 0, runnerX, GridRunner::GAME_TYPE_TWO_PLAYER, 0);
+	GridRunner runner(controller, grid, blockServer, 0, runnerX, gameType, startLevel);
 	
 	// Player 2
-	Grid* aiGrid = new Grid(0);
-	SmartAIController* aiController = new SmartAIController(false);
-	GridRunner aiRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, GridRunner::GAME_TYPE_TWO_PLAYER, 0);
+	Grid* aiGrid = new Grid(startHeight);
+	SmartAIController* aiController = new SmartAIController(smartAI);
+	GridRunner aiRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, startLevel);
 
 	// We have to set the aiController's GridRunner after constructing the
 	// runner because the runner needs a pointer to the controller and the
 	// controller needs a pointer to the runner - argh
 	aiController->setGridRunner(&aiRunner);
 
+	const Pad& pad = Hardware::getPad();
+
 	while (1) {
+		switch (state) {
+			case GAME_STATE_ACTIVE:
 
-		// Check for pause mode
-		const Pad& pad = Hardware::getPad();
+				// Standard mode
+				runner.iterate();
+				aiRunner.iterate();
 
-		if (pad.isStartNewPress()) {
+				if (runner.isDead() && !aiRunner.isDead()) {
+					showText(runnerX, 0, runnerWidth, runnerHeight, "Loser");
+					showText(aiRunnerX, 0, runnerWidth, runnerHeight, "Winner");
+					state = GAME_STATE_GAME_OVER;
+				} else if (aiRunner.isDead() && !runner.isDead()) {
+					showText(runnerX, 0, runnerWidth, runnerHeight, "Winner");
+					showText(aiRunnerX, 0, runnerWidth, runnerHeight, "Loser");
+					state = GAME_STATE_GAME_OVER;
+				} else if (aiRunner.isDead() && runner.isDead()) {
+					showText(runnerX, 0, runnerWidth, runnerHeight, "Draw");
+					showText(aiRunnerX, 0, runnerWidth, runnerHeight, "Draw");
+					state = GAME_STATE_GAME_OVER;
+				}
 
-			// Pause mode
-			WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
-			gfx->drawFilledRect(runnerX, 0, runnerWidth, runnerHeight, woopsiRGB(0, 0, 0));
-			gfx->drawFilledRect(aiRunnerX, 0, runnerWidth, runnerHeight, woopsiRGB(0, 0, 0));
+				if (runner.addIncomingGarbage(aiRunner.getOutgoingGarbageCount())) {
+					aiRunner.clearOutgoingGarbageCount();
+				}
 
-			WoopsiGfx::WoopsiString str("Paused");
-			GameFont font;
+				if (aiRunner.addIncomingGarbage(runner.getOutgoingGarbageCount())) {
+					runner.clearOutgoingGarbageCount();
+				}
 
-			s32 textX = (runnerWidth - font.getStringWidth(str)) / 2;
-			s32 textY = (runnerHeight - font.getHeight()) / 2;
+				if (pad.isStartNewPress()) {
+					showPauseScreen(runnerX, aiRunnerX, 0, runnerWidth, runnerHeight);
+					state = GAME_STATE_PAUSED;
+				}
 
-			gfx->drawText(runnerX + textX, textY, &font, str, 0, str.getLength(), woopsiRGB(31, 31, 0));
-			gfx->drawText(aiRunnerX + textX, textY, &font, str, 0, str.getLength(), woopsiRGB(31, 31, 0));
+				break;
+			
+			case GAME_STATE_PAUSED:
+				if (pad.isStartNewPress()) {
+					state = GAME_STATE_ACTIVE;
+				}
+				break;
 
-			Hardware::getTopBuffer()->buffer();
-
-			// Need to wait for another vblank so that the newpress state of the
-			// Start button is cleared
-			Hardware::waitForVBlank();
-
-			while (!pad.isStartNewPress()) {
-				Hardware::waitForVBlank();
-			}
-
-		} else {
-
-			// Standard mode
-			runner.iterate();
-			aiRunner.iterate();
-
-			if (runner.isDead()) {
-				// Game over, man!  Game over!
-			}
-
-			if (aiRunner.isDead()) {
-				// Ditto
-			}
-
-			if (runner.addIncomingGarbage(aiRunner.getOutgoingGarbageCount())) {
-				aiRunner.clearOutgoingGarbageCount();
-			}
-
-			if (aiRunner.addIncomingGarbage(runner.getOutgoingGarbageCount())) {
-				runner.clearOutgoingGarbageCount();
-			}
+			case GAME_STATE_GAME_OVER:
+				// TODO: Check for start/A/B button and return to options screen
+				break;
 		}
 
 		Hardware::waitForVBlank();
