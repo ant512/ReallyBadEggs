@@ -4,9 +4,8 @@ To do
 Engine
 
  - Add all bitmaps for blocks.
- - Represent grey blocks waiting to fall into grid with boulders.  1 block =
-   small boulder, 6 blocks = big boulder, 24 blocks = face boulder.  Show on
-   bottom screen.
+ - Use bitmaps for incoming garbage display instead of rects and erase old
+   display when display is updated.
  - Replace winner/loser text with bitmaps.
  - Sound effects.
 
