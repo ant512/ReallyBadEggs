@@ -6,8 +6,6 @@ Engine
  - Add all bitmaps for blocks.
  - Represent grey blocks waiting to fall into grid with boulders.  1 block =
    small boulder, 6 blocks = big boulder, 24 blocks = face boulder.
- - Remove defensive garbage creation (ie. remove incoming before increasing
-   outgoing) or make it an option?
  - When game is over:
    - Blocks should drop off bottom of dead player's screen?
    - Show winner/loser text.

@@ -149,11 +149,11 @@ private:
 	s32 _chains;							/**< Number of chains exploded. */
 	s32 _scoreMultiplier;					/**< Increases when multiple chains are exploded in one move. */
 
-	s32 _pendingGarbageCount;				/**< Number of incoming/outgoing garbage blocks.  Negative indicates
-												 outgoing; positive indicates incoming. */
-	s32 _outgoingGarbageCount;				/**< Outgoing garbage blocks that accumulate during chain
+	s32 _accumulatingGarbageCount;			/**< Outgoing garbage blocks that accumulate during chain
 												 sequences.  At the end of a sequence they are moved to the
-												 _pendingGarbageCount member. */
+												 _outgoinggGarbageCount member. */
+	s32 _outgoingGarbageCount;				/**< Number of garbage blocks to send to the other player. */
+	s32 _incomingGarbageCount;				/**< Number of garbage blocks sent from the other player. */
 
 	GameType _gameType;						/**< The type of game being played. */
 

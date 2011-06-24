@@ -30,7 +30,8 @@ GridRunner::GridRunner(ControllerBase* controller,
 	_chains = _gameType == GAME_TYPE_B ? GAME_TYPE_B_START_CHAINS : 0;
 	_scoreMultiplier = 0;
 	_outgoingGarbageCount = 0;
-	_pendingGarbageCount = 0;
+	_incomingGarbageCount = 0;
+	_accumulatingGarbageCount = 0;
 
 	_nextBlocks = new BlockBase*[2];
 
@@ -105,7 +106,7 @@ void GridRunner::renderIncomingGarbage(s32 x, s32 y) {
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
 	WoopsiGfx::WoopsiString str;
-	str.format("%02d", _pendingGarbageCount);
+	str.format("%02d", _incomingGarbageCount);
 
 	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
 	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
@@ -192,7 +193,7 @@ void GridRunner::land() {
 					garbage += blocks - Grid::CHAIN_LENGTH;
 				}
 
-				_outgoingGarbageCount += garbage;
+				_accumulatingGarbageCount += garbage;
 				break;
 		}
 
@@ -203,28 +204,21 @@ void GridRunner::land() {
 		// We need to run the explosion animations next
 		_state = GRID_RUNNER_STATE_EXPLODING;
 
-	} else if (_pendingGarbageCount > 0) {
+	} else if (_incomingGarbageCount > 0) {
 
 		// Add any incoming garbage blocks
-		if (_outgoingGarbageCount > 0) {
-			_pendingGarbageCount -= _outgoingGarbageCount;
+		if (_grid->addGarbage(_incomingGarbageCount)) {
 
-			if (_pendingGarbageCount < 0) {
+			// Switch back to the drop state
+			_state = GRID_RUNNER_STATE_DROP;
+		} else {
 
-				_outgoingGarbageCount = -_pendingGarbageCount;
-				_pendingGarbageCount = 0;
-			} else {
-				_outgoingGarbageCount = 0;
-			}
+			// Cannot add all garbage blocks, which means we're dead
+			_state = GRID_RUNNER_STATE_DEAD;
 		}
 
-		_grid->addGarbage(_pendingGarbageCount);
-		_pendingGarbageCount = 0;
-
+		_incomingGarbageCount = 0;
 		renderIncomingGarbage(_x, 40);
-
-		// Switch back to the drop state
-		_state = GRID_RUNNER_STATE_DROP;
 	} else {
 
 		// Nothing exploded, so we can put a new live block into
@@ -244,10 +238,8 @@ void GridRunner::land() {
 			_scoreMultiplier = 0;
 
 			// Queue up outgoing blocks for the other player
-			if (_outgoingGarbageCount > 0) {
-				_pendingGarbageCount -= _outgoingGarbageCount;
-				_outgoingGarbageCount = 0;
-			}
+			_outgoingGarbageCount += _accumulatingGarbageCount;
+			_accumulatingGarbageCount = 0;
 
 			_state = GRID_RUNNER_STATE_LIVE;
 		}
@@ -347,13 +339,11 @@ void GridRunner::iterate() {
 }
 
 s32 GridRunner::getOutgoingGarbageCount() const {
-	if (_pendingGarbageCount > 0) return 0;
-	return 0 - _pendingGarbageCount;
+	return _outgoingGarbageCount;
 }
 
 s32 GridRunner::getIncomingGarbageCount() const {
-	if (_pendingGarbageCount < 0) return 0;
-	return _pendingGarbageCount;
+	return _incomingGarbageCount;
 }
 
 const Grid* GridRunner::getGrid() const {
@@ -364,7 +354,7 @@ bool GridRunner::addIncomingGarbage(s32 count) {
 	if (!canReceiveGarbage()) return false;
 	if (count < 1) return false;
 
-	_pendingGarbageCount += count;
+	_incomingGarbageCount += count;
 
 	renderIncomingGarbage(_x, 40);
 
@@ -372,7 +362,7 @@ bool GridRunner::addIncomingGarbage(s32 count) {
 }
 
 void GridRunner::clearOutgoingGarbageCount() {
-	if (_pendingGarbageCount < 0) _pendingGarbageCount = 0;
+	_outgoingGarbageCount = 0;
 }
 
 bool GridRunner::canReceiveGarbage() const {
