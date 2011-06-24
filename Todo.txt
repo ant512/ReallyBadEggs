@@ -8,12 +8,20 @@ Engine
    small boulder, 6 blocks = big boulder, 24 blocks = face boulder.  Show on
    bottom screen.
  - Replace winner/loser text with bitmaps.
-
  - Sound effects.
 
 Presentation
 
- - Design layout of bottom screen.
+ - Design layout of bottom screen:
+   - Game logo;
+   - Simian Zombie logo;
+   - Stats boxes for both players:
+     - Incoming garbage;
+     - Next block;
+     - Score;
+     - Level;
+     - Chains.
+   - High score for current game type;
  - Options screen:
    - Single player, Tetris A style;
    - Single player, Tetris B style:
@@ -26,7 +34,7 @@ Presentation
    - Enable/disable level increases (enables endless mode as drop speed is
      static);
    - Number of block colours (4-6).
- - High score screen.
+ - High score screen (or several screens) giving top scores for each game type.
  - Title screen.
  - Game over screen.
  - ROM icon.
