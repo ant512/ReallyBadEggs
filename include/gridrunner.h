@@ -124,13 +124,14 @@ private:
 		GRID_RUNNER_STATE_LIVE = 1,			/**< Live, user-controlled blocks are in play. */
 		GRID_RUNNER_STATE_LANDING = 2,		/**< Blocks are running their landing animations. */
 		GRID_RUNNER_STATE_EXPLODING = 3,	/**< Blocks are running their exploding animations. */
-		GRID_RUNNER_STATE_DEAD = 4,			/**< Game is over; player has lost. */
-		GRID_RUNNER_STATE_WON = 5			/**< Game is over; player has won. */
+		GRID_RUNNER_STATE_DEAD = 4,			/**< Game is over. */
 	};
 
 	static const s32 AUTO_DROP_TIME = 2;	/**< Frames between drops when blocks are automatically dropping. */
 	static const s32 GAME_TYPE_B_START_CHAINS = 25;		/**< Number of chains to remove in game type B. */
 	static const s32 CHAIN_SEQUENCE_GARBAGE_BONUS = 6;	/**< Bonus garbage blocks added for each chain sequence. */
+	static const s32 GARBAGE_FACE_BOULDER_VALUE = 24;	/**< Number of garbage blocks represented by a face boulder. */
+	static const s32 GARBAGE_LARGE_BOULDER_VALUE = 6;	/**< Number of garbage blocks represented by a large boulder. */
 
 	static const s32 LEVEL_SPEED_COUNT = 20;			/**< Number of items in the drop speed array. */
 	static const s32 LEVEL_SPEEDS[LEVEL_SPEED_COUNT];	/**< Array of auto drop speeds for each level. */

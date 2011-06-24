@@ -110,6 +110,24 @@ void GridRunner::renderIncomingGarbage(s32 x, s32 y) {
 
 	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
 	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
+
+	// TODO: Replace the above with bitmaps
+	s32 garbage = _incomingGarbageCount;
+	
+	s32 faceBoulders = garbage / GARBAGE_FACE_BOULDER_VALUE;
+	garbage -= faceBoulders * GARBAGE_FACE_BOULDER_VALUE;
+
+	s32 largeBoulders = _incomingGarbageCount / GARBAGE_LARGE_BOULDER_VALUE;
+	garbage -= largeBoulders * GARBAGE_LARGE_BOULDER_VALUE;
+
+	//s32 bmpX = x;
+	// Draw face boulders
+	// bmpX += height of face boulder * faceBoulders
+
+	// Draw large boulders
+	// bmpX += height of large boulder * largeBoulders
+
+	// Draw small boulders
 }
 
 void GridRunner::renderNextBlocks(s32 x, s32 y) const {
@@ -327,13 +345,6 @@ void GridRunner::iterate() {
 			break;	
 
 		case GRID_RUNNER_STATE_DEAD:
-			
-			// TODO: Show loser message here
-			break;
-		
-		case GRID_RUNNER_STATE_WON:
-
-			// TODO: Show winner message here
 			break;
 	}
 }
