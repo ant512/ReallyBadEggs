@@ -33,12 +33,12 @@ int main(int argc, char* argv[]) {
 	// Player 1
 	Grid* grid = new Grid(0);
 	PlayerController* controller = new PlayerController();
-	GridRunner runner(controller, grid, blockServer, 0, runnerX, GridRunner::GAME_TYPE_TWO_PLAYER);
+	GridRunner runner(controller, grid, blockServer, 0, runnerX, GridRunner::GAME_TYPE_TWO_PLAYER, 0);
 	
 	// Player 2
 	Grid* aiGrid = new Grid(0);
 	SmartAIController* aiController = new SmartAIController(false);
-	GridRunner aiRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, GridRunner::GAME_TYPE_TWO_PLAYER);
+	GridRunner aiRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, GridRunner::GAME_TYPE_TWO_PLAYER, 0);
 
 	// We have to set the aiController's GridRunner after constructing the
 	// runner because the runner needs a pointer to the controller and the

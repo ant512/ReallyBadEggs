@@ -35,13 +35,15 @@ public:
 	 * @param playerNumber The unique number of the player using this runner.
 	 * @param x The x co-ordinate to render at.
 	 * @param gameType The type of game to play.
+	 * @param startLevel The starting level.
 	 */
 	GridRunner(ControllerBase* controller,
 			   Grid* grid,
 			   BlockServer* blockServer,
 			   s32 playerNumber,
 			   s32 x,
-			   GameType gameType);
+			   GameType gameType,
+			   s32 startLevel);
 
 	/**
 	 * Destructor.

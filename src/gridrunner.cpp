@@ -13,7 +13,8 @@ GridRunner::GridRunner(ControllerBase* controller,
 					   BlockServer* blockServer,
 					   s32 playerNumber,
 					   s32 x,
-					   GameType gameType) {
+					   GameType gameType,
+					   s32 startLevel) {
 
 	_state = GRID_RUNNER_STATE_DROP;
 	_timer = 0;
@@ -25,7 +26,7 @@ GridRunner::GridRunner(ControllerBase* controller,
 	_gameType = gameType;
 
 	_score = 0;
-	_level = 0;
+	_level = startLevel;
 	_chains = _gameType == GAME_TYPE_B ? GAME_TYPE_B_START_CHAINS : 0;
 	_scoreMultiplier = 0;
 	_outgoingGarbageCount = 0;
@@ -165,7 +166,7 @@ void GridRunner::land() {
 		switch (_gameType) {
 			case GAME_TYPE_A:
 				_chains += chains;
-				_level = _chains / 10;
+				if (_chains / 10 > _level) _level = _chains / 10;
 				break;
 			case GAME_TYPE_B:
 				_chains -= chains;
