@@ -15,7 +15,7 @@ public:
 	Menu() {
 		_activeMenu = 0;
 
-		_gameTypeMenu = new MenuSet(10, 100, 56, 4, 1, 0, "Game Type");
+		_gameTypeMenu = new MenuSet(60, 100, 56, 4, 1, 0, "Game Type");
 		_gameTypeMenu->addOption("Game A", 0);
 		_gameTypeMenu->addOption("Game B", 1);
 		_gameTypeMenu->addOption("Easy AI", 2);

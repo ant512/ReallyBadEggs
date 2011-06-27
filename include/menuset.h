@@ -34,7 +34,9 @@ public:
 
 	void render(bool active, WoopsiGfx::FontBase* font, WoopsiGfx::Graphics* gfx) {
 
-		gfx->drawText((SCREEN_WIDTH - font->getStringWidth(_title)) / 2, _y, font, _title, 0, _title.getLength(), woopsiRGB(31, 31, 31));
+		u16 titleColour = active ? woopsiRGB(31, 31, 31) : woopsiRGB(9, 9, 9);
+
+		gfx->drawText((SCREEN_WIDTH - font->getStringWidth(_title)) / 2, _y, font, _title, 0, _title.getLength(), titleColour);
 
 		s32 optionWidth = _width / _columns;
 		s32 optionHeight = _height / _rows;

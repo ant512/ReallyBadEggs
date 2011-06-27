@@ -17,10 +17,11 @@
 #include "menu.h"
 
 enum GameState {
-	GAME_STATE_MENU = 0,
-	GAME_STATE_ACTIVE = 1,
-	GAME_STATE_PAUSED = 2,
-	GAME_STATE_GAME_OVER = 3
+	GAME_STATE_TITLE = 0,
+	GAME_STATE_MENU = 1,
+	GAME_STATE_ACTIVE = 2,
+	GAME_STATE_PAUSED = 3,
+	GAME_STATE_GAME_OVER = 4
 };
 
 void showText(s32 x, s32 y, s32 width, s32 height, const WoopsiGfx::WoopsiString& text) {
@@ -62,7 +63,7 @@ int main(int argc, char* argv[]) {
 	s32 runnerWidth = Grid::GRID_WIDTH * Grid::BLOCK_SIZE;
 	s32 runnerHeight = Grid::GRID_HEIGHT * Grid::BLOCK_SIZE;
 	GridRunner::GameType gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
-	GameState state = GAME_STATE_MENU;
+	GameState state = GAME_STATE_TITLE;
 
 	Menu* menu = new Menu();
 
@@ -90,6 +91,20 @@ int main(int argc, char* argv[]) {
 		++blanks;
 
 		switch (state) {
+			case GAME_STATE_TITLE:
+
+				showText(0, 0, 256, 192, "Really Bad Eggs");
+
+				if (pad.isANewPress() || pad.isStartNewPress()) {
+					
+					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
+					gfx->drawFilledRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, woopsiRGB(0, 0, 0));
+					Hardware::getTopBuffer()->buffer();
+
+					state = GAME_STATE_MENU;
+				}
+				break;
+
 			case GAME_STATE_MENU:
 				menu->iterate();
 
