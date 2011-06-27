@@ -14,6 +14,8 @@
 #include "playercontroller.h"
 #include "twoplayerbgbmp.h"
 
+#include "menuset.h"
+
 enum GameState {
 	GAME_STATE_ACTIVE = 0,
 	GAME_STATE_PAUSED = 1,
@@ -40,9 +42,55 @@ void showPauseScreen(s32 x1, s32 x2, s32 y, s32 width, s32 height) {
 	showText(x2, y, width, height, "Paused");
 }
 
+void showMenu() {
+	GameFont font;
+	MenuSet gameTypeMenu(10, 100, 100, 4, 1, 0, "Game Type");
+	gameTypeMenu.addOption("Game A", 0);
+	gameTypeMenu.addOption("Game B", 1);
+	gameTypeMenu.addOption("Easy AI", 2);
+	gameTypeMenu.addOption("Hard AI", 3);
+
+	MenuSet startLevelMenu(10, 100, 100, 5, 2, 1, "Start Level");
+	gameTypeMenu.addOption("0", 0);
+	gameTypeMenu.addOption("1", 1);
+	gameTypeMenu.addOption("2", 2);
+	gameTypeMenu.addOption("3", 3);
+	gameTypeMenu.addOption("4", 4);
+	gameTypeMenu.addOption("5", 5);
+	gameTypeMenu.addOption("6", 6);
+	gameTypeMenu.addOption("7", 7);
+	gameTypeMenu.addOption("8", 8);
+	gameTypeMenu.addOption("9", 9);
+
+	MenuSet startHeightMenu(10, 100, 100, 3, 2, 2, "Height");
+	gameTypeMenu.addOption("0", 0);
+	gameTypeMenu.addOption("1", 1);
+	gameTypeMenu.addOption("2", 2);
+	gameTypeMenu.addOption("3", 3);
+	gameTypeMenu.addOption("4", 4);
+	gameTypeMenu.addOption("5", 5);
+
+	MenuSet coloursMenu(10, 100, 100, 3, 1, 3, "Block Colours");
+	coloursMenu.addOption("4", 4);
+	coloursMenu.addOption("5", 5);
+	coloursMenu.addOption("6", 6);
+
+	while (1) {
+		gameTypeMenu.iterate();
+		gameTypeMenu.render(&font, Hardware::getTopGfx());
+		Hardware::waitForVBlank();
+	}
+}
+
 int main(int argc, char* argv[]) {
 
 	Hardware::init();
+
+	showMenu();
+
+
+
+
 
 	s32 runnerX = Grid::BLOCK_SIZE;
 	s32 aiRunnerX = SCREEN_WIDTH - (Grid::GRID_WIDTH * Grid::BLOCK_SIZE) - Grid::BLOCK_SIZE;

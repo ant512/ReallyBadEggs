@@ -34,10 +34,9 @@ Presentation
      - CPU difficulty option.
    - Initial grid height;
    - Starting level (controls auto drop speed);
-   - Enable/disable level increases (enables endless mode as drop speed is
-     static);
    - Number of block colours (4-6).
- - High score screen (or several screens) giving top scores for each game type.
+ - High score screen (or several screens) giving top scores for each game type
+   on bottom screen during menu system.
  - Title screen.
  - Game over screen.
  - ROM icon.
