@@ -9,7 +9,7 @@ endif
 include $(DEVKITARM)/ds_rules
 
 # set the texts that appear in the loader menus
-GAME_TITLE		:= Super Foul Egg
+GAME_TITLE		:= Really Bad Eggs
 GAME_SUBTITLE1	:= Using WoopsiGfx
 GAME_SUBTITLE2	:= ant.simianzombie.com
 
