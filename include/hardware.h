@@ -4,9 +4,8 @@
 #include <nds.h>
 #include <graphics.h>
 
-#include "pad.h"
-#include "sdldoublebufferedframebuffer.h"
 #include "sdlframebuffer.h"
+#include "pad.h"
 #include "stylus.h"
 
 /**
@@ -69,7 +68,7 @@ public:
 	 * @return A pointer to a SDLFrameBuffer object that wraps around the top
 	 * frame buffer VRAM.
 	 */
-	static inline SDLDoubleBufferedFrameBuffer* getTopBuffer() { return _topBuffer; };
+	static inline SDLFrameBuffer* getTopBuffer() { return _topBuffer; };
 
 	/**
 	 * Get a pointer to the SDLFrameBuffer object that wraps around the bottom
@@ -80,16 +79,16 @@ public:
 	static inline SDLFrameBuffer* getBottomBuffer() { return _bottomBuffer; };
 
 private:
-	static Pad _pad;									/**< State of the DS' pad. */
-	static Stylus _stylus;								/**< State of the DS' stylus. */
-	static SDLDoubleBufferedFrameBuffer* _topBuffer;	/**< Top frame buffer. */
-	static SDLFrameBuffer* _bottomBuffer;				/**< Bottom frame buffer. */
-	static WoopsiGfx::Graphics* _topGfx;				/**< Top display graphics object. */
-	static WoopsiGfx::Graphics* _bottomGfx;				/**< Bottom display graphics object. */
+	static Pad _pad;						/**< State of the DS' pad. */
+	static Stylus _stylus;					/**< State of the DS' stylus. */
+	static SDLFrameBuffer* _topBuffer;		/**< Top frame buffer. */
+	static SDLFrameBuffer* _bottomBuffer;	/**< Bottom frame buffer. */
+	static WoopsiGfx::Graphics* _topGfx;	/**< Top display graphics object. */
+	static WoopsiGfx::Graphics* _bottomGfx;	/**< Bottom display graphics object. */
     
 #ifdef USING_SDL
     
-	static SDL_Surface* _surface;						/**< SDL surface for visual output. */
+	static SDL_Surface* _surface;			/**< SDL surface for visual output. */
 
 #else
 

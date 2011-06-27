@@ -192,6 +192,8 @@ Uint32 SDLFrameBuffer::getSDLPixel(int x, int y) {
 	}
 }
 
+void SDLFrameBuffer::buffer() { }
+
 #else
 
 // DS mode
@@ -200,6 +202,14 @@ SDLFrameBuffer::SDLFrameBuffer(u16* data, u16 width, u16 height) {
 	_width = width;
 	_height = height;
 	_bitmap = data;
+	_backBuffer = NULL;
+}
+
+SDLFrameBuffer::SDLFrameBuffer(u16* data, u16* backBuffer, u16 width, u16 height) {
+	_width = width;
+	_height = height;
+	_bitmap = data;
+	_backBuffer = backBuffer;
 }
 
 // Get a single pixel from the bitmap
@@ -250,6 +260,16 @@ void SDLFrameBuffer::blitFill(const s16 x, const s16 y, const u16 colour, const 
 void SDLFrameBuffer::copy(s16 x, s16 y, u32 size, u16* dest) const {
 	u16* pos = _bitmap + (y * _width) + x;
 	woopsiDmaCopy(pos, dest, size);
+}
+
+void SDLFrameBuffer::flipBuffer() {
+	u16* tmp = _bitmap;
+	_bitmap = _backBuffer;
+	_backBuffer = tmp;
+}
+
+void SDLFrameBuffer::buffer() {
+	copy(0, 0, _width * _height, _backBuffer);
 }
 
 #endif

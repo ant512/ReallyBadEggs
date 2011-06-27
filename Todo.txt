@@ -1,6 +1,11 @@
 To do
 -----
 
+Game Template
+
+ - Create a new frame buffer class that is not double-buffered and use this for
+   the bottom display.
+
 Engine
 
  - Add all bitmaps for blocks.

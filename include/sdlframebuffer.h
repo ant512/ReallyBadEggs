@@ -11,9 +11,9 @@
  * can be drawn to with setPixel(), blit() and blitFill() methods, and
  * it can produce a Graphics object for more complex drawing functions.
  *
- * The FrameBuffer class automatically switches from using the DS'
+ * The SDLFrameBuffer class automatically switches from using the DS'
  * framebuffer (more accurately, a 16-bit background) to using an SDL
- * surface if Woopsi is compiled in SDL mode.
+ * surface if the project is compiled in SDL mode.
  */
 class SDLFrameBuffer : public WoopsiGfx::MutableBitmapBase {
 public:
@@ -55,9 +55,11 @@ public:
 	 * @return Pointer to the internal bitmap.
 	 */
 	const u16* getData() const;
+
 #else
+
 	// DS version
-	
+
 	/**
 	 * Constructor.
 	 * @param data Pointer to the raw bitmap data.
@@ -65,6 +67,16 @@ public:
 	 * @param height The height of the bitmap.
 	 */
 	SDLFrameBuffer(u16* data, u16 width, u16 height);
+	
+	/**
+	 * Constructor.
+	 * @param data Pointer to the raw bitmap data.
+	 * @param backBuffer Pointer to the bitmap to use as a back buffer when
+	 * double buffering.
+	 * @param width The width of the bitmap.
+	 * @param height The height of the bitmap.
+	 */
+	SDLFrameBuffer(u16* data, u16* backBuffer, u16 width, u16 height);
 
 	/**
 	 * Destructor.
@@ -76,7 +88,19 @@ public:
 	 * @return Pointer to the internal bitmap.
 	 */
 	inline const u16* getData() const { return _bitmap; };
+
+	/**
+	 * Flips the buffers so that future writes are drawn to the back buffer
+	 * (which becomes the main buffer).
+	 */
+	void flipBuffer();
+
 #endif
+
+	/**
+	 * Copies the front buffer to the back buffer.
+	 */
+	void buffer();
 
 	/**
 	 * Get the colour of the pixel at the specified co-ordinates
@@ -143,6 +167,7 @@ public:
 protected:
 	
 #ifdef USING_SDL
+
 	// SDL version
 	SDL_Surface* _surface;	/**< Pointer to the SDL surface. */
 	u16 _yOffset;			/**< Y offset from top of surface to draw. */
@@ -163,9 +188,13 @@ protected:
 	 * @return The pixel colour.
 	 */
 	Uint32 getSDLPixel(int x, int y);
+
 #else
+
 	// DS version
 	u16* _bitmap __attribute__ ((aligned (4)));		/**< Bitmap. */
+	u16* _backBuffer __attribute__ ((aligned (4)));	/**< Back buffer bitmap */
+
 #endif
 
 	/**
@@ -173,8 +202,8 @@ protected:
 	 */
 	inline SDLFrameBuffer(const SDLFrameBuffer& bitmap) { };
 
-	u16 _width;									/**< Width of the bitmap */
-	u16 _height;								/**< Height of the bitmap */
+	u16 _width;										/**< Width of the bitmap */
+	u16 _height;									/**< Height of the bitmap */
 };
 
 #endif

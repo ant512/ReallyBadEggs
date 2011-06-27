@@ -3,7 +3,7 @@
 Pad Hardware::_pad;
 Stylus Hardware::_stylus;
 
-SDLDoubleBufferedFrameBuffer* Hardware::_topBuffer = NULL;
+SDLFrameBuffer* Hardware::_topBuffer = NULL;
 SDLFrameBuffer* Hardware::_bottomBuffer = NULL;
 
 WoopsiGfx::Graphics* Hardware::_topGfx = NULL;
@@ -36,7 +36,7 @@ void Hardware::init() {
 	bgInit(3, BgType_Bmp16, BgSize_B16_256x256, 0, 0);
 	bgInitSub(3, BgType_Bmp16, BgSize_B16_256x256, 0, 0);
 
-	_topBuffer = new SDLDoubleBufferedFrameBuffer((u16*)BG_BMP_RAM(6), (u16*)BG_BMP_RAM(0), SCREEN_WIDTH, SCREEN_HEIGHT);
+	_topBuffer = new SDLFrameBuffer((u16*)BG_BMP_RAM(6), (u16*)BG_BMP_RAM(0), SCREEN_WIDTH, SCREEN_HEIGHT);
 	_bottomBuffer = new SDLFrameBuffer((u16*)BG_BMP_RAM_SUB(0), SCREEN_WIDTH, SCREEN_HEIGHT);
 
 #else
@@ -59,7 +59,7 @@ void Hardware::init() {
 		exit(2);
 	}
 
-	_topBuffer = new SDLDoubleBufferedFrameBuffer(_surface, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+	_topBuffer = new SDLFrameBuffer(_surface, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 	_bottomBuffer = new SDLFrameBuffer(_surface, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_HEIGHT);
 
 #endif
