@@ -45,14 +45,10 @@ void showPauseScreen(s32 x1, s32 x2, s32 y, s32 width, s32 height) {
 	showText(x2, y, width, height, "Paused");
 }
 
-void showMenu() {
-
-	Menu menu;
-
-	while (1) {
-		menu.iterate();
-		Hardware::waitForVBlank();
-	}
+void clearScreens() {
+	Hardware::getTopGfx()->drawFilledRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, woopsiRGB(0, 0, 0));
+	Hardware::getBottomGfx()->drawFilledRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, woopsiRGB(0, 0, 0));
+	Hardware::getTopBuffer()->buffer();
 }
 
 int main(int argc, char* argv[]) {
@@ -87,27 +83,21 @@ int main(int argc, char* argv[]) {
 
 	s32 blanks = 0;
 
+	// Draw title screen
+	// TODO: Replace with bitmap
+	showText(0, 0, 256, 192, "Really Bad Eggs");
+
+	Hardware::getBottomGfx()->drawBitmap(0, 0, simianZombieLogoBmp.getWidth(), simianZombieLogoBmp.getHeight(), &simianZombieLogoBmp, 0, 0);
+	Hardware::getTopBuffer()->buffer();
+
 	while (1) {
 
 		++blanks;
 
 		switch (state) {
 			case GAME_STATE_TITLE:
-
-				if (blanks == 1) {
-					showText(0, 0, 256, 192, "Really Bad Eggs");
-
-					Hardware::getBottomGfx()->drawBitmap(0, 0, simianZombieLogoBmp.getWidth(), simianZombieLogoBmp.getHeight(), &simianZombieLogoBmp, 0, 0);
-
-					Hardware::getTopBuffer()->buffer();
-				}
-
 				if (pad.isANewPress() || pad.isStartNewPress()) {
-
-					Hardware::getTopGfx()->drawFilledRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, woopsiRGB(0, 0, 0));
-					Hardware::getBottomGfx()->drawFilledRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, woopsiRGB(0, 0, 0));
-					Hardware::getTopBuffer()->buffer();
-
+					clearScreens();
 					state = GAME_STATE_MENU;
 				}
 				break;
@@ -207,7 +197,33 @@ int main(int argc, char* argv[]) {
 			
 			case GAME_STATE_PAUSED:
 				if (pad.isStartNewPress()) {
+
+					// Unpause
 					state = GAME_STATE_ACTIVE;
+				} else if (pad.isSelectNewPress()) {
+
+					// Quit to menu
+					delete blockServer;
+
+					delete runner;
+					delete grid;
+
+					delete aiRunner;
+					delete aiGrid;
+					delete aiController;
+
+					blockServer = NULL;
+					runner = NULL;
+					grid = NULL;
+					aiRunner = NULL;
+					aiGrid = NULL;
+					aiController = NULL;
+
+					menu->setActiveMenu(1);
+
+					clearScreens();
+
+					state = GAME_STATE_MENU;
 				}
 				break;
 
@@ -231,6 +247,8 @@ int main(int argc, char* argv[]) {
 					aiController = NULL;
 
 					menu->setActiveMenu(1);
+
+					clearScreens();
 
 					state = GAME_STATE_MENU;
 				}
