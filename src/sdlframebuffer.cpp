@@ -263,12 +263,17 @@ void SDLFrameBuffer::copy(s16 x, s16 y, u32 size, u16* dest) const {
 }
 
 void SDLFrameBuffer::flipBuffer() {
+
+	if (_backBuffer == NULL) return;
+
 	u16* tmp = _bitmap;
 	_bitmap = _backBuffer;
 	_backBuffer = tmp;
 }
 
 void SDLFrameBuffer::buffer() {
+	if (_backBuffer == NULL) return;
+	
 	copy(0, 0, _width * _height, _backBuffer);
 }
 
