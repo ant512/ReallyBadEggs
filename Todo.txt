@@ -25,18 +25,8 @@ Presentation
      - Level;
      - Chains.
    - High score for current game type;
- - Options screen:
-   - Single player, Tetris A style;
-   - Single player, Tetris B style:
-     - Grid appears with pre-placed random blocks (determined by height value);
-     - Have to earn 25 chains to complete the level.
-   - Two player (AI):
-     - CPU difficulty option.
-   - Initial grid height;
-   - Starting level (controls auto drop speed);
-   - Number of block colours (4-6).
+ - Title screen on top screen before menu.
  - High score screen (or several screens) giving top scores for each game type
    on bottom screen during menu system.
- - Title screen.
- - Game over screen.
+ - Game over screen with high-score entry.
  - ROM icon.
