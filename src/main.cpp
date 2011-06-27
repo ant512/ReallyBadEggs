@@ -28,7 +28,6 @@ enum GameState {
 void showText(s32 x, s32 y, s32 width, s32 height, const WoopsiGfx::WoopsiString& text) {
 
 	WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
-	gfx->drawFilledRect(x, y, width, height, woopsiRGB(0, 0, 0));
 
 	GameFont font;
 
