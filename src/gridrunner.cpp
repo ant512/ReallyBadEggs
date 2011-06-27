@@ -195,6 +195,8 @@ void GridRunner::land() {
 				break;
 			case GAME_TYPE_B:
 				_chains -= chains;
+
+				if (_chains < 0) _chains = 0;
 				break;
 			case GAME_TYPE_TWO_PLAYER:
 				_chains += chains;
@@ -247,7 +249,12 @@ void GridRunner::land() {
 
 		// Nothing exploded, so we can put a new live block into
 		// the grid
-		if (!_grid->addLiveBlocks(_nextBlocks[0], _nextBlocks[1])) {
+
+		if (_gameType == GAME_TYPE_B && _chains == 0) {
+
+			// Game B complete
+			_state = GRID_RUNNER_STATE_DEAD;
+		} else if (!_grid->addLiveBlocks(_nextBlocks[0], _nextBlocks[1])) {
 
 			// Cannot add more blocks - game is over
 			_state = GRID_RUNNER_STATE_DEAD;
