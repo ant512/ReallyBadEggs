@@ -90,6 +90,9 @@ public:
 					Hardware::getTopBuffer()->buffer();
 				}
 			}
+		} else if (pad.isStartNewPress()) {
+			// Jump to the end of the menu
+			_activeMenu = 4;
 		}
 
 		switch (_activeMenu) {
@@ -128,6 +131,10 @@ public:
 
 	bool isRunning() const {
 		return _activeMenu < 4;
+	};
+
+	void setActiveMenu(s32 menu) {
+		_activeMenu = menu;
 	};
 
 private:

@@ -81,11 +81,6 @@ int main(int argc, char* argv[]) {
 	SmartAIController* aiController = NULL;
 	GridRunner* aiRunner = NULL;
 
-	// We have to set the aiController's GridRunner after constructing the
-	// runner because the runner needs a pointer to the controller and the
-	// controller needs a pointer to the runner - argh
-	aiController->setGridRunner(aiRunner);
-
 	const Pad& pad = Hardware::getPad();
 
 	s32 blanks = 0;
@@ -113,17 +108,23 @@ int main(int argc, char* argv[]) {
 							break;
 						case 2:
 							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
+							
 							blockServer = new BlockServer(2, menu->getColours());
 							aiGrid = new Grid(menu->getStartHeight());
 							aiController = new SmartAIController(false);
 							aiRunner = new GridRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, menu->getStartLevel());
+
+							aiController->setGridRunner(aiRunner);
 							break;
 						case 3:
 							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
+
 							blockServer = new BlockServer(2, menu->getColours());
 							aiGrid = new Grid(menu->getStartHeight());
 							aiController = new SmartAIController(true);
 							aiRunner = new GridRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, menu->getStartLevel());
+
+							aiController->setGridRunner(aiRunner);
 							break;
 					}
 
@@ -206,6 +207,8 @@ int main(int argc, char* argv[]) {
 					aiRunner = NULL;
 					aiGrid = NULL;
 					aiController = NULL;
+
+					menu->setActiveMenu(1);
 
 					state = GAME_STATE_MENU;
 				}
