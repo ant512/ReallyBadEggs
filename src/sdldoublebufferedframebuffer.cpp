@@ -1,13 +1,13 @@
 #include <dmafuncs.h>
 #include <rect.h>
 
-#include "sdlframebuffer.h"
+#include "sdldoublebufferedframebuffer.h"
 
 #ifdef USING_SDL
 
 // SDL mode
 
-SDLFrameBuffer::SDLFrameBuffer(SDL_Surface* surface, u16 width, u16 height, u16 yOffset) {
+SDLDoubleBufferedFrameBuffer::SDLDoubleBufferedFrameBuffer(SDL_Surface* surface, u16 width, u16 height, u16 yOffset) {
 	_width = width;
 	_height = height;
 	_surface = surface;
@@ -15,7 +15,7 @@ SDLFrameBuffer::SDLFrameBuffer(SDL_Surface* surface, u16 width, u16 height, u16 
 	_dataBuffer = new u16[width * height];
 }
 
-const u16 SDLFrameBuffer::getPixel(s16 x, s16 y) const {
+const u16 SDLDoubleBufferedFrameBuffer::getPixel(s16 x, s16 y) const {
 	
 	// Prevent overflows
 	if ((x < 0) || (y < 0)) return 0;
@@ -24,7 +24,7 @@ const u16 SDLFrameBuffer::getPixel(s16 x, s16 y) const {
 	return _dataBuffer[x + (y * _width)];
 }
 
-void SDLFrameBuffer::setPixel(s16 x, s16 y, u16 colour) {
+void SDLDoubleBufferedFrameBuffer::setPixel(s16 x, s16 y, u16 colour) {
 	
 	// Prevent overflows
 	if ((x < 0) || (y < 0)) return;
@@ -47,20 +47,20 @@ void SDLFrameBuffer::setPixel(s16 x, s16 y, u16 colour) {
 	_dataBuffer[x + (y * _width)] = colour;
 }
 
-const u16* SDLFrameBuffer::getData() const {
+const u16* SDLDoubleBufferedFrameBuffer::getData() const {
 	return getData(0, 0);
 }
 
-const u16* SDLFrameBuffer::getData(s16 x, s16 y) const {
+const u16* SDLDoubleBufferedFrameBuffer::getData(s16 x, s16 y) const {
 	return _dataBuffer + (x + (y * _width));
 }
 
-void SDLFrameBuffer::copy(s16 x, s16 y, u32 size, u16* dest) const {
+void SDLDoubleBufferedFrameBuffer::copy(s16 x, s16 y, u32 size, u16* dest) const {
 	u16* pos = _dataBuffer + (x + (y * _width));
 	woopsiDmaCopy(pos, dest, size);
 }
 
-void SDLFrameBuffer::blit(const s16 x, const s16 y, const u16* data, const u32 size) {
+void SDLDoubleBufferedFrameBuffer::blit(const s16 x, const s16 y, const u16* data, const u32 size) {
 	u16 destX = x;
 	u16 destY = y + _yOffset;
 	
@@ -96,7 +96,7 @@ void SDLFrameBuffer::blit(const s16 x, const s16 y, const u16* data, const u32 s
 	woopsiDmaCopy(data, pos, size);
 }
 
-void SDLFrameBuffer::blitFill(const s16 x, const s16 y, const u16 colour, const u32 size) {
+void SDLDoubleBufferedFrameBuffer::blitFill(const s16 x, const s16 y, const u16 colour, const u32 size) {
 	u16 destX = x;
 	u16 destY = y + _yOffset;
 	
@@ -132,7 +132,7 @@ void SDLFrameBuffer::blitFill(const s16 x, const s16 y, const u16 colour, const 
 	woopsiDmaFill(colour, pos, size);
 }
 
-void SDLFrameBuffer::putSDLPixel(int x, int y, Uint32 pixel) {
+void SDLDoubleBufferedFrameBuffer::putSDLPixel(int x, int y, Uint32 pixel) {
 	int bpp = _surface->format->BytesPerPixel;
 
 	/* Here p is the address to the pixel we want to set */
@@ -165,7 +165,7 @@ void SDLFrameBuffer::putSDLPixel(int x, int y, Uint32 pixel) {
 	}
 }
 
-Uint32 SDLFrameBuffer::getSDLPixel(int x, int y) {
+Uint32 SDLDoubleBufferedFrameBuffer::getSDLPixel(int x, int y) {
 	int bpp = _surface->format->BytesPerPixel;
 	
 	/* Here p is the address to the pixel we want to retrieve */
@@ -192,20 +192,13 @@ Uint32 SDLFrameBuffer::getSDLPixel(int x, int y) {
 	}
 }
 
-void SDLFrameBuffer::buffer() { }
+void SDLDoubleBufferedFrameBuffer::buffer() { }
 
 #else
 
 // DS mode
 
-SDLFrameBuffer::SDLFrameBuffer(u16* data, u16 width, u16 height) {
-	_width = width;
-	_height = height;
-	_bitmap = data;
-	_backBuffer = NULL;
-}
-
-SDLFrameBuffer::SDLFrameBuffer(u16* data, u16* backBuffer, u16 width, u16 height) {
+SDLDoubleBufferedFrameBuffer::SDLDoubleBufferedFrameBuffer(u16* data, u16* backBuffer, u16 width, u16 height) {
 	_width = width;
 	_height = height;
 	_bitmap = data;
@@ -213,7 +206,7 @@ SDLFrameBuffer::SDLFrameBuffer(u16* data, u16* backBuffer, u16 width, u16 height
 }
 
 // Get a single pixel from the bitmap
-const u16 SDLFrameBuffer::getPixel(s16 x, s16 y) const {
+const u16 SDLDoubleBufferedFrameBuffer::getPixel(s16 x, s16 y) const {
 
 	// Prevent overflows
 	if ((x < 0) || (y < 0)) return 0;
@@ -225,7 +218,7 @@ const u16 SDLFrameBuffer::getPixel(s16 x, s16 y) const {
 }
 
 // Draw a single pixel to the bitmap
-void SDLFrameBuffer::setPixel(s16 x, s16 y, u16 colour) {
+void SDLDoubleBufferedFrameBuffer::setPixel(s16 x, s16 y, u16 colour) {
 
 	// Prevent overflows
 	if ((x < 0) || (y < 0)) return;
@@ -236,7 +229,7 @@ void SDLFrameBuffer::setPixel(s16 x, s16 y, u16 colour) {
 	_bitmap[pos] = colour;
 }
 
-const u16* SDLFrameBuffer::getData(s16 x, s16 y) const {
+const u16* SDLDoubleBufferedFrameBuffer::getData(s16 x, s16 y) const {
 
 	// Prevent overflows
 	if ((x < 0) || (y < 0)) return 0;
@@ -247,34 +240,34 @@ const u16* SDLFrameBuffer::getData(s16 x, s16 y) const {
 	return _bitmap + pos;
 }
 
-void SDLFrameBuffer::blit(const s16 x, const s16 y, const u16* data, const u32 size) {
+void SDLDoubleBufferedFrameBuffer::blit(const s16 x, const s16 y, const u16* data, const u32 size) {
 	u16* pos = _bitmap + (y * _width) + x;
 	woopsiDmaCopy(data, pos, size);
 }
 
-void SDLFrameBuffer::blitFill(const s16 x, const s16 y, const u16 colour, const u32 size) {
+void SDLDoubleBufferedFrameBuffer::blitFill(const s16 x, const s16 y, const u16 colour, const u32 size) {
 	u16* pos = _bitmap + (y * _width) + x;
 	woopsiDmaFill(colour, pos, size);
 }
 
-void SDLFrameBuffer::copy(s16 x, s16 y, u32 size, u16* dest) const {
+void SDLDoubleBufferedFrameBuffer::copy(s16 x, s16 y, u32 size, u16* dest) const {
 	u16* pos = _bitmap + (y * _width) + x;
 	woopsiDmaCopy(pos, dest, size);
 }
 
-void SDLFrameBuffer::flipBuffer() {
+void SDLDoubleBufferedFrameBuffer::flipBuffer() {
 	u16* tmp = _bitmap;
 	_bitmap = _backBuffer;
 	_backBuffer = tmp;
 }
 
-void SDLFrameBuffer::buffer() {
+void SDLDoubleBufferedFrameBuffer::buffer() {
 	copy(0, 0, _width * _height, _backBuffer);
 }
 
 #endif
 
-WoopsiGfx::Graphics* SDLFrameBuffer::newGraphics() {
+WoopsiGfx::Graphics* SDLDoubleBufferedFrameBuffer::newGraphics() {
 	WoopsiGfx::Rect rect;
 	rect.x = 0;
 	rect.y = 0;

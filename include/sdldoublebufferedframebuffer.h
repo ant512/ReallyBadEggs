@@ -1,5 +1,5 @@
-#ifndef _SDL_FRAME_BUFFER_H_
-#define _SDL_FRAME_BUFFER_H_
+#ifndef _SDL_DOUBLE_BUFFERED_FRAME_BUFFER_H_
+#define _SDL_DOUBLE_BUFFERED_FRAME_BUFFER_H_
 
 #include <graphics.h>
 #include <mutablebitmapbase.h>
@@ -15,7 +15,7 @@
  * framebuffer (more accurately, a 16-bit background) to using an SDL
  * surface if the project is compiled in SDL mode.
  */
-class SDLFrameBuffer : public WoopsiGfx::MutableBitmapBase {
+class SDLDoubleBufferedFrameBuffer : public WoopsiGfx::MutableBitmapBase {
 public:
 
 	/**
@@ -41,12 +41,12 @@ public:
 	 * @param width The width of the bitmap.
 	 * @param height The height of the bitmap.
 	 */
-	SDLFrameBuffer(SDL_Surface* surface, u16 width, u16 height, u16 yOffset);
+	SDLDoubleBufferedFrameBuffer(SDL_Surface* surface, u16 width, u16 height, u16 yOffset);
 
 	/**
 	 * Destructor.
 	 */
-	virtual inline ~SDLFrameBuffer() {
+	virtual inline ~SDLDoubleBufferedFrameBuffer() {
 		delete[] _dataBuffer;
 	};
 	
@@ -59,14 +59,6 @@ public:
 #else
 
 	// DS version
-
-	/**
-	 * Constructor.
-	 * @param data Pointer to the raw bitmap data.
-	 * @param width The width of the bitmap.
-	 * @param height The height of the bitmap.
-	 */
-	SDLFrameBuffer(u16* data, u16 width, u16 height);
 	
 	/**
 	 * Constructor.
@@ -76,12 +68,12 @@ public:
 	 * @param width The width of the bitmap.
 	 * @param height The height of the bitmap.
 	 */
-	SDLFrameBuffer(u16* data, u16* backBuffer, u16 width, u16 height);
+	SDLDoubleBufferedFrameBuffer(u16* data, u16* backBuffer, u16 width, u16 height);
 
 	/**
 	 * Destructor.
 	 */
-	virtual inline ~SDLFrameBuffer() { };
+	virtual inline ~SDLDoubleBufferedFrameBuffer() { };
 	
 	/**
 	 * Get a pointer to the internal bitmap.
@@ -200,7 +192,7 @@ protected:
 	/**
 	 * Copy constructor is protected to prevent usage.
 	 */
-	inline SDLFrameBuffer(const SDLFrameBuffer& bitmap) { };
+	inline SDLDoubleBufferedFrameBuffer(const SDLDoubleBufferedFrameBuffer& bitmap) { };
 
 	u16 _width;										/**< Width of the bitmap */
 	u16 _height;									/**< Height of the bitmap */
