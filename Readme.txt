@@ -256,7 +256,7 @@ Credits and Acknowledgements
 ----------------------------
 
   - Coding                                          - Antony Dzeryn
-  - Original graphics, sounds and design            - David & Michael Hay
+  - Original graphics and sounds                    - David & Michael Hay
 
 
 Links

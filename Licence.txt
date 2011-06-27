@@ -1,21 +1,3 @@
- Game Assets
- -----------
-
- All graphics, source code that represents graphics, sounds and level designs
- are copyright (c) 1990 Michael Batty, and cannot be distributed without his
- permission.
-
- If you want to release your own version of this game, you will need to either
- get Michael Batty's permission to distribute the game assets, or:
-
-  - Redesign the levels;
-  - Redraw the graphics;
-  - Provide your own sound effects.
-
-
- Game Sourcecode
- --------------- 
-
  Copyright (c) 2011 Antony Dzeryn
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
