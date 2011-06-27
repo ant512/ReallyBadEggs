@@ -69,10 +69,6 @@ void GridRunner::renderScore(s32 x, s32 y) {
 }
 
 void GridRunner::renderLevelNumber(s32 x, s32 y) {
-
-	// Indicator is disabled in two-player games
-	if (_gameType == GAME_TYPE_TWO_PLAYER) return;
-
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
 	WoopsiGfx::WoopsiString str;

@@ -3,8 +3,8 @@ Really Bad Eggs
 
 Really Bad Eggs started life as a remake of Super Foul Egg, itself a clone of
 Puyo Puyo released for the Commodore Amiga in 1995.  However, I took the
-opportunity to mix in some game mechanics from Tetris to make a game more akin
-to how I always wished it worked.
+opportunity to mix in some mechanics from Tetris to fix what I perceived to be
+problems in the original game.
 
 
 Game Mechanics
