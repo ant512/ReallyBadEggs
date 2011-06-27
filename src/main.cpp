@@ -5,16 +5,17 @@
 #include <woopsiarray.h>
 #include <woopsistring.h>
 
-#include "smartaicontroller.h"
 #include "blockserver.h"
 #include "gamefont.h"
 #include "grid.h"
 #include "gridrunner.h"
 #include "hardware.h"
+#include "menu.h"
 #include "playercontroller.h"
+#include "simianzombielogobmp.h"
+#include "smartaicontroller.h"
 #include "twoplayerbgbmp.h"
 
-#include "menu.h"
 
 enum GameState {
 	GAME_STATE_TITLE = 0,
@@ -67,8 +68,8 @@ int main(int argc, char* argv[]) {
 
 	Menu* menu = new Menu();
 
-	// Set up background graphic
 	TwoPlayerBgBmp background;
+	SimianZombieLogoBmp simianZombieLogoBmp;
 
 	BlockServer* blockServer = NULL;
 
@@ -93,12 +94,18 @@ int main(int argc, char* argv[]) {
 		switch (state) {
 			case GAME_STATE_TITLE:
 
-				showText(0, 0, 256, 192, "Really Bad Eggs");
+				if (blanks == 1) {
+					showText(0, 0, 256, 192, "Really Bad Eggs");
+
+					Hardware::getBottomGfx()->drawBitmap(0, 0, simianZombieLogoBmp.getWidth(), simianZombieLogoBmp.getHeight(), &simianZombieLogoBmp, 0, 0);
+
+					Hardware::getTopBuffer()->buffer();
+				}
 
 				if (pad.isANewPress() || pad.isStartNewPress()) {
-					
-					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
-					gfx->drawFilledRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, woopsiRGB(0, 0, 0));
+
+					Hardware::getTopGfx()->drawFilledRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, woopsiRGB(0, 0, 0));
+					Hardware::getBottomGfx()->drawFilledRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, woopsiRGB(0, 0, 0));
 					Hardware::getTopBuffer()->buffer();
 
 					state = GAME_STATE_MENU;

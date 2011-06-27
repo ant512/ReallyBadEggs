@@ -1,6 +1,11 @@
 To do
 -----
 
+Game Template
+
+ - Create a new frame buffer class that is not double-buffered and use this for
+   the bottom display.
+
 Engine
 
  - Add all bitmaps for blocks.
@@ -26,7 +31,7 @@ Presentation
      - Level;
      - Chains.
    - High score for current game type;
- - Title screen on top screen before menu.
+ - Title screen on top and bottom screens before menu.
  - High score screen (or several screens) giving top scores for each game type
    on bottom screen during menu system.
  - Game over screen with high-score entry.
