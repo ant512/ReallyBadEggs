@@ -12,6 +12,7 @@ Engine
    significantly.
  - Replace winner/loser text with bitmaps.
  - Sound effects.
+ - Bitmap to fill blocks in second playfield when AI is disabled.
 
 Presentation
 
