@@ -30,12 +30,9 @@ public:
 
 	void addOption(const WoopsiGfx::WoopsiString& text, s32 value) {
 		_options.push_back(new MenuOption(text, value));
-
-		// Ensure the first item is selected
-		if (_options.size() == 1) _options[0]->setSelected(true);
 	};
 
-	void render(WoopsiGfx::FontBase* font, WoopsiGfx::Graphics* gfx) {
+	void render(bool active, WoopsiGfx::FontBase* font, WoopsiGfx::Graphics* gfx) {
 
 		gfx->drawText((SCREEN_WIDTH - font->getStringWidth(_title)) / 2, _y, font, _title, 0, _title.getLength(), woopsiRGB(31, 31, 31));
 
@@ -58,7 +55,7 @@ public:
 				optionX = x + (optionWidth * col);
 
 				if (optionIndex < _options.size()) {
-					_options[optionIndex]->render(optionX, optionY, optionWidth, optionHeight, font, gfx);
+					_options[optionIndex]->render(optionX, optionY, optionWidth, optionHeight, _selectedOptionIndex == optionIndex, active, font, gfx);
 				} else {
 					gfx->drawFilledRect(optionX, optionY, optionWidth, optionHeight, woopsiRGB(0, 0, 0));
 				}
@@ -83,8 +80,6 @@ public:
 	};
 
 	void setSelectedOption(s32 index) {
-		_options[_selectedOptionIndex]->setSelected(false);
-
 		_selectedOptionIndex = index;
 
 		if (_selectedOptionIndex < 0) {
@@ -92,8 +87,10 @@ public:
 		} else if (_selectedOptionIndex >= _options.size()) {
 			_selectedOptionIndex = _options.size() - 1;
 		}
+	};
 
-		_options[_selectedOptionIndex]->setSelected(true);
+	s32 getSelectedValue() const {
+		return _options[_selectedOptionIndex]->getValue();
 	};
 
 private:

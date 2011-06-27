@@ -14,12 +14,13 @@
 #include "playercontroller.h"
 #include "twoplayerbgbmp.h"
 
-#include "menuset.h"
+#include "menu.h"
 
 enum GameState {
-	GAME_STATE_ACTIVE = 0,
-	GAME_STATE_PAUSED = 1,
-	GAME_STATE_GAME_OVER = 2
+	GAME_STATE_MENU = 0,
+	GAME_STATE_ACTIVE = 1,
+	GAME_STATE_PAUSED = 2,
+	GAME_STATE_GAME_OVER = 3
 };
 
 void showText(s32 x, s32 y, s32 width, s32 height, const WoopsiGfx::WoopsiString& text) {
@@ -43,41 +44,11 @@ void showPauseScreen(s32 x1, s32 x2, s32 y, s32 width, s32 height) {
 }
 
 void showMenu() {
-	GameFont font;
-	MenuSet gameTypeMenu(10, 100, 100, 4, 1, 0, "Game Type");
-	gameTypeMenu.addOption("Game A", 0);
-	gameTypeMenu.addOption("Game B", 1);
-	gameTypeMenu.addOption("Easy AI", 2);
-	gameTypeMenu.addOption("Hard AI", 3);
 
-	MenuSet startLevelMenu(10, 100, 100, 5, 2, 1, "Start Level");
-	gameTypeMenu.addOption("0", 0);
-	gameTypeMenu.addOption("1", 1);
-	gameTypeMenu.addOption("2", 2);
-	gameTypeMenu.addOption("3", 3);
-	gameTypeMenu.addOption("4", 4);
-	gameTypeMenu.addOption("5", 5);
-	gameTypeMenu.addOption("6", 6);
-	gameTypeMenu.addOption("7", 7);
-	gameTypeMenu.addOption("8", 8);
-	gameTypeMenu.addOption("9", 9);
-
-	MenuSet startHeightMenu(10, 100, 100, 3, 2, 2, "Height");
-	gameTypeMenu.addOption("0", 0);
-	gameTypeMenu.addOption("1", 1);
-	gameTypeMenu.addOption("2", 2);
-	gameTypeMenu.addOption("3", 3);
-	gameTypeMenu.addOption("4", 4);
-	gameTypeMenu.addOption("5", 5);
-
-	MenuSet coloursMenu(10, 100, 100, 3, 1, 3, "Block Colours");
-	coloursMenu.addOption("4", 4);
-	coloursMenu.addOption("5", 5);
-	coloursMenu.addOption("6", 6);
+	Menu menu;
 
 	while (1) {
-		gameTypeMenu.iterate();
-		gameTypeMenu.render(&font, Hardware::getTopGfx());
+		menu.iterate();
 		Hardware::waitForVBlank();
 	}
 }
@@ -86,75 +57,122 @@ int main(int argc, char* argv[]) {
 
 	Hardware::init();
 
-	showMenu();
-
-
-
-
-
 	s32 runnerX = Grid::BLOCK_SIZE;
 	s32 aiRunnerX = SCREEN_WIDTH - (Grid::GRID_WIDTH * Grid::BLOCK_SIZE) - Grid::BLOCK_SIZE;
 	s32 runnerWidth = Grid::GRID_WIDTH * Grid::BLOCK_SIZE;
 	s32 runnerHeight = Grid::GRID_HEIGHT * Grid::BLOCK_SIZE;
-	s32 startLevel = 0;
-	s32 startHeight = 0;
-	s32 smartAI = true;
 	GridRunner::GameType gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
-	GameState state = GAME_STATE_ACTIVE;
+	GameState state = GAME_STATE_MENU;
+
+	Menu* menu = new Menu();
 
 	// Set up background graphic
 	TwoPlayerBgBmp background;
-	WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
-	gfx->drawBitmap(0, 0, background.getWidth(), background.getHeight(), &background, 0, 0);
-	Hardware::getTopBuffer()->buffer();
 
-	BlockServer* blockServer = new BlockServer(2, 4);
+	BlockServer* blockServer = NULL;
 
 	// Player 1
-	Grid* grid = new Grid(startHeight);
+	Grid* grid = NULL;
 	PlayerController* controller = new PlayerController();
-	GridRunner runner(controller, grid, blockServer, 0, runnerX, gameType, startLevel);
+	GridRunner* runner = NULL;
 	
 	// Player 2
-	Grid* aiGrid = new Grid(startHeight);
-	SmartAIController* aiController = new SmartAIController(smartAI);
-	GridRunner aiRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, startLevel);
+	Grid* aiGrid = NULL;
+	SmartAIController* aiController = NULL;
+	GridRunner* aiRunner = NULL;
 
 	// We have to set the aiController's GridRunner after constructing the
 	// runner because the runner needs a pointer to the controller and the
 	// controller needs a pointer to the runner - argh
-	aiController->setGridRunner(&aiRunner);
+	aiController->setGridRunner(aiRunner);
 
 	const Pad& pad = Hardware::getPad();
 
+	s32 blanks = 0;
+
 	while (1) {
+
+		++blanks;
+
 		switch (state) {
+			case GAME_STATE_MENU:
+				menu->iterate();
+
+				if (!menu->isRunning()) {
+
+					srand(blanks);
+
+					switch (menu->getGameType()) {
+						case 0:
+							gameType = GridRunner::GAME_TYPE_A;
+							blockServer = new BlockServer(1, menu->getColours());
+							break;
+						case 1:
+							gameType = GridRunner::GAME_TYPE_B;
+							blockServer = new BlockServer(1, menu->getColours());
+							break;
+						case 2:
+							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
+							blockServer = new BlockServer(2, menu->getColours());
+							aiGrid = new Grid(menu->getStartHeight());
+							aiController = new SmartAIController(false);
+							aiRunner = new GridRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, menu->getStartLevel());
+							break;
+						case 3:
+							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
+							blockServer = new BlockServer(2, menu->getColours());
+							aiGrid = new Grid(menu->getStartHeight());
+							aiController = new SmartAIController(true);
+							aiRunner = new GridRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, menu->getStartLevel());
+							break;
+					}
+
+					grid = new Grid(menu->getStartHeight());
+					runner = new GridRunner(controller, grid, blockServer, 0, runnerX, gameType, menu->getStartLevel());
+
+					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
+					gfx->drawBitmap(0, 0, background.getWidth(), background.getHeight(), &background, 0, 0);
+					Hardware::getTopBuffer()->buffer();
+
+					state = GAME_STATE_ACTIVE;
+				}
+
+				break;
+
 			case GAME_STATE_ACTIVE:
 
 				// Standard mode
-				runner.iterate();
-				aiRunner.iterate();
+				runner->iterate();
 
-				if (runner.isDead() && !aiRunner.isDead()) {
-					showText(runnerX, 0, runnerWidth, runnerHeight, "Loser");
-					showText(aiRunnerX, 0, runnerWidth, runnerHeight, "Winner");
-					state = GAME_STATE_GAME_OVER;
-				} else if (aiRunner.isDead() && !runner.isDead()) {
-					showText(runnerX, 0, runnerWidth, runnerHeight, "Winner");
-					showText(aiRunnerX, 0, runnerWidth, runnerHeight, "Loser");
-					state = GAME_STATE_GAME_OVER;
-				} else if (aiRunner.isDead() && runner.isDead()) {
-					showText(runnerX, 0, runnerWidth, runnerHeight, "Draw");
-					showText(aiRunnerX, 0, runnerWidth, runnerHeight, "Draw");
-					state = GAME_STATE_GAME_OVER;
-				}
+				if (aiRunner == NULL) {
+					if (runner->isDead()) {
+						showText(runnerX, 0, runnerWidth, runnerHeight, "Game Over");
+						state = GAME_STATE_GAME_OVER;
+					}
+				} else {
+					aiRunner->iterate();
 
-				if (runner.addIncomingGarbage(aiRunner.getOutgoingGarbageCount())) {
-					aiRunner.clearOutgoingGarbageCount();
-				}
+					if (runner->isDead() && !aiRunner->isDead()) {
+						showText(runnerX, 0, runnerWidth, runnerHeight, "Loser");
+						showText(aiRunnerX, 0, runnerWidth, runnerHeight, "Winner");
+						state = GAME_STATE_GAME_OVER;
+					} else if (aiRunner->isDead() && !runner->isDead()) {
+						showText(runnerX, 0, runnerWidth, runnerHeight, "Winner");
+						showText(aiRunnerX, 0, runnerWidth, runnerHeight, "Loser");
+						state = GAME_STATE_GAME_OVER;
+					} else if (aiRunner->isDead() && runner->isDead()) {
+						showText(runnerX, 0, runnerWidth, runnerHeight, "Draw");
+						showText(aiRunnerX, 0, runnerWidth, runnerHeight, "Draw");
+						state = GAME_STATE_GAME_OVER;
+					}
 
-				if (aiRunner.addIncomingGarbage(runner.getOutgoingGarbageCount())) {
-					runner.clearOutgoingGarbageCount();
+					if (runner->addIncomingGarbage(aiRunner->getOutgoingGarbageCount())) {
+						aiRunner->clearOutgoingGarbageCount();
+					}
+
+					if (aiRunner->addIncomingGarbage(runner->getOutgoingGarbageCount())) {
+						runner->clearOutgoingGarbageCount();
+					}
 				}
 
 				if (pad.isStartNewPress()) {
@@ -171,20 +189,34 @@ int main(int argc, char* argv[]) {
 				break;
 
 			case GAME_STATE_GAME_OVER:
-				// TODO: Check for start/A/B button and return to options screen
+				if (pad.isStartNewPress() || pad.isANewPress() || pad.isBNewPress()) {
+
+					delete blockServer;
+
+					delete runner;
+					delete grid;
+
+					delete aiRunner;
+					delete aiGrid;
+					delete aiController;
+
+					blockServer = NULL;
+					runner = NULL;
+					grid = NULL;
+					aiRunner = NULL;
+					aiGrid = NULL;
+					aiController = NULL;
+
+					state = GAME_STATE_MENU;
+				}
 				break;
 		}
 
 		Hardware::waitForVBlank();
 	}
 
-	delete blockServer;
-
-	delete grid;
+	delete menu;
 	delete controller;
-
-	delete aiGrid;
-	delete aiController;
 
 	Hardware::shutdown();
 	return 0;
