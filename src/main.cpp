@@ -39,11 +39,6 @@ void showText(s32 x, s32 y, s32 width, s32 height, const WoopsiGfx::WoopsiString
 	Hardware::getTopBuffer()->buffer();
 }
 
-void showPauseScreen(s32 x1, s32 x2, s32 y, s32 width, s32 height) {
-	showText(x1, y, width, height, "Paused");
-	showText(x2, y, width, height, "Paused");
-}
-
 void clearScreens() {
 	Hardware::getTopGfx()->drawFilledRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, woopsiRGB(0, 0, 0));
 	Hardware::getBottomGfx()->drawFilledRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, woopsiRGB(0, 0, 0));
@@ -188,7 +183,16 @@ int main(int argc, char* argv[]) {
 				}
 
 				if (pad.isStartNewPress()) {
-					showPauseScreen(runnerX, aiRunnerX, 0, runnerWidth, runnerHeight);
+					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
+
+					gfx->drawFilledRect(runnerX, 0, runnerWidth, runnerHeight, woopsiRGB(0, 0, 0));
+					showText(runnerX, 0, runnerWidth, runnerHeight, "Paused");
+
+					if (aiGrid != NULL) {
+						gfx->drawFilledRect(aiRunnerX, 0, runnerWidth, runnerHeight, woopsiRGB(0, 0, 0));
+						showText(aiRunnerX, 0, runnerWidth, runnerHeight, "Paused");
+					}
+
 					state = GAME_STATE_PAUSED;
 				}
 
