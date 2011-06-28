@@ -107,14 +107,10 @@ int main(int argc, char* argv[]) {
 
 					switch (menu->getGameType()) {
 						case 0:
-							gameType = GridRunner::GAME_TYPE_A;
+							gameType = GridRunner::GAME_TYPE_SINGLE_PLAYER;
 							blockServer = new BlockServer(1, menu->getColours());
 							break;
 						case 1:
-							gameType = GridRunner::GAME_TYPE_B;
-							blockServer = new BlockServer(1, menu->getColours());
-							break;
-						case 2:
 							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
 							
 							blockServer = new BlockServer(2, menu->getColours());
@@ -124,7 +120,7 @@ int main(int argc, char* argv[]) {
 
 							aiController->setGridRunner(aiRunner);
 							break;
-						case 3:
+						case 2:
 							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
 
 							blockServer = new BlockServer(2, menu->getColours());

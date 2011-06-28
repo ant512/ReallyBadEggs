@@ -21,8 +21,7 @@ public:
 	 */
 	enum GameType {
 		GAME_TYPE_TWO_PLAYER = 0,						/**< Player vs AI. */
-		GAME_TYPE_A = 1,								/**< Endless with advancing levels. */
-		GAME_TYPE_B = 2									/**< Get 25 chains to win. */
+		GAME_TYPE_SINGLE_PLAYER = 1,					/**< Single player. */
 	};
 
 	/**
@@ -128,12 +127,11 @@ private:
 	};
 
 	static const s32 AUTO_DROP_TIME = 2;	/**< Frames between drops when blocks are automatically dropping. */
-	static const s32 GAME_TYPE_B_START_CHAINS = 25;		/**< Number of chains to remove in game type B. */
 	static const s32 CHAIN_SEQUENCE_GARBAGE_BONUS = 6;	/**< Bonus garbage blocks added for each chain sequence. */
 	static const s32 GARBAGE_FACE_BOULDER_VALUE = 24;	/**< Number of garbage blocks represented by a face boulder. */
 	static const s32 GARBAGE_LARGE_BOULDER_VALUE = 6;	/**< Number of garbage blocks represented by a large boulder. */
 
-	static const s32 LEVEL_SPEED_COUNT = 20;			/**< Number of items in the drop speed array. */
+	static const s32 LEVEL_SPEED_COUNT = 10;			/**< Number of items in the drop speed array. */
 	static const s32 LEVEL_SPEEDS[LEVEL_SPEED_COUNT];	/**< Array of auto drop speeds for each level. */
 
 	Grid* _grid;							/**< The grid the runner controls. */

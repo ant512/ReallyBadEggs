@@ -16,10 +16,9 @@ public:
 		_activeMenu = 0;
 
 		_gameTypeMenu = new MenuSet(60, 100, 56, 4, 1, 0, "Game Type");
-		_gameTypeMenu->addOption("Game A", 0);
-		_gameTypeMenu->addOption("Game B", 1);
-		_gameTypeMenu->addOption("Easy AI", 2);
-		_gameTypeMenu->addOption("Hard AI", 3);
+		_gameTypeMenu->addOption("Practice", 0);
+		_gameTypeMenu->addOption("Easy AI", 1);
+		_gameTypeMenu->addOption("Hard AI", 2);
 
 		_startLevelMenu = new MenuSet(10, 70, 28, 2, 5, 1, "Start Level");
 		_startLevelMenu->addOption("0", 0);
@@ -33,7 +32,7 @@ public:
 		_startLevelMenu->addOption("8", 8);
 		_startLevelMenu->addOption("9", 9);
 
-		_startHeightMenu = new MenuSet(68, 42, 28, 2, 3, 2, "Height");
+		_startHeightMenu = new MenuSet(68, 56, 28, 2, 3, 2, "Height");
 		_startHeightMenu->addOption("0", 0);
 		_startHeightMenu->addOption("1", 1);
 		_startHeightMenu->addOption("2", 2);

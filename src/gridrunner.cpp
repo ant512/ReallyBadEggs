@@ -6,7 +6,7 @@
 // Hard-coded lookup list for level speeds.  The speed increase between each
 // levels 0 to 10 is larger than the increase between levels 11 to 19 as the
 // increase becomes more significant as the wait period gets shorter
-const s32 GridRunner::LEVEL_SPEEDS[20] = { 30, 28, 26, 24, 22, 20, 18, 16, 14, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+const s32 GridRunner::LEVEL_SPEEDS[LEVEL_SPEED_COUNT] = { 38, 34, 30, 26, 22, 18, 14, 10, 6, 2 };
 
 GridRunner::GridRunner(ControllerBase* controller,
 					   Grid* grid,
@@ -27,7 +27,7 @@ GridRunner::GridRunner(ControllerBase* controller,
 
 	_score = 0;
 	_level = startLevel;
-	_chains = _gameType == GAME_TYPE_B ? GAME_TYPE_B_START_CHAINS : 0;
+	_chains = 0;
 	_scoreMultiplier = 0;
 	_outgoingGarbageCount = 0;
 	_incomingGarbageCount = 0;
@@ -185,42 +185,30 @@ void GridRunner::land() {
 	if (_grid->explodeChains(score, chains, blocks)) {
 		
 		++_scoreMultiplier;
-
 		_score += score * _scoreMultiplier;
 
-		switch (_gameType) {
-			case GAME_TYPE_A:
-				_chains += chains;
-				if (_chains / 10 > _level) _level = _chains / 10;
-				break;
-			case GAME_TYPE_B:
-				_chains -= chains;
+		_chains += chains;
 
-				if (_chains < 0) _chains = 0;
-				break;
-			case GAME_TYPE_TWO_PLAYER:
-				_chains += chains;
+		if (_gameType == GAME_TYPE_TWO_PLAYER) {
+			s32 garbage = 0;
 
-				s32 garbage = 0;
+			if (_scoreMultiplier == 1) {
 
-				if (_scoreMultiplier == 1) {
+				// One block for the chain and one block for each block on
+				// top of the required minimum number
+				garbage = blocks - (Grid::CHAIN_LENGTH - 1);
+			} else {
 
-					// One block for the chain and one block for each block on
-					// top of the required minimum number
-					garbage = blocks - (Grid::CHAIN_LENGTH - 1);
-				} else {
+				// If we're in a sequence of chains, we add 6 blocks each
+				// sequence
+				garbage = CHAIN_SEQUENCE_GARBAGE_BONUS;
 
-					// If we're in a sequence of chains, we add 6 blocks each
-					// sequence
-					garbage = CHAIN_SEQUENCE_GARBAGE_BONUS;
+				// Add any additional blocks on top of the standard
+				// chain length
+				garbage += blocks - Grid::CHAIN_LENGTH;
+			}
 
-					// Add any additional blocks on top of the standard
-					// chain length
-					garbage += blocks - Grid::CHAIN_LENGTH;
-				}
-
-				_accumulatingGarbageCount += garbage;
-				break;
+			_accumulatingGarbageCount += garbage;
 		}
 
 		renderScore(_x, 16);
@@ -249,12 +237,7 @@ void GridRunner::land() {
 
 		// Nothing exploded, so we can put a new live block into
 		// the grid
-
-		if (_gameType == GAME_TYPE_B && _chains == 0) {
-
-			// Game B complete
-			_state = GRID_RUNNER_STATE_DEAD;
-		} else if (!_grid->addLiveBlocks(_nextBlocks[0], _nextBlocks[1])) {
+		if (!_grid->addLiveBlocks(_nextBlocks[0], _nextBlocks[1])) {
 
 			// Cannot add more blocks - game is over
 			_state = GRID_RUNNER_STATE_DEAD;
@@ -285,7 +268,7 @@ void GridRunner::live() {
 
 		// Work out how many frames we need to wait until the blocks drop
 		// automatically
-		s32 timeToDrop = LEVEL_SPEEDS[_level < 20 ? _level : 19];
+		s32 timeToDrop = LEVEL_SPEEDS[_level];
 
 		// Process user input
 		if (_controller->left()) {
