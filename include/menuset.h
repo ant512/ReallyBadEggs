@@ -73,11 +73,15 @@ public:
 		if (pad.isLeftNewPress() || pad.isLeftRepeat()) {
 			setSelectedOption(_selectedOptionIndex - 1);
 		} else if (pad.isUpNewPress() || pad.isUpRepeat()) {
-			setSelectedOption(_selectedOptionIndex - _columns);
+			if (_selectedOptionIndex - _columns >= 0) {
+				setSelectedOption(_selectedOptionIndex - _columns);
+			}
 		} else if (pad.isRightNewPress() || pad.isRightRepeat()) {
 			setSelectedOption(_selectedOptionIndex + 1);
 		} else if (pad.isDownNewPress() || pad.isDownRepeat()) {
-			setSelectedOption(_selectedOptionIndex + _columns);
+			if (_selectedOptionIndex + _columns < _options.size()) {
+				setSelectedOption(_selectedOptionIndex + _columns);
+			}
 		}
 	};
 
