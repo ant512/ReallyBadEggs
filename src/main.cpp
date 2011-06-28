@@ -14,6 +14,7 @@
 #include "playercontroller.h"
 #include "simianzombielogobmp.h"
 #include "smartaicontroller.h"
+#include "soundplayer.h"
 #include "twoplayerbgbmp.h"
 
 
@@ -48,6 +49,7 @@ void clearScreens() {
 int main(int argc, char* argv[]) {
 
 	Hardware::init();
+	SoundPlayer::init();
 
 	s32 runnerX = Grid::BLOCK_SIZE;
 	s32 aiRunnerX = SCREEN_WIDTH - (Grid::GRID_WIDTH * Grid::BLOCK_SIZE) - Grid::BLOCK_SIZE;
@@ -193,6 +195,8 @@ int main(int argc, char* argv[]) {
 						showText(aiRunnerX, 0, runnerWidth, runnerHeight, "Paused");
 					}
 
+					SoundPlayer::playPause();
+
 					state = GAME_STATE_PAUSED;
 				}
 
@@ -264,6 +268,7 @@ int main(int argc, char* argv[]) {
 	delete menu;
 	delete controller;
 
+	SoundPlayer::shutdown();
 	Hardware::shutdown();
 	return 0;
 }
