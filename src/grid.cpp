@@ -329,7 +329,7 @@ void Grid::dropLiveBlocks() {
 	// Abort if we don't have live blocks to move
 	if (!_hasLiveBlocks) return;
 
-	bool landed = false;
+	bool hasLanded = false;
 
 	// Check both live blocks for collisions before we try to drop them.  This
 	// prevents us from getting into a situation in which one of the pair drops
@@ -343,7 +343,7 @@ void Grid::dropLiveBlocks() {
 			BlockBase* block = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
 			block->land();
 
-			landed = true;
+			hasLanded = true;
 		} else {
 
 			// Check if the block has landed on another
@@ -358,7 +358,7 @@ void Grid::dropLiveBlocks() {
 					BlockBase* block = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
 					block->land();
 
-					landed = true;
+					hasLanded = true;
 				}
 			}
 		}
@@ -382,7 +382,7 @@ void Grid::dropLiveBlocks() {
 		}
 	}
 
-	if (landed) {
+	if (hasLanded) {
 		SoundPlayer::playLand();
 	}
 }
@@ -393,6 +393,8 @@ bool Grid::dropBlocks() {
 	if (_hasLiveBlocks) return false;
 
 	bool hasDropped = false;
+	bool hasLanded = false;
+	bool isGarbage = false;
 
 	// Everything on the bottom row should have landed
 	for (s32 x = 0; x < GRID_WIDTH; ++x) {
@@ -403,9 +405,12 @@ bool Grid::dropBlocks() {
 			// Shake the column
 			if (block->getColour() == GarbageBlock::COLOUR) {
 				_columnOffsets[x] = GARBAGE_LAND_OFFSET;
+
+				isGarbage = true;
 			}
 
 			block->land();
+			hasLanded = true;
 		}
 	}
 
@@ -434,13 +439,24 @@ bool Grid::dropBlocks() {
 
 				if (!getBlockAt(x, y + 1)->isFalling()) {
 					block->land();
+					hasLanded = true;
 
 					// Shake the column
 					if (block->getColour() == GarbageBlock::COLOUR) {
 						_columnOffsets[x] = GARBAGE_LAND_OFFSET;
+
+						isGarbage = true;
 					}
 				}
 			}
+		}
+	}
+
+	if (hasLanded) {
+		if (isGarbage) {
+			SoundPlayer::playGarbage();
+		} else {
+			SoundPlayer::playLand();
 		}
 	}
 
