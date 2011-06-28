@@ -787,7 +787,7 @@ s32 Grid::getColumnHeight(s32 column) const {
 	return height;
 }
 
-bool Grid::addGarbage(s32 count) {
+void Grid::addGarbage(s32 count) {
 	s32 columnHeights[6];
 	s32 columns[6];
 	s32 items = 0;
@@ -852,10 +852,8 @@ bool Grid::addGarbage(s32 count) {
 		}
 
 		// If we failed to place the block the grid must be full
-		if (oldCount == count) return false;
+		if (oldCount == count) return;
 
 		++y;
 	}
-
-	return true;
 }

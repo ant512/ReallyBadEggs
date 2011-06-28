@@ -224,15 +224,10 @@ void GridRunner::land() {
 	} else if (_incomingGarbageCount > 0) {
 
 		// Add any incoming garbage blocks
-		if (_grid->addGarbage(_incomingGarbageCount)) {
+		_grid->addGarbage(_incomingGarbageCount);
 
-			// Switch back to the drop state
-			_state = GRID_RUNNER_STATE_DROP;
-		} else {
-
-			// Cannot add all garbage blocks, which means we're dead
-			_state = GRID_RUNNER_STATE_DEAD;
-		}
+		// Switch back to the drop state
+		_state = GRID_RUNNER_STATE_DROP;
 
 		_incomingGarbageCount = 0;
 		renderIncomingGarbage(_x, 40);

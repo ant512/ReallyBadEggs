@@ -126,12 +126,12 @@ public:
 
 	/**
 	 * Adds the specified amount of garbage blocks to the grid.  Blocks are
-	 * placed in the lowest columns first.
+	 * placed in the lowest columns first.  If the grid is full, no more blocks
+	 * are added.  If the number of blocks exceeds the amount of free space in
+	 * the grid, the grid is filled and the function exits.
 	 * @param count The number of blocks to place.
-	 * @return True if the blocks were all added.  If false is returned, the
-	 * blocks could not be placed which means the grid is full.
 	 */
-	bool addGarbage(s32 count);
+	void addGarbage(s32 count);
 
 	/**
 	 * Gets the length of chain created if the specified block is placed at the
