@@ -7,7 +7,15 @@ Engine
  - Use bitmaps for incoming garbage display instead of rects and erase old
    display when display is updated.
  - Replace "game over" text with bitmap.
- - Sound effects.
+ - Sound effects:
+   - Chain;
+   - Player 1 dumps garbage on player 2;
+   - Player 2 dumps garbage on player 1;
+   - Player 1 wins;
+   - Player 1 loses;
+   - Lots of garbage dumped simultaneously (whole row?);
+   - Menu movement;
+   - Menu selection.
  - Bitmap to fill blocks in second playfield when AI is disabled.
 
 Presentation
