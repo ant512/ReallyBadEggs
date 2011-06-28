@@ -6,11 +6,7 @@ Engine
  - Add all bitmaps for blocks.
  - Use bitmaps for incoming garbage display instead of rects and erase old
    display when display is updated.
- - Replace two player background bitmap with components that make up the
-   background; this will allow the incoming garbage block display to be removed
-   if placed in the top screen borders.  Will also reduce the ROM size
-   significantly.
- - Replace winner/loser text with bitmaps.
+ - Replace "game over" text with bitmap.
  - Sound effects.
  - Bitmap to fill blocks in second playfield when AI is disabled.
 

@@ -11,12 +11,13 @@
 #include "gridrunner.h"
 #include "hardware.h"
 #include "menu.h"
+#include "pausedbmp.h"
 #include "playercontroller.h"
 #include "simianzombielogobmp.h"
 #include "smartaicontroller.h"
 #include "soundplayer.h"
 #include "twoplayerbgbmp.h"
-
+#include "winnerbmp.h"
 
 enum GameState {
 	GAME_STATE_TITLE = 0,
@@ -62,6 +63,8 @@ int main(int argc, char* argv[]) {
 
 	TwoPlayerBgBmp background;
 	SimianZombieLogoBmp simianZombieLogoBmp;
+	PausedBmp pausedBmp;
+	WinnerBmp winnerBmp;
 
 	BlockServer* blockServer = NULL;
 
@@ -162,16 +165,29 @@ int main(int argc, char* argv[]) {
 					aiRunner->iterate();
 
 					if (runner->isDead() && !aiRunner->isDead()) {
-						showText(runnerX, 0, runnerWidth, runnerHeight, "Loser");
-						showText(aiRunnerX, 0, runnerWidth, runnerHeight, "Winner");
+						WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
+						
+						gfx->drawBitmap(aiRunnerX, (runnerHeight - 16) / 2, winnerBmp.getWidth(), winnerBmp.getHeight(), &winnerBmp, 0, 0);
+
+						Hardware::getTopBuffer()->buffer();
+
 						state = GAME_STATE_GAME_OVER;
 					} else if (aiRunner->isDead() && !runner->isDead()) {
-						showText(runnerX, 0, runnerWidth, runnerHeight, "Winner");
-						showText(aiRunnerX, 0, runnerWidth, runnerHeight, "Loser");
+						WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
+						
+						gfx->drawBitmap(runnerX, (runnerHeight - 16) / 2, winnerBmp.getWidth(), winnerBmp.getHeight(), &winnerBmp, 0, 0);
+
+						Hardware::getTopBuffer()->buffer();
+
 						state = GAME_STATE_GAME_OVER;
 					} else if (aiRunner->isDead() && runner->isDead()) {
-						showText(runnerX, 0, runnerWidth, runnerHeight, "Draw");
-						showText(aiRunnerX, 0, runnerWidth, runnerHeight, "Draw");
+						WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
+
+						gfx->drawBitmap(runnerX, (runnerHeight - 16) / 2, winnerBmp.getWidth(), winnerBmp.getHeight(), &winnerBmp, 0, 0);
+						gfx->drawBitmap(aiRunnerX, (runnerHeight - 16) / 2, winnerBmp.getWidth(), winnerBmp.getHeight(), &winnerBmp, 0, 0);
+
+						Hardware::getTopBuffer()->buffer();
+
 						state = GAME_STATE_GAME_OVER;
 					}
 
@@ -188,12 +204,14 @@ int main(int argc, char* argv[]) {
 					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 
 					gfx->drawFilledRect(runnerX, 0, runnerWidth, runnerHeight, woopsiRGB(0, 0, 0));
-					showText(runnerX, 0, runnerWidth, runnerHeight, "Paused");
+					gfx->drawBitmap(runnerX, (runnerHeight - 16) / 2, pausedBmp.getWidth(), pausedBmp.getHeight(), &pausedBmp, 0, 0);
 
 					if (aiGrid != NULL) {
 						gfx->drawFilledRect(aiRunnerX, 0, runnerWidth, runnerHeight, woopsiRGB(0, 0, 0));
-						showText(aiRunnerX, 0, runnerWidth, runnerHeight, "Paused");
+						gfx->drawBitmap(aiRunnerX, (runnerHeight - 16) / 2, pausedBmp.getWidth(), pausedBmp.getHeight(), &pausedBmp, 0, 0);
 					}
+
+					Hardware::getTopBuffer()->buffer();
 
 					SoundPlayer::playPause();
 
