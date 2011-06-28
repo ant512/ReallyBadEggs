@@ -34,6 +34,8 @@ public:
 
 		mmInitDefaultMem((mm_addr)soundbank_bin);
 		mmLoadEffect(SFX_PAUSE);
+
+		mmLoad(MOD_TITLE);
 		
 #else
 		
@@ -54,6 +56,14 @@ public:
 #endif
 	};
 
+	static void playTitleMusic() {
+		mmStart(MOD_TITLE, MM_PLAY_LOOP);
+	};
+
+	static void stopMusic() {
+		mmStop();
+	};
+
 	/**
 	 * Shuts down all game sounds.
 	 */
@@ -62,6 +72,8 @@ public:
 #ifndef USING_SDL
 		
 		mmUnloadEffect(SFX_PAUSE);
+
+		mmUnload(MOD_TITLE);
 		
 #else
 		

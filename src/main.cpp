@@ -86,6 +86,8 @@ int main(int argc, char* argv[]) {
 	Hardware::getBottomGfx()->drawBitmap(0, 0, simianZombieLogoBmp.getWidth(), simianZombieLogoBmp.getHeight(), &simianZombieLogoBmp, 0, 0);
 	Hardware::getTopBuffer()->buffer();
 
+	SoundPlayer::playTitleMusic();
+
 	while (1) {
 
 		++blanks;
@@ -138,6 +140,8 @@ int main(int argc, char* argv[]) {
 					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 					gfx->drawBitmap(0, 0, background.getWidth(), background.getHeight(), &background, 0, 0);
 					Hardware::getTopBuffer()->buffer();
+
+					SoundPlayer::stopMusic();
 
 					state = GAME_STATE_ACTIVE;
 				}
@@ -252,6 +256,8 @@ int main(int argc, char* argv[]) {
 					menu->setActiveMenu(1);
 
 					clearScreens();
+
+					SoundPlayer::playTitleMusic();
 
 					state = GAME_STATE_MENU;
 				}
