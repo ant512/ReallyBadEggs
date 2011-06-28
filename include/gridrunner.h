@@ -158,6 +158,8 @@ private:
 
 	GameFont _font;							/**< Font used for rendering text. */
 
+	bool _droppingLiveBlocks;
+
 	/**
 	 * Draws the current score at the specified co-ordinates to the lower
 	 * screen.

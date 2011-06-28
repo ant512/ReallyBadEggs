@@ -4,6 +4,7 @@
 #include "purpleblock.h"
 #include "yellowblock.h"
 #include "blueblock.h"
+#include "soundplayer.h"
 
 Grid::Grid(s32 startingHeight) {
 	_data = new BlockBase*[GRID_WIDTH * GRID_HEIGHT];
@@ -328,6 +329,8 @@ void Grid::dropLiveBlocks() {
 	// Abort if we don't have live blocks to move
 	if (!_hasLiveBlocks) return;
 
+	bool landed = false;
+
 	// Check both live blocks for collisions before we try to drop them.  This
 	// prevents us from getting into a situation in which one of the pair drops
 	// and the other hits something
@@ -339,6 +342,8 @@ void Grid::dropLiveBlocks() {
 
 			BlockBase* block = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
 			block->land();
+
+			landed = true;
 		} else {
 
 			// Check if the block has landed on another
@@ -352,6 +357,8 @@ void Grid::dropLiveBlocks() {
 
 					BlockBase* block = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
 					block->land();
+
+					landed = true;
 				}
 			}
 		}
@@ -373,6 +380,10 @@ void Grid::dropLiveBlocks() {
 			
 			liveBlock->dropHalfBlock();
 		}
+	}
+
+	if (landed) {
+		SoundPlayer::playLand();
 	}
 }
 
@@ -503,6 +514,8 @@ void Grid::moveLiveBlocksLeft() {
 			moveBlock(_liveBlocks[i].x, _liveBlocks[i].y, _liveBlocks[i].x - 1, _liveBlocks[i].y);
 			--_liveBlocks[i].x;
 		}
+
+		SoundPlayer::playMove();
 	}
 }
 
@@ -538,6 +551,8 @@ void Grid::moveLiveBlocksRight() {
 			moveBlock(_liveBlocks[i].x, _liveBlocks[i].y, _liveBlocks[i].x + 1, _liveBlocks[i].y);
 			++_liveBlocks[i].x;
 		}
+
+		SoundPlayer::playMove();
 	}
 }
 
@@ -601,6 +616,8 @@ void Grid::rotateLiveBlocksClockwise() {
 
 		--_liveBlocks[0].x;
 	}
+
+	SoundPlayer::playRotate();
 }
 
 void Grid::rotateLiveBlocksAntiClockwise() {
@@ -661,6 +678,8 @@ void Grid::rotateLiveBlocksAntiClockwise() {
 		moveBlock(_liveBlocks[1].x, _liveBlocks[1].y, _liveBlocks[1].x, _liveBlocks[1].y - 1);
 		--_liveBlocks[1].y;
 	}
+
+	SoundPlayer::playRotate();
 }
 
 bool Grid::addLiveBlocks(BlockBase* block1, BlockBase* block2) {

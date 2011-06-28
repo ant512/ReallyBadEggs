@@ -33,7 +33,12 @@ public:
 #ifndef USING_SDL
 
 		mmInitDefaultMem((mm_addr)soundbank_bin);
+		mmLoadEffect(SFX_DROP);
+		mmLoadEffect(SFX_GARBAGE);
+		mmLoadEffect(SFX_LAND);
+		mmLoadEffect(SFX_MOVE);
 		mmLoadEffect(SFX_PAUSE);
+		mmLoadEffect(SFX_ROTATE);
 
 		mmLoad(MOD_TITLE);
 		
@@ -45,6 +50,38 @@ public:
 #endif
 	};
 
+	static void playDrop() {
+#ifndef USING_SDL
+		mmEffect(SFX_DROP);
+#else
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
+#endif
+	};
+
+	static void playGarbage() {
+#ifndef USING_SDL
+		mmEffect(SFX_GARBAGE);
+#else
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_GARBAGE], 0);
+#endif
+	};
+
+	static void playLand() {
+#ifndef USING_SDL
+		mmEffect(SFX_LAND);
+#else
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_LAND], 0);
+#endif
+	};
+
+	static void playMove() {
+#ifndef USING_SDL
+		mmEffect(SFX_MOVE);
+#else
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_MOVE], 0);
+#endif
+	};
+
 	/**
 	 * Plays the game paused sound.
 	 */
@@ -53,6 +90,17 @@ public:
 		mmEffect(SFX_PAUSE);
 #else
 		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_PAUSE], 0);
+#endif
+	};
+
+	/**
+	 * Plays the block rotation sound.
+	 */
+	static void playRotate() {
+#ifndef USING_SDL
+		mmEffect(SFX_ROTATE);
+#else
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_ROTATE], 0);
 #endif
 	};
 
@@ -71,7 +119,12 @@ public:
 		
 #ifndef USING_SDL
 		
+		mmUnloadEffect(SFX_DROP);
+		mmUnloadEffect(SFX_GARBAGE);
+		mmUnloadEffect(SFX_LAND);
+		mmUnloadEffect(SFX_MOVE);
 		mmUnloadEffect(SFX_PAUSE);
+		mmUnloadEffect(SFX_ROTATE);
 
 		mmUnload(MOD_TITLE);
 		

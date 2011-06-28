@@ -2,6 +2,7 @@
 
 #include "gridrunner.h"
 #include "hardware.h"
+#include "soundplayer.h"
 
 // Hard-coded lookup list for level speeds.  The speed increase between each
 // levels 0 to 10 is larger than the increase between levels 11 to 19 as the
@@ -32,6 +33,8 @@ GridRunner::GridRunner(ControllerBase* controller,
 	_outgoingGarbageCount = 0;
 	_incomingGarbageCount = 0;
 	_accumulatingGarbageCount = 0;
+
+	_droppingLiveBlocks = false;
 
 	_nextBlocks = new BlockBase*[2];
 
@@ -275,11 +278,23 @@ void GridRunner::live() {
 			_grid->moveLiveBlocksLeft();
 		} else if (_controller->right()) {
 			_grid->moveLiveBlocksRight();
-		} else if (_controller->down() && (_timer % 2 == 0)) {
+		}
+
+		if (_controller->down() && (_timer % 2 == 0)) {
 
 			// Force blocks to drop
 			_timer = timeToDrop;
-		} else if (_controller->rotateClockwise()) {
+
+			if (!_droppingLiveBlocks) {
+				_droppingLiveBlocks = true;
+
+				SoundPlayer::playDrop();
+			}
+		} else if (!_controller->down()) {
+			_droppingLiveBlocks = false;
+		}
+		
+		if (_controller->rotateClockwise()) {
 			_grid->rotateLiveBlocksClockwise();
 		} else if (_controller->rotateAntiClockwise()) {
 			_grid->rotateLiveBlocksAntiClockwise();
@@ -294,6 +309,7 @@ void GridRunner::live() {
 
 		// At least one of the blocks in the live pair has touched down.
 		// We need to drop the other block automatically
+		_droppingLiveBlocks = false;
 		_state = GRID_RUNNER_STATE_DROP;
 	}
 }
