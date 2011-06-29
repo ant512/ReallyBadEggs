@@ -99,6 +99,8 @@ int main(int argc, char* argv[]) {
 			case GAME_STATE_TITLE:
 				if (pad.isANewPress() || pad.isStartNewPress()) {
 					clearScreens();
+
+					menu->reset();
 					state = GAME_STATE_MENU;
 				}
 				break;
@@ -263,6 +265,8 @@ int main(int argc, char* argv[]) {
 
 					SoundPlayer::playTitleMusic();
 
+					menu->reset();
+
 					state = GAME_STATE_MENU;
 				}
 				break;
@@ -302,6 +306,8 @@ int main(int argc, char* argv[]) {
 					clearScreens();
 
 					SoundPlayer::playTitleMusic();
+
+					menu->reset();
 
 					state = GAME_STATE_MENU;
 				}

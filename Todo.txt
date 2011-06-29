@@ -24,6 +24,4 @@ Presentation
  - Title screen on top and bottom screens before menu.
  - High score screen (or several screens) giving top scores for each game type
    on bottom screen during menu system.
- - Background graphic for menu screens - reuse title screen but greyscale?
- - Game over screen with high-score entry.
- - ROM icon.
+ - High-score entry.

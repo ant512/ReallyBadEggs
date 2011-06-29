@@ -7,6 +7,7 @@
 #include <woopsistring.h>
 
 #include "gamefont.h"
+#include "menubackgroundbmp.h"
 #include "menuset.h"
 #include "menuoption.h"
 #include "soundplayer.h"
@@ -16,7 +17,7 @@ public:
 	Menu() {
 		_activeMenu = 0;
 
-		_gameTypeMenu = new MenuSet(60, 100, 56, 4, 1, 0, "Game Type");
+		_gameTypeMenu = new MenuSet(60, 100, 56, 3, 1, 0, "Game Type");
 		_gameTypeMenu->addOption("Practice", 0);
 		_gameTypeMenu->addOption("Easy AI", 1);
 		_gameTypeMenu->addOption("Hard AI", 2);
@@ -67,6 +68,16 @@ public:
 		}
 	};
 
+	void drawBackground() {
+		Hardware::getTopGfx()->drawBitmap(0, 0, _backgroundBmp.getWidth(), _backgroundBmp.getHeight(), &_backgroundBmp, 0, 0);
+		Hardware::getTopBuffer()->buffer();
+	};
+
+	void reset() {
+		drawBackground();
+		_activeMenu = 0;
+	};
+
 	void iterate() {
 		const Pad& pad = Hardware::getPad();
 
@@ -74,10 +85,8 @@ public:
 			if (_activeMenu < 4) {
 				++_activeMenu;
 
-				// Wipe the menu if switching to a new set of menus
 				if (_activeMenu == 1) {
-					Hardware::getTopGfx()->drawFilledRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, woopsiRGB(0, 0, 0));
-					Hardware::getTopBuffer()->buffer();
+					drawBackground();
 				}
 			}
 
@@ -87,10 +96,8 @@ public:
 			if (_activeMenu > 0) {
 				--_activeMenu;
 
-				// Wipe the menu if switching to a new set of menus
 				if (_activeMenu == 0) {
-					Hardware::getTopGfx()->drawFilledRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, woopsiRGB(0, 0, 0));
-					Hardware::getTopBuffer()->buffer();
+					drawBackground();
 				}
 
 				SoundPlayer::playMenuBack();
@@ -154,6 +161,7 @@ private:
 	s32 _activeMenu;
 
 	GameFont _font;
+	MenuBackgroundBmp _backgroundBmp;
 };
 
 #endif

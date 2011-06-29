@@ -49,6 +49,8 @@ public:
 
 		s32 x = (SCREEN_WIDTH - _width) / 2;
 
+		gfx->drawFilledRect(x + 4, _y + (font->getHeight() * 2) + 4, _columns * optionWidth, _rows * optionHeight, woopsiRGB(0, 0, 0));
+
 		for (s32 row = 0; row < _rows; ++row) {
 
 			optionY = _y + (optionHeight * row) + (font->getHeight() * 2);
