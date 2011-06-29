@@ -73,7 +73,7 @@ public:
 #endif
 	};
 
-	static void playDrop() {
+	static void playMenuBack() {
 #ifndef USING_SDL
 		mmEffect(SFX_DROP);
 #else
@@ -153,7 +153,7 @@ public:
 #endif
 	};
 
-	static void playMove() {
+	static void playMenuMove() {
 #ifndef USING_SDL
 		mmEffect(SFX_MOVE);
 #else
@@ -207,9 +207,9 @@ public:
 	};
 
 	/**
-	 * Plays the block rotation sound.
+	 * Plays the menu selection sound.
 	 */
-	static void playRotate() {
+	static void playMenuSelect() {
 #ifndef USING_SDL
 		mmEffect(SFX_ROTATE);
 #else

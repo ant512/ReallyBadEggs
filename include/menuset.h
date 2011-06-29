@@ -98,7 +98,7 @@ public:
 
 		if (_selectedOptionIndex != newValue) {
 			_selectedOptionIndex = newValue;
-			SoundPlayer::playMove();
+			SoundPlayer::playMenuMove();
 		}
 	};
 

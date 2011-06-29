@@ -81,7 +81,7 @@ public:
 				}
 			}
 
-			SoundPlayer::playRotate();
+			SoundPlayer::playMenuSelect();
 
 		} else if (pad.isBNewPress()) {
 			if (_activeMenu > 0) {
@@ -92,15 +92,15 @@ public:
 					Hardware::getTopGfx()->drawFilledRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, woopsiRGB(0, 0, 0));
 					Hardware::getTopBuffer()->buffer();
 				}
-			}
 
-			SoundPlayer::playDrop();
+				SoundPlayer::playMenuBack();
+			}
 
 		} else if (pad.isStartNewPress()) {
 			// Jump to the end of the menu
 			_activeMenu = 4;
 
-			SoundPlayer::playRotate();
+			SoundPlayer::playMenuSelect();
 		}
 
 		switch (_activeMenu) {
