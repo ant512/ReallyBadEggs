@@ -828,6 +828,8 @@ void Grid::addGarbage(s32 count) {
 	s32 activeColumns = 1;
 	s32 y = columnHeights[0];
 
+	if (count >= GRID_WIDTH) SoundPlayer::playGarbageBig(_playerNumber);
+
 	while (count > 0) {
 
 		s32 oldCount = count;

@@ -34,14 +34,19 @@ public:
 
 		mmInitDefaultMem((mm_addr)soundbank_bin);
 		mmLoadEffect(SFX_CHAIN);
+		mmLoadEffect(SFX_DEAD);
 		mmLoadEffect(SFX_DROP);
 		mmLoadEffect(SFX_GARBAGE);
+		mmLoadEffect(SFX_GARBAGEBIG);
 		mmLoadEffect(SFX_LAND);
 		mmLoadEffect(SFX_MOVE);
+		mmLoadEffect(SFX_MULTICHAIN1);
 		mmLoadEffect(SFX_PAUSE);
 		mmLoadEffect(SFX_ROTATE);
 
 		mmLoad(MOD_TITLE);
+
+		mmSetModuleVolume(512);
 		
 #else
 		
@@ -105,6 +110,23 @@ public:
 #endif
 	};
 
+	static void playGarbageBig(s32 player) {
+#ifndef USING_SDL
+
+		mm_sound_effect sound;
+		sound.id = SFX_GARBAGEBIG;
+		sound.rate = 1024;
+		sound.handle = 0;
+		sound.volume = 255;
+		sound.panning = player * 255;
+
+		mmEffectEx(&sound);
+
+#else
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_GARBAGEBIG], 0);
+#endif
+	};
+
 	static void playLand(s32 player) {
 #ifndef USING_SDL
 
@@ -136,6 +158,23 @@ public:
 
 #else
 		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_MOVE], 0);
+#endif
+	};
+
+	static void playMultichain(s32 player) {
+#ifndef USING_SDL
+
+		mm_sound_effect sound;
+		sound.id = player == 0 ? SFX_MULTICHAIN1 : SFX_MULTICHAIN1; // TODO: Fix
+		sound.rate = 1024;
+		sound.handle = 0;
+		sound.volume = 255;
+		sound.panning = player * 255;
+
+		mmEffectEx(&sound);
+
+#else
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[player == 0 ? SFX_MULTICHAIN1 : SFX_MULTICHAIN1], 0);
 #endif
 	};
 
@@ -186,10 +225,13 @@ public:
 #ifndef USING_SDL
 		
 		mmUnloadEffect(SFX_CHAIN);
+		mmUnloadEffect(SFX_DEAD);
 		mmUnloadEffect(SFX_DROP);
 		mmUnloadEffect(SFX_GARBAGE);
+		mmUnloadEffect(SFX_GARBAGEBIG);
 		mmUnloadEffect(SFX_LAND);
 		mmUnloadEffect(SFX_MOVE);
+		mmUnloadEffect(SFX_MULTICHAIN1);
 		mmUnloadEffect(SFX_PAUSE);
 		mmUnloadEffect(SFX_ROTATE);
 
