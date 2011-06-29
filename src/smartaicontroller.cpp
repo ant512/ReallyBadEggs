@@ -31,6 +31,7 @@ void SmartAIController::analyseGrid() {
 		s32 bestScore = 0;
 		s32 bestScoreX = 0;
 		bool rotate = false;
+		s32 chainLength[2];
 
 		// Get the score for each possible move we can make.  Assumptions:
 		// - Blocks are only ever placed horizontally;
@@ -38,9 +39,8 @@ void SmartAIController::analyseGrid() {
 		//   columns).
 		for (s32 arrangement = 0; arrangement < 2; ++arrangement) {
 
-			for (s32 i = 0; i <  Grid::GRID_WIDTH - 1; ++i) {
+			for (s32 i = 0; i < Grid::GRID_WIDTH - 1; ++i) {
 
-				s32 chainLength[2];
 				chainLength[0] = 0;
 				chainLength[1] = 0;
 
@@ -51,17 +51,18 @@ void SmartAIController::analyseGrid() {
 				}
 
 				if (columnY[i + 1] >= 0) {
-					chainLength[1] = grid->getPotentialChainLength(i, columnY[i + 1], grid->getBlockAt(liveBlock2.x, liveBlock2.y));
+					chainLength[1] = grid->getPotentialChainLength(i + 1, columnY[i + 1], grid->getBlockAt(liveBlock2.x, liveBlock2.y));
 				}
 
 				// Basic score is the number of blocks connected together,
 				// regardless of whether explosions will be created
-				s32 chainBaseScore = (chainLength[0] + chainLength[1]) * 20;
+				s32 chainBaseScore = chainLength[0] + chainLength[1];
 
 				// Extra score gives a bonus for creating exploding chains
 				s32 chainExtraScore = chainLength[0] > Grid::CHAIN_LENGTH ? 1 + chainLength[0] - Grid::CHAIN_LENGTH : 1;
 
 				// Join the chains together if the blocks are the same colour
+				// and adjacent
 				if (grid->getBlockAt(liveBlock1.x, liveBlock1.y)->getColour() == grid->getBlockAt(liveBlock2.x, liveBlock2.y)->getColour() &&
 					columnY[i] == columnY[i + 1]) {
 
@@ -70,10 +71,10 @@ void SmartAIController::analyseGrid() {
 					chainExtraScore += chainLength[1] > Grid::CHAIN_LENGTH ? 1 + chainLength[1] - Grid::CHAIN_LENGTH : 1;
 				}
 
-				// Penalise for increasing the height of the target column
-				s32 heightPenalty = (Grid::GRID_HEIGHT * 2) - (columnY[i] + columnY[i + 1]);
+				// Bonus for not increasing the height of the target column
+				s32 heightBonus = 1 + ((columnY[i] + columnY[i + 1]) / 2);
 
-				s32 score = chainBaseScore * chainExtraScore / heightPenalty;
+				s32 score = chainBaseScore * chainExtraScore * heightBonus;
 
 				if (score > bestScore) {
 					bestScore = score;
@@ -85,7 +86,7 @@ void SmartAIController::analyseGrid() {
 
 			// If both blocks are the same, we don't need to try the
 			// alternative rotation
-			if (grid->getBlockAt(liveBlock1.x, liveBlock1.y)->getColour() != grid->getBlockAt(liveBlock2.x, liveBlock2.y)->getColour()) break;
+			if (grid->getBlockAt(liveBlock1.x, liveBlock1.y)->getColour() == grid->getBlockAt(liveBlock2.x, liveBlock2.y)->getColour()) break;
 			
 			// Switch the blocks and try again
 			grid->getLiveBlockPoints(liveBlock2, liveBlock1);
