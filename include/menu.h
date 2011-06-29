@@ -22,7 +22,7 @@ public:
 		_gameTypeMenu->addOption("Easy AI", 1);
 		_gameTypeMenu->addOption("Hard AI", 2);
 
-		_startLevelMenu = new MenuSet(10, 70, 28, 2, 5, 1, "Speed");
+		_startLevelMenu = new MenuSet(23, 70, 28, 2, 5, 1, "Speed");
 		_startLevelMenu->addOption("0", 0);
 		_startLevelMenu->addOption("1", 1);
 		_startLevelMenu->addOption("2", 2);
@@ -34,7 +34,7 @@ public:
 		_startLevelMenu->addOption("8", 8);
 		_startLevelMenu->addOption("9", 9);
 
-		_startHeightMenu = new MenuSet(68, 56, 28, 2, 3, 2, "Height");
+		_startHeightMenu = new MenuSet(81, 56, 28, 2, 3, 2, "Height");
 		_startHeightMenu->addOption("0", 0);
 		_startHeightMenu->addOption("1", 1);
 		_startHeightMenu->addOption("2", 2);
@@ -42,7 +42,7 @@ public:
 		_startHeightMenu->addOption("4", 4);
 		_startHeightMenu->addOption("5", 5);
 
-		_coloursMenu = new MenuSet(126, 42, 14, 1, 3, 3, "Egg Colours");
+		_coloursMenu = new MenuSet(139, 42, 14, 1, 3, 3, "Egg Colours");
 		_coloursMenu->addOption("4", 4);
 		_coloursMenu->addOption("5", 5);
 		_coloursMenu->addOption("6", 6);
