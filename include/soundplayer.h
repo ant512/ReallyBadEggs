@@ -41,6 +41,7 @@ public:
 		mmLoadEffect(SFX_LAND);
 		mmLoadEffect(SFX_MOVE);
 		mmLoadEffect(SFX_MULTICHAIN1);
+		mmLoadEffect(SFX_MULTICHAIN2);
 		mmLoadEffect(SFX_PAUSE);
 		mmLoadEffect(SFX_ROTATE);
 
@@ -165,7 +166,7 @@ public:
 #ifndef USING_SDL
 
 		mm_sound_effect sound;
-		sound.id = player == 0 ? SFX_MULTICHAIN1 : SFX_MULTICHAIN1; // TODO: Fix
+		sound.id = player == 0 ? SFX_MULTICHAIN1 : SFX_MULTICHAIN2;
 		sound.rate = 1024;
 		sound.handle = 0;
 		sound.volume = 255;
@@ -174,7 +175,7 @@ public:
 		mmEffectEx(&sound);
 
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[player == 0 ? SFX_MULTICHAIN1 : SFX_MULTICHAIN1], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[player == 0 ? SFX_MULTICHAIN1 : SFX_MULTICHAIN2], 0);
 #endif
 	};
 
@@ -232,6 +233,7 @@ public:
 		mmUnloadEffect(SFX_LAND);
 		mmUnloadEffect(SFX_MOVE);
 		mmUnloadEffect(SFX_MULTICHAIN1);
+		mmUnloadEffect(SFX_MULTICHAIN2);
 		mmUnloadEffect(SFX_PAUSE);
 		mmUnloadEffect(SFX_ROTATE);
 

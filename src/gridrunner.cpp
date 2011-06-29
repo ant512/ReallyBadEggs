@@ -249,6 +249,8 @@ void GridRunner::land() {
 
 			renderNextBlocks(_x + ((Grid::GRID_WIDTH - 2) * Grid::BLOCK_SIZE / 2), 0);
 
+			if (_scoreMultiplier > 1) SoundPlayer::playMultichain(_playerNumber);
+
 			_scoreMultiplier = 0;
 
 			// Queue up outgoing blocks for the other player
