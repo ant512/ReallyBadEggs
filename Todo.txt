@@ -7,7 +7,6 @@ Engine
  - Use bitmaps for incoming garbage display instead of rects and erase old
    display when display is updated.
  - Replace "game over" text with bitmap.
- - Bitmap to fill blocks in second playfield when AI is disabled.
 
 Presentation
 

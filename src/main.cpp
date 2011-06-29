@@ -5,6 +5,7 @@
 #include <woopsiarray.h>
 #include <woopsistring.h>
 
+#include "blankblockbmp.h"
 #include "blockserver.h"
 #include "gamefont.h"
 #include "grid.h"
@@ -144,6 +145,19 @@ int main(int argc, char* argv[]) {
 
 					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 					gfx->drawBitmap(0, 0, background.getWidth(), background.getHeight(), &background, 0, 0);
+
+					// Fill second player grid with blank blocks if single
+					// player mode is selected
+					if (menu->getGameType() == 0) {
+						BlankBlockBmp blankBlockBmp;
+
+						for (s32 x = 0; x < Grid::GRID_WIDTH; ++x) {
+							for (s32 y = 0; y < Grid::GRID_HEIGHT; ++y) {
+								gfx->drawBitmap(aiRunnerX + (x * Grid::BLOCK_SIZE), y * Grid::BLOCK_SIZE, blankBlockBmp.getWidth(), blankBlockBmp.getHeight(), &blankBlockBmp, 0, 0);
+							}
+						}
+					}
+
 					Hardware::getTopBuffer()->buffer();
 
 					SoundPlayer::stopMusic();
