@@ -8,6 +8,7 @@
 #include <woopsistring.h>
 
 #include "menuoption.h"
+#include "soundplayer.h"
 
 class MenuSet {
 public:
@@ -86,12 +87,18 @@ public:
 	};
 
 	void setSelectedOption(s32 index) {
-		_selectedOptionIndex = index;
 
-		if (_selectedOptionIndex < 0) {
-			_selectedOptionIndex = 0;
-		} else if (_selectedOptionIndex >= _options.size()) {
-			_selectedOptionIndex = _options.size() - 1;
+		s32 newValue = index;
+
+		if (newValue < 0) {
+			newValue = 0;
+		} else if (newValue >= _options.size()) {
+			newValue = _options.size() - 1;
+		}
+
+		if (_selectedOptionIndex != newValue) {
+			_selectedOptionIndex = newValue;
+			SoundPlayer::playMove();
 		}
 	};
 

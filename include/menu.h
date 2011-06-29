@@ -9,6 +9,7 @@
 #include "gamefont.h"
 #include "menuset.h"
 #include "menuoption.h"
+#include "soundplayer.h"
 
 class Menu {
 public:
@@ -79,6 +80,9 @@ public:
 					Hardware::getTopBuffer()->buffer();
 				}
 			}
+
+			SoundPlayer::playRotate();
+
 		} else if (pad.isBNewPress()) {
 			if (_activeMenu > 0) {
 				--_activeMenu;
@@ -89,9 +93,14 @@ public:
 					Hardware::getTopBuffer()->buffer();
 				}
 			}
+
+			SoundPlayer::playDrop();
+
 		} else if (pad.isStartNewPress()) {
 			// Jump to the end of the menu
 			_activeMenu = 4;
+
+			SoundPlayer::playRotate();
 		}
 
 		switch (_activeMenu) {

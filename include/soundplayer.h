@@ -73,6 +73,14 @@ public:
 #endif
 	};
 
+	static void playDrop() {
+#ifndef USING_SDL
+		mmEffect(SFX_DROP);
+#else
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
+#endif
+	};
+
 	static void playDrop(s32 player) {
 
 		// Don't play drop sound for CPU as it is maddeningly annoying
@@ -145,6 +153,14 @@ public:
 #endif
 	};
 
+	static void playMove() {
+#ifndef USING_SDL
+		mmEffect(SFX_MOVE);
+#else
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_MOVE], 0);
+#endif
+	};
+
 	static void playMove(s32 player) {
 #ifndef USING_SDL
 
@@ -187,6 +203,17 @@ public:
 		mmEffect(SFX_PAUSE);
 #else
 		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_PAUSE], 0);
+#endif
+	};
+
+	/**
+	 * Plays the block rotation sound.
+	 */
+	static void playRotate() {
+#ifndef USING_SDL
+		mmEffect(SFX_ROTATE);
+#else
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_ROTATE], 0);
 #endif
 	};
 
