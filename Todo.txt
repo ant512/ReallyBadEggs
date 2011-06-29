@@ -7,9 +7,6 @@ Engine
  - Use bitmaps for incoming garbage display instead of rects and erase old
    display when display is updated.
  - Replace "game over" text with bitmap.
- - Sound effects:
-   - Player 1 wins;
-   - Player 1 loses;
  - Bitmap to fill blocks in second playfield when AI is disabled.
 
 Presentation

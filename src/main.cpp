@@ -159,6 +159,10 @@ int main(int argc, char* argv[]) {
 				if (aiRunner == NULL) {
 					if (runner->isDead()) {
 						showText(runnerX, 0, runnerWidth, runnerHeight, "Game Over");
+
+						SoundPlayer::playDead();
+
+						blanks = 0;
 						state = GAME_STATE_GAME_OVER;
 					}
 				} else {
@@ -171,6 +175,9 @@ int main(int argc, char* argv[]) {
 
 						Hardware::getTopBuffer()->buffer();
 
+						SoundPlayer::playDead();
+
+						blanks = 0;
 						state = GAME_STATE_GAME_OVER;
 					} else if (aiRunner->isDead() && !runner->isDead()) {
 						WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
@@ -179,6 +186,9 @@ int main(int argc, char* argv[]) {
 
 						Hardware::getTopBuffer()->buffer();
 
+						SoundPlayer::playDead();
+
+						blanks = 0;
 						state = GAME_STATE_GAME_OVER;
 					} else if (aiRunner->isDead() && runner->isDead()) {
 						WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
@@ -188,6 +198,9 @@ int main(int argc, char* argv[]) {
 
 						Hardware::getTopBuffer()->buffer();
 
+						SoundPlayer::playDead();
+
+						blanks = 0;
 						state = GAME_STATE_GAME_OVER;
 					}
 
@@ -255,7 +268,18 @@ int main(int argc, char* argv[]) {
 				break;
 
 			case GAME_STATE_GAME_OVER:
-				if (pad.isStartNewPress() || pad.isANewPress() || pad.isBNewPress()) {
+
+				if (blanks == 200) {
+					if (aiRunner != NULL) {
+						if (aiRunner->isDead()) {
+							SoundPlayer::playWin();
+						} else {
+							SoundPlayer::playLose();
+						}
+					}
+				}
+
+				if ((blanks > 200) && (pad.isStartNewPress() || pad.isANewPress() || pad.isBNewPress())) {
 
 					delete blockServer;
 

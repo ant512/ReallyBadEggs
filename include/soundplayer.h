@@ -39,11 +39,13 @@ public:
 		mmLoadEffect(SFX_GARBAGE);
 		mmLoadEffect(SFX_GARBAGEBIG);
 		mmLoadEffect(SFX_LAND);
+		mmLoadEffect(SFX_LOSE);
 		mmLoadEffect(SFX_MOVE);
 		mmLoadEffect(SFX_MULTICHAIN1);
 		mmLoadEffect(SFX_MULTICHAIN2);
 		mmLoadEffect(SFX_PAUSE);
 		mmLoadEffect(SFX_ROTATE);
+		mmLoadEffect(SFX_WIN);
 
 		mmLoad(MOD_TITLE);
 
@@ -78,6 +80,14 @@ public:
 		mmEffect(SFX_DROP);
 #else
 		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
+#endif
+	};
+
+	static void playDead() {
+#ifndef USING_SDL
+		mmEffect(SFX_DEAD);
+#else
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DEAD], 0);
 #endif
 	};
 
@@ -237,6 +247,22 @@ public:
 #endif
 	};
 
+	static void playLose() {
+#ifndef USING_SDL
+		mmEffect(SFX_LOSE);
+#else
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_LOSE], 0);
+#endif
+	};
+
+	static void playWin() {
+#ifndef USING_SDL
+		mmEffect(SFX_WIN);
+#else
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_WIN], 0);
+#endif
+	};
+
 	static void playTitleMusic() {
 		mmStart(MOD_TITLE, MM_PLAY_LOOP);
 	};
@@ -258,11 +284,13 @@ public:
 		mmUnloadEffect(SFX_GARBAGE);
 		mmUnloadEffect(SFX_GARBAGEBIG);
 		mmUnloadEffect(SFX_LAND);
+		mmUnloadEffect(SFX_LOSE);
 		mmUnloadEffect(SFX_MOVE);
 		mmUnloadEffect(SFX_MULTICHAIN1);
 		mmUnloadEffect(SFX_MULTICHAIN2);
 		mmUnloadEffect(SFX_PAUSE);
 		mmUnloadEffect(SFX_ROTATE);
+		mmUnloadEffect(SFX_WIN);
 
 		mmUnload(MOD_TITLE);
 		
