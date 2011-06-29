@@ -21,7 +21,7 @@ public:
 		_gameTypeMenu->addOption("Easy AI", 1);
 		_gameTypeMenu->addOption("Hard AI", 2);
 
-		_startLevelMenu = new MenuSet(10, 70, 28, 2, 5, 1, "Start Level");
+		_startLevelMenu = new MenuSet(10, 70, 28, 2, 5, 1, "Speed");
 		_startLevelMenu->addOption("0", 0);
 		_startLevelMenu->addOption("1", 1);
 		_startLevelMenu->addOption("2", 2);
@@ -41,7 +41,7 @@ public:
 		_startHeightMenu->addOption("4", 4);
 		_startHeightMenu->addOption("5", 5);
 
-		_coloursMenu = new MenuSet(126, 42, 14, 1, 3, 3, "Block Colours");
+		_coloursMenu = new MenuSet(126, 42, 14, 1, 3, 3, "Egg Colours");
 		_coloursMenu->addOption("4", 4);
 		_coloursMenu->addOption("5", 5);
 		_coloursMenu->addOption("6", 6);
