@@ -186,6 +186,8 @@ void GridRunner::land() {
 
 	// Attempt to explode any chains that exist in the grid
 	if (_grid->explodeChains(score, chains, blocks)) {
+
+		SoundPlayer::playChain(_playerNumber, _scoreMultiplier);
 		
 		++_scoreMultiplier;
 		_score += score * _scoreMultiplier;
@@ -283,7 +285,7 @@ void GridRunner::live() {
 			if (!_droppingLiveBlocks) {
 				_droppingLiveBlocks = true;
 
-				SoundPlayer::playDrop();
+				SoundPlayer::playDrop(_playerNumber);
 			}
 		} else if (!_controller->down()) {
 			_droppingLiveBlocks = false;

@@ -24,7 +24,7 @@ public:
 	 * @param startingHeight Number of rows that are filled with grey blocks at
 	 * the start of the game.
 	 */
-	Grid(s32 startingHeight);
+	Grid(s32 startingHeight, s32 playerNumber);
 
 	/**
 	 * Destructor.
@@ -160,6 +160,7 @@ private:
 	Point* _liveBlocks;			/**< Array of 2 Point objects that track the location of the live blocks. */
 	bool _hasLiveBlocks;		/**< True if there are any live blocks in the grid. */
 	s32* _columnOffsets;		/**< Y Offset of all columns caused by dropping garbage blocks. */
+	s32 _playerNumber;			/**< Number of the player controlling the grid. */
 	
 	/**
 	 * Inserts the supplied block at the specified co-ordinates.  If a block

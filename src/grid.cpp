@@ -6,11 +6,13 @@
 #include "blueblock.h"
 #include "soundplayer.h"
 
-Grid::Grid(s32 startingHeight) {
+Grid::Grid(s32 startingHeight, s32 playerNumber) {
 	_data = new BlockBase*[GRID_WIDTH * GRID_HEIGHT];
 
 	_liveBlocks = new Point[2];
 	_hasLiveBlocks = false;
+
+	_playerNumber = playerNumber;
 
 	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
 		_data[i] = NULL;
@@ -383,7 +385,7 @@ void Grid::dropLiveBlocks() {
 	}
 
 	if (hasLanded) {
-		SoundPlayer::playLand();
+		SoundPlayer::playLand(_playerNumber);
 	}
 }
 
@@ -454,9 +456,9 @@ bool Grid::dropBlocks() {
 
 	if (hasLanded) {
 		if (isGarbage) {
-			SoundPlayer::playGarbage();
+			SoundPlayer::playGarbage(_playerNumber);
 		} else {
-			SoundPlayer::playLand();
+			SoundPlayer::playLand(_playerNumber);
 		}
 	}
 
@@ -531,7 +533,7 @@ void Grid::moveLiveBlocksLeft() {
 			--_liveBlocks[i].x;
 		}
 
-		SoundPlayer::playMove();
+		SoundPlayer::playMove(_playerNumber);
 	}
 }
 
@@ -568,7 +570,7 @@ void Grid::moveLiveBlocksRight() {
 			++_liveBlocks[i].x;
 		}
 
-		SoundPlayer::playMove();
+		SoundPlayer::playMove(_playerNumber);
 	}
 }
 
@@ -633,7 +635,7 @@ void Grid::rotateLiveBlocksClockwise() {
 		--_liveBlocks[0].x;
 	}
 
-	SoundPlayer::playRotate();
+	SoundPlayer::playRotate(_playerNumber);
 }
 
 void Grid::rotateLiveBlocksAntiClockwise() {
@@ -695,7 +697,7 @@ void Grid::rotateLiveBlocksAntiClockwise() {
 		--_liveBlocks[1].y;
 	}
 
-	SoundPlayer::playRotate();
+	SoundPlayer::playRotate(_playerNumber);
 }
 
 bool Grid::addLiveBlocks(BlockBase* block1, BlockBase* block2) {

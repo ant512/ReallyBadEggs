@@ -33,6 +33,7 @@ public:
 #ifndef USING_SDL
 
 		mmInitDefaultMem((mm_addr)soundbank_bin);
+		mmLoadEffect(SFX_CHAIN);
 		mmLoadEffect(SFX_DROP);
 		mmLoadEffect(SFX_GARBAGE);
 		mmLoadEffect(SFX_LAND);
@@ -50,33 +51,89 @@ public:
 #endif
 	};
 
-	static void playDrop() {
+	static void playChain(s32 player, s32 scoreMultiplier) {
 #ifndef USING_SDL
-		mmEffect(SFX_DROP);
+
+		mm_sound_effect sound;
+		sound.id = SFX_CHAIN;
+		sound.rate = 1024 | (scoreMultiplier << 6);
+		sound.handle = 0;
+		sound.volume = 255;
+		sound.panning = player * 255;
+
+		mmEffectEx(&sound);
 #else
 		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
 #endif
 	};
 
-	static void playGarbage() {
+	static void playDrop(s32 player) {
+
+		// Don't play drop sound for CPU as it is maddeningly annoying
+		if (player == 1) return;
+
 #ifndef USING_SDL
-		mmEffect(SFX_GARBAGE);
+
+		mm_sound_effect sound;
+		sound.id = SFX_DROP;
+		sound.rate = 1024;
+		sound.handle = 0;
+		sound.volume = 255;
+		sound.panning = player * 255;
+
+		mmEffectEx(&sound);
+
+#else
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
+#endif
+	};
+
+	static void playGarbage(s32 player) {
+#ifndef USING_SDL
+
+		mm_sound_effect sound;
+		sound.id = SFX_GARBAGE;
+		sound.rate = 1024;
+		sound.handle = 0;
+		sound.volume = 255;
+		sound.panning = player * 255;
+
+		mmEffectEx(&sound);
+
 #else
 		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_GARBAGE], 0);
 #endif
 	};
 
-	static void playLand() {
+	static void playLand(s32 player) {
 #ifndef USING_SDL
-		mmEffect(SFX_LAND);
+
+		mm_sound_effect sound;
+		sound.id = SFX_LAND;
+		sound.rate = 1024;
+		sound.handle = 0;
+		sound.volume = 255;
+		sound.panning = player * 255;
+
+		mmEffectEx(&sound);
+
 #else
 		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_LAND], 0);
 #endif
 	};
 
-	static void playMove() {
+	static void playMove(s32 player) {
 #ifndef USING_SDL
-		mmEffect(SFX_MOVE);
+
+		mm_sound_effect sound;
+		sound.id = SFX_MOVE;
+		sound.rate = 1024;
+		sound.handle = 0;
+		sound.volume = 255;
+		sound.panning = player * 255;
+
+		mmEffectEx(&sound);
+
 #else
 		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_MOVE], 0);
 #endif
@@ -96,9 +153,18 @@ public:
 	/**
 	 * Plays the block rotation sound.
 	 */
-	static void playRotate() {
+	static void playRotate(s32 player) {
 #ifndef USING_SDL
-		mmEffect(SFX_ROTATE);
+
+		mm_sound_effect sound;
+		sound.id = SFX_ROTATE;
+		sound.rate = 1024;
+		sound.handle = 0;
+		sound.volume = 255;
+		sound.panning = player * 255;
+
+		mmEffectEx(&sound);
+
 #else
 		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_ROTATE], 0);
 #endif
@@ -119,6 +185,7 @@ public:
 		
 #ifndef USING_SDL
 		
+		mmUnloadEffect(SFX_CHAIN);
 		mmUnloadEffect(SFX_DROP);
 		mmUnloadEffect(SFX_GARBAGE);
 		mmUnloadEffect(SFX_LAND);

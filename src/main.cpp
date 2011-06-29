@@ -119,7 +119,7 @@ int main(int argc, char* argv[]) {
 							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
 							
 							blockServer = new BlockServer(2, menu->getColours());
-							aiGrid = new Grid(menu->getStartHeight());
+							aiGrid = new Grid(menu->getStartHeight(), 1);
 							aiController = new SmartAIController(false);
 							aiRunner = new GridRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, menu->getStartLevel());
 
@@ -129,7 +129,7 @@ int main(int argc, char* argv[]) {
 							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
 
 							blockServer = new BlockServer(2, menu->getColours());
-							aiGrid = new Grid(menu->getStartHeight());
+							aiGrid = new Grid(menu->getStartHeight(), 1);
 							aiController = new SmartAIController(true);
 							aiRunner = new GridRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, menu->getStartLevel());
 
@@ -137,7 +137,7 @@ int main(int argc, char* argv[]) {
 							break;
 					}
 
-					grid = new Grid(menu->getStartHeight());
+					grid = new Grid(menu->getStartHeight(), 0);
 					runner = new GridRunner(controller, grid, blockServer, 0, runnerX, gameType, menu->getStartLevel());
 
 					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
@@ -247,6 +247,8 @@ int main(int argc, char* argv[]) {
 					menu->setActiveMenu(1);
 
 					clearScreens();
+
+					SoundPlayer::playTitleMusic();
 
 					state = GAME_STATE_MENU;
 				}
