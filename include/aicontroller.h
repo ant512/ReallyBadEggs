@@ -78,6 +78,9 @@ private:
 	s32 _targetRotations;					/**< Number of clockwise rotations needed before correct live block
 												 orientation is achieved. */
 	bool _isFast;							/**< True if the fast AI is active; false if the slow AI is active. */
+
+
+	s32 scoreShapePosition(BlockBase* block1, BlockBase* block2, const Point& point1, const Point& point2);
 };
 
 #endif

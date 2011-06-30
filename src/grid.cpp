@@ -198,14 +198,8 @@ void Grid::getLiveBlockPoints(Point& liveBlock1, Point& liveBlock2) const {
 	liveBlock2 = _liveBlocks[1];
 }
 
-s32 Grid::getPotentialChainLength(s32 x, s32 y, BlockBase* block) const {
+s32 Grid::getPotentialChainLength(s32 x, s32 y, BlockBase* block, bool* checkedData) const {
 	
-	bool* checkedData = new bool[GRID_WIDTH * GRID_HEIGHT];
-
-	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
-		checkedData[i] = false;
-	}
-
 	checkedData[x + (y * GRID_WIDTH)] = true;
 
 	WoopsiArray<Point> chain;
@@ -229,8 +223,6 @@ s32 Grid::getPotentialChainLength(s32 x, s32 y, BlockBase* block) const {
 	if (gridBlock != NULL && gridBlock->getColour() == block->getColour()) {
 		getChain(x, y + 1, chain, checkedData);
 	}
-
-	delete[] checkedData;
 
 	return chain.size() + 1;
 }
