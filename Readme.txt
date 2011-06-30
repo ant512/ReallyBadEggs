@@ -141,18 +141,6 @@ So, if the player creates a chain of 5 blocks, which falls to create a chain of
   7 - 4 + 6 = 9  (second chain)
             = 10 (total)
 
-If the player has any incoming garbage eggs, their numbers are reduced before
-the outgoing count is increased.  For example, if the player has 6 incoming
-garbage eggs, the number of outgoing eggs will be:
-
-  10 - 6 = 4
-
-The number of incoming eggs will be 0.  However, if the player has 12 incoming
-garbage eggs, the number of outgoing eggs would be 0, whilst the incoming eggs
-would be:
-
-  12 - 10 = 2
-
 
 Really Bad Eggs vs Super Foul Egg
 ---------------------------------
@@ -160,27 +148,35 @@ Really Bad Eggs vs Super Foul Egg
 There are a number of differences between Really Bad Eggs and Super Foul Egg.
 Really Bad Eggs does not include a two player mode for two humans.  There were
 two ways to implement this.  The first would have been to share a single DS,
-with one player using the d-pad and L button, whilst the other used the A, B, X
-and Y buttons and R button.  This option is impractical as it would require that
-the players are very well acquainted.  The second possibility was a wifi mode,
-but I abandoned this idea early on as the DS and DS Lite's wifi capabilities are
-hopeless.
+with one player using the d-pad and L button, whilst the other used the A, B, X,
+Y and R buttons.  This option is impractical as it would require that the
+players are very well acquainted.  The second possibility was a wifi mode,
+but I abandoned this idea early on.   The DS and DS Lite's wifi capabilities are
+hopeless for commercial games and worse for homebrew.
 
 The game does not include a "hard drop" option, in which pressing "Down" to drop
-a pair of eggs causes them to drop all of the way to the bottom of the grid.  It
-only features "soft drop", in which releasing "Down" stops the shape from
-falling.  This is solely because I *loathe* the hard drop feature.
+a pair of eggs causes them to drop all of the way to the bottom of the grid,
+even if the Down button is subsequently released.  It only features "soft drop",
+in which releasing "Down" stops the shape from falling.  This is solely because
+I *loathe* the hard drop feature.
 
-As Really Bad Eggs is written for a 66MHz computer in C++, whilst Super Foul
-Egg was written for a 7.1MHz computer in AMOS (compiled BASIC), Really Bad Eggs
-is noticably faster and smoother.
+Really Bad Eggs is written for a 66MHz computer in C++, whilst Super Foul Egg
+was written for a 7.1MHz computer in AMOS (compiled BASIC).  The remake is
+noticably faster and smoother.
 
 Garbage eggs are supposed to be removed from the grid when the eggs adjacent to
 them explode.  However, Super Foul Egg features at least one situation in which
 adjacent garbage eggs are incorrectly left in play.
 
 Garbage eggs in Super Foul Egg are added to random columns.  In Really Bad Eggs,
-these eggs are added to the lowest columns first.
+these eggs are added to the lowest columns first.  If there are two or more
+columns with the same lowest height, the leftmost column receives the garbage
+egg.
+
+The bitmap for the green egg with connections at the bottom, left and right is
+missing from Super Foul Egg.  As it is on-screen for a total of 1/50th of a
+second it is doubtful that anyone has ever noticed this, but Really Bad Eggs
+includes the correct graphic.
 
 
 Really Bad Eggs vs Puyo Puyo
@@ -206,7 +202,7 @@ However, it is slightly simplified.  The algorithm for generating garbage is
 the same as Super Foul Egg's.  I tried the Puyo Puyo algorithm and found that it
 did not work as well (at least it didn't with the modified scoring algorithm -
 the garbage egg count is a function of the score in Puyo Puyo, whilst it is
-a function of the number of blocks exploded/sequences created in SFE).
+a function of the number of eggs exploded/sequenced in SFE).
 
 From what I read online, garbage eggs in Puyo Puyo are added to the columns with
 the fewest eggs (ie. the lowest columns) first.  Really Bad Eggs does the same.
@@ -231,6 +227,7 @@ Credits and Acknowledgements
 
   - Coding                                          - Antony Dzeryn
   - Original graphics and sounds                    - David & Michael Hay
+  - Simian Zombie logo                              - John Clay
 
 
 Links
