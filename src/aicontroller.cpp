@@ -49,7 +49,7 @@ void AIController::analyseGrid() {
 	// live block Y co-ordinates and constrain the search to within the
 	// boundaries that they create
 	s32 leftBoundary = -1;
-	s32 rightBoundary = Grid::GRID_WIDTH - 1;
+	s32 rightBoundary = Grid::GRID_WIDTH;
 	s32 lowestYCoord = liveBlock1.y > liveBlock2.y ? liveBlock1.y : liveBlock2.y;
 	s32 leftBlockXCoord = liveBlock1.x < liveBlock2.x ? liveBlock1.x : liveBlock2.x;
 	s32 rightBlockXCoord = liveBlock1.x > liveBlock2.x ? liveBlock1.x : liveBlock2.x;
@@ -91,11 +91,11 @@ void AIController::analyseGrid() {
 					break;
 				
 				case 1:
-					point1.x = x + 1;
-					point1.y = columnYCoords[x + 1] - 1;
+					point1.x = x;
+					point1.y = columnYCoords[x] - 1;
 
-					point2.x = x + 1;
-					point2.y = columnYCoords[x + 1];
+					point2.x = x;
+					point2.y = columnYCoords[x];
 					break;
 				
 				case 2:
@@ -107,11 +107,11 @@ void AIController::analyseGrid() {
 					break;
 
 				case 3:
-					point1.x = x + 1;
-					point1.y = columnYCoords[x + 1];
+					point1.x = x;
+					point1.y = columnYCoords[x];
 
-					point2.x = x + 1;
-					point2.y = columnYCoords[x + 1] - 1;
+					point2.x = x;
+					point2.y = columnYCoords[x] - 1;
 					break;
 			}
 
@@ -124,7 +124,7 @@ void AIController::analyseGrid() {
 			s32 score = scoreShapePosition(block1, block2, point1, point2);
 
 			// Bonus for not increasing the height of the target column
-			s32 heightBonus = 1 + ((point1.y + point2.y) * 40);
+			s32 heightBonus = 1 + ((point1.y + point2.y));
 
 			score *= heightBonus;
 
@@ -132,7 +132,7 @@ void AIController::analyseGrid() {
 			// current best
 			if (score > bestScore) {
 				bestScore = score;
-				_targetX = x;
+				_targetX = point1.x < point2.x ? point1.x : point2.x;
 				_targetRotations = rotation;
 			}
 		}
@@ -160,9 +160,7 @@ void AIController::analyseGrid() {
 	// if necessary
 	if (_targetRotations == 3) _targetRotations = -1;
 
-
-
-	delete columnYCoords;
+	delete[] columnYCoords;
 }
 
 s32 AIController::scoreShapePosition(BlockBase* block1, BlockBase* block2, const Point& point1, const Point& point2) {
@@ -192,17 +190,16 @@ s32 AIController::scoreShapePosition(BlockBase* block1, BlockBase* block2, const
 
 	delete[] checkedData;
 
-	s32 baseScore = score1 + score2;
-	s32 extraScore = 0;
-
-	if ((point1.x == point2.x || point1.y == point2.y) && (block1->getColour() == block2->getColour())) {
-		extraScore = score1 + score2 - Grid::CHAIN_LENGTH;
+	s32 score = 0;
+	
+	if ((block1->getColour() == block2->getColour()) && ((point1.x == point2.x) || (point1.y == point2.y))) {
+		score = 1 << (score1 + score2);
 	} else {
-		extraScore = score1 > Grid::CHAIN_LENGTH ? 1 + score1 - Grid::CHAIN_LENGTH : 1;
-		extraScore += score2 > Grid::CHAIN_LENGTH ? 1 + score2 - Grid::CHAIN_LENGTH : 1;
+		score = 1 << score1;
+		score += 1 << score2;
 	}
-
-	return baseScore * extraScore;
+	
+	return score;
 }
 
 bool AIController::canMoveToTarget() {
@@ -304,7 +301,7 @@ bool AIController::rotateClockwise() {
 	if (_targetRotations > 0) {
 		--_targetRotations;
 
-		return _hesitation == 0 ? true : rand() % _hesitation == 0;
+		return true;
 	}
 
 	return false;
@@ -316,7 +313,7 @@ bool AIController::rotateAntiClockwise() {
 	if (_targetRotations < 0) {
 		++_targetRotations;
 
-		return _hesitation == 0 ? true : rand() % _hesitation == 0;
+		return true;
 	}
 
 	return false;

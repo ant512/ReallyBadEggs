@@ -75,7 +75,7 @@ private:
 	s32 _targetX;							/**< The x co-ordinate the AI is trying to move the live block to. */
 	s32 _targetRotations;					/**< Number of clockwise rotations needed before correct live block
 												 orientation is achieved. */
-	bool _hesitation;						/**< Chance that the AI will hesitate (larger value = more likely;
+	s32 _hesitation;						/**< Chance that the AI will hesitate (larger value = more likely;
 												 0 = no hesitation). */
 
 	s32 scoreShapePosition(BlockBase* block1, BlockBase* block2, const Point& point1, const Point& point2);
