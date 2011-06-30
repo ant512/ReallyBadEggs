@@ -124,7 +124,7 @@ void AIController::analyseGrid() {
 			s32 score = scoreShapePosition(block1, block2, point1, point2);
 
 			// Bonus for not increasing the height of the target column
-			s32 heightBonus = 1 + ((point1.y + point2.y) / 2);
+			s32 heightBonus = 1 + ((point1.y + point2.y) * 40);
 
 			score *= heightBonus;
 
@@ -205,7 +205,7 @@ s32 AIController::scoreShapePosition(BlockBase* block1, BlockBase* block2, const
 	return baseScore * extraScore;
 }
 
-bool AIController::canMove() {
+bool AIController::canMoveToTarget() {
 
 	const Grid* grid = _gridRunner->getGrid();
 
