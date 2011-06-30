@@ -157,13 +157,13 @@ s32 AIController::scoreShapePosition(BlockBase* block1, BlockBase* block2, const
 		checkedData[i] = false;
 	}
 
-	// Unfortunately, we can't get the score for each possible block position,
-	// then add together pairs and see what the total score would be for each
-	// possible rotation (this would have the number of times we walk the grid
-	// graph).  If blocks are the same colour, and we do not examine the same
-	// checkedData array whilst checking for chain lengths, we may end up
-	// walking over the same blocks twice.  They will therefore be included in
-	// the score multiple times (once for each block and once when the scores
+	// Unfortunately, we can't get the score for each possible single block
+	// position, then add together pairs and see what the total score would be
+	// for each possible rotation (this would have the number of times we walk
+	// the grid graph).  If blocks are the same colour, and we do not examine
+	// the same checkedData array whilst checking for chain lengths, we may end
+	// up walking over the same blocks twice.  They will therefore be included
+	// in the score multiple times (once for each block and once when the scores
 	// are added together).  This would lead to positions where both blocks
 	// touched same colour blocks being massively overweighted and possibly
 	// supplant better positions.
