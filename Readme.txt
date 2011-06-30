@@ -46,8 +46,8 @@ accept all currently-selected options and skip straight to the game.
 
 The menus are as follows:
 
- - Game Type: Choose from the practice game type, or the easy/hard 2-player
-   types.
+ - Game Type: Choose from the practice game type, or the easy/medium/hard
+   player-vs-AI types.
  - Speed: Choose the speed at which the eggs drop down the grid.  Faster speeds
    mean less time to think.
  - Height: Choose the starting height.  The number corresponds to the rows of
