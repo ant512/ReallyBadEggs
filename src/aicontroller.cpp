@@ -116,15 +116,15 @@ void AIController::analyseGrid() {
 			}
 
 			// Check if the new co-ords are valid
-			if (point1.x < 0 || point1.x >= Grid::GRID_WIDTH) break;
-			if (point1.y < 0 || point1.y >= Grid::GRID_HEIGHT) break;
-			if (point2.x < 0 || point2.x >= Grid::GRID_WIDTH) break;
-			if (point2.y < 0 || point2.y >= Grid::GRID_HEIGHT) break;
+			if (point1.x < 0 || point1.x >= Grid::GRID_WIDTH) continue;
+			if (point1.y < 0 || point1.y >= Grid::GRID_HEIGHT) continue;
+			if (point2.x < 0 || point2.x >= Grid::GRID_WIDTH) continue;
+			if (point2.y < 0 || point2.y >= Grid::GRID_HEIGHT) continue;
 
 			s32 score = scoreShapePosition(block1, block2, point1, point2);
 
 			// Bonus for not increasing the height of the target column
-			s32 heightBonus = 1 + ((point1.y + point2.y));
+			s32 heightBonus = 1 + ((point1.y + point2.y) / 2);
 
 			score *= heightBonus;
 
