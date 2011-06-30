@@ -1,6 +1,6 @@
-#include "smartaicontroller.h"
+#include "aicontroller.h"
 
-SmartAIController::SmartAIController(bool isFast) {
+AIController::AIController(bool isFast) {
 	_gridRunner = NULL;
 	_lastLiveBlockY = Grid::GRID_HEIGHT;
 	_targetX = 0;
@@ -8,7 +8,7 @@ SmartAIController::SmartAIController(bool isFast) {
 	_isFast = isFast;
 }
 
-void SmartAIController::analyseGrid() {
+void AIController::analyseGrid() {
 
 	const Grid* grid = _gridRunner->getGrid();
 
@@ -103,11 +103,11 @@ void SmartAIController::analyseGrid() {
 	_lastLiveBlockY = liveBlock1.y < liveBlock2.y ? liveBlock1.y : liveBlock2.y;
 }
 
-void SmartAIController::setGridRunner(const GridRunner* gridRunner) {
+void AIController::setGridRunner(const GridRunner* gridRunner) {
 	_gridRunner = gridRunner;
 }
 
-bool SmartAIController::left() {
+bool AIController::left() {
 	analyseGrid();
 
 	if (_targetRotations > 0) return false;
@@ -124,7 +124,7 @@ bool SmartAIController::left() {
 	return _isFast ? result : result && (rand() % SLOWDOWN_CHANCE == 0);
 }
 
-bool SmartAIController::right() {
+bool AIController::right() {
 	analyseGrid();
 
 	if (_targetRotations > 0) return false;
@@ -141,7 +141,7 @@ bool SmartAIController::right() {
 	return _isFast ? result : result && (rand() % SLOWDOWN_CHANCE == 0);
 }
 
-bool SmartAIController::down() {
+bool AIController::down() {
 	analyseGrid();
 
 	if (_targetRotations > 0) return false;
@@ -158,7 +158,7 @@ bool SmartAIController::down() {
 	return _isFast ? result : result && (rand() % SLOWDOWN_CHANCE == 0);
 }
 
-bool SmartAIController::rotateClockwise() {
+bool AIController::rotateClockwise() {
 	analyseGrid();
 
 	if (_targetRotations > 0) {
@@ -170,6 +170,6 @@ bool SmartAIController::rotateClockwise() {
 	return false;
 }
 
-bool SmartAIController::rotateAntiClockwise() {
+bool AIController::rotateAntiClockwise() {
 	return false;
 }

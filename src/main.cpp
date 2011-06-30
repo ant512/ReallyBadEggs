@@ -15,7 +15,7 @@
 #include "pausedbmp.h"
 #include "playercontroller.h"
 #include "simianzombielogobmp.h"
-#include "smartaicontroller.h"
+#include "aicontroller.h"
 #include "soundplayer.h"
 #include "twoplayerbgbmp.h"
 #include "winnerbmp.h"
@@ -76,7 +76,7 @@ int main(int argc, char* argv[]) {
 	
 	// Player 2
 	Grid* aiGrid = NULL;
-	SmartAIController* aiController = NULL;
+	AIController* aiController = NULL;
 	GridRunner* aiRunner = NULL;
 
 	const Pad& pad = Hardware::getPad();
@@ -123,7 +123,7 @@ int main(int argc, char* argv[]) {
 							
 							blockServer = new BlockServer(2, menu->getColours());
 							aiGrid = new Grid(menu->getStartHeight(), 1);
-							aiController = new SmartAIController(false);
+							aiController = new AIController(false);
 							aiRunner = new GridRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, menu->getStartLevel());
 
 							aiController->setGridRunner(aiRunner);
@@ -133,7 +133,7 @@ int main(int argc, char* argv[]) {
 
 							blockServer = new BlockServer(2, menu->getColours());
 							aiGrid = new Grid(menu->getStartHeight(), 1);
-							aiController = new SmartAIController(true);
+							aiController = new AIController(true);
 							aiRunner = new GridRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, menu->getStartLevel());
 
 							aiController->setGridRunner(aiRunner);

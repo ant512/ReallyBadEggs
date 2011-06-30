@@ -1,5 +1,5 @@
-#ifndef _SMART_AI_CONTROLLER_H_
-#define _SMART_AI_CONTROLLER_H_
+#ifndef _AI_CONTROLLER_H_
+#define _AI_CONTROLLER_H_
 
 #include <nds.h>
 
@@ -11,19 +11,19 @@
 /**
  * AI that plays the game.
  */
-class SmartAIController : public ControllerBase {
+class AIController : public ControllerBase {
 public:
 
 	/**
 	 * Constructor.
 	 * @param isFast True to make the AI hard; false to make it easier.
 	 */
-	SmartAIController(bool isFast);
+	AIController(bool isFast);
 
 	/**
 	 * Destructor.
 	 */
-	~SmartAIController() { };
+	~AIController() { };
 
 	/**
 	 * Decides where to move the current live block.  Checks the state of the
