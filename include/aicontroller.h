@@ -79,6 +79,8 @@ private:
 												 0 = no hesitation). */
 
 	s32 scoreShapePosition(BlockBase* block1, BlockBase* block2, const Point& point1, const Point& point2);
+
+	bool canMove();
 };
 
 #endif

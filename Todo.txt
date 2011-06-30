@@ -6,6 +6,8 @@ Engine
  - Use bitmaps for incoming garbage display instead of rects and erase old
    display when display is updated.
  - Replace "game over" text with bitmap.
+ - AI should check that it can rotate/move to the targets, and if not reconsider
+   the grid and establish a new target.
 
 Presentation
 

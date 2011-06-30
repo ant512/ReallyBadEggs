@@ -45,6 +45,29 @@ void AIController::analyseGrid() {
 		columnYCoords[i] = (Grid::GRID_HEIGHT - grid->getColumnHeight(i)) - 1;
 	}
 
+	// Work out which columns have heights equal to or greater than the current
+	// live block Y co-ordinates and constrain the search to within the
+	// boundaries that they create
+	s32 leftBoundary = 0;
+	s32 rightBoundary = Grid::GRID_WIDTH - 1;
+	s32 lowestYCoord = liveBlock1.y > liveBlock2.y ? liveBlock1.y : liveBlock2.y;
+	s32 leftBlockXCoord = liveBlock1.x < liveBlock2.x ? liveBlock1.x : liveBlock2.x;
+	s32 rightBlockXCoord = liveBlock1.x > liveBlock2.x ? liveBlock1.x : liveBlock2.x;
+
+	for (s32 i = leftBlockXCoord; i >= 0; --i) {
+		if (columnYCoords[i] <= lowestYCoord) {
+			leftBoundary = i;
+			break;
+		}
+	}
+
+	for (s32 i = rightBlockXCoord; i < Grid::GRID_WIDTH; ++i) {
+		if (columnYCoords[i] <= lowestYCoord) {
+			rightBoundary = i;
+			break;
+		}
+	}
+
 	BlockBase* block1 = grid->getBlockAt(liveBlock1.x, liveBlock1.y);
 	BlockBase* block2 = grid->getBlockAt(liveBlock2.x, liveBlock2.y);
 
@@ -53,7 +76,7 @@ void AIController::analyseGrid() {
 	Point point1;
 	Point point2;
 
-	for (s32 x = 0; x < Grid::GRID_WIDTH - 1; ++x) {
+	for (s32 x = leftBoundary + 1; x < rightBoundary; ++x) {
 		for (s32 rotation = 0; rotation < 4; ++rotation) {
 
 			// Work out where the shapes will be if they move, rotation occurs
@@ -160,6 +183,48 @@ s32 AIController::scoreShapePosition(BlockBase* block1, BlockBase* block2, const
 	}
 
 	return baseScore * extraScore;
+}
+
+bool AIController::canMove() {
+
+	const Grid* grid = _gridRunner->getGrid();
+
+	Point liveBlock1;
+	Point liveBlock2;
+
+	grid->getLiveBlockPoints(liveBlock1, liveBlock2);
+
+	// Get the y co-ords of the topmost blank block in each column
+	s32* columnYCoords = new s32[Grid::GRID_WIDTH];
+
+	for (s32 i = 0; i < Grid::GRID_WIDTH; ++i) {
+		columnYCoords[i] = (Grid::GRID_HEIGHT - grid->getColumnHeight(i)) - 1;
+	}
+
+	bool movePossible = true;
+
+	if (_targetX < liveBlock1.x) {
+
+		// Need to move left
+		for (s32 x = liveBlock1.x; x >= _targetX; --x) {
+
+			// If either block is lower than the column we're looking at, it is
+			// impossible for the block to be moved to the target column
+			if (columnYCoords[x] < liveBlock1.y || columnYCoords[x] < liveBlock2.y) {
+				movePossible = false;
+			}
+		}
+	} else if (_targetX > liveBlock1.x) {
+
+		// Need to move right
+		for (s32 x = liveBlock1.x; x <= _targetX; ++x) {
+			if (columnYCoords[x] < liveBlock1.y || columnYCoords[x] < liveBlock2.y) {
+				movePossible = false;
+			}
+		}
+	}
+
+	return movePossible;
 }
 
 bool AIController::left() {
