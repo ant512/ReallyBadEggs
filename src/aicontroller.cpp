@@ -48,7 +48,7 @@ void AIController::analyseGrid() {
 	// Work out which columns have heights equal to or greater than the current
 	// live block Y co-ordinates and constrain the search to within the
 	// boundaries that they create
-	s32 leftBoundary = 0;
+	s32 leftBoundary = -1;
 	s32 rightBoundary = Grid::GRID_WIDTH - 1;
 	s32 lowestYCoord = liveBlock1.y > liveBlock2.y ? liveBlock1.y : liveBlock2.y;
 	s32 leftBlockXCoord = liveBlock1.x < liveBlock2.x ? liveBlock1.x : liveBlock2.x;
@@ -138,9 +138,29 @@ void AIController::analyseGrid() {
 		}
 	}
 
+	// We need to determine if the shape has already been rotated and adjust
+	// accordingly
+	if (liveBlock1.x == liveBlock2.x) {
+		if (liveBlock1.y == liveBlock2.y - 1) {
+
+			// Block 1 is above block 2, therefore exising rotation is 1
+			--_targetRotations;
+		} else {
+
+			// Block 1 is below block 2, therefore existing rotation is 3
+			_targetRotations -= 3;
+		}
+	} else if (liveBlock1.x == liveBlock2.x + 1) {
+
+		// Block 1 is on the right of block 2, therefore existing rotation is 2
+		_targetRotations -= 2;
+	}
+
 	// We can rotate to the correct orientation faster by rotating anticlockwise
 	// if necessary
 	if (_targetRotations == 3) _targetRotations = -1;
+
+
 
 	delete columnYCoords;
 }
