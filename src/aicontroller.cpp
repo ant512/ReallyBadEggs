@@ -8,12 +8,12 @@
 // the current position.  This should probably be re-examined every time the AI
 // has the chance to move.
 
-AIController::AIController(bool isFast) {
+AIController::AIController(s32 hesitation) {
 	_gridRunner = NULL;
 	_lastLiveBlockY = Grid::GRID_HEIGHT;
 	_targetX = 0;
 	_targetRotations = 0;
-	_isFast = isFast;
+	_hesitation = hesitation;
 }
 
 void AIController::setGridRunner(const GridRunner* gridRunner) {
@@ -176,7 +176,7 @@ bool AIController::left() {
 	
 	bool result = liveBlock1.x > _targetX;
 
-	return _isFast ? result : result && (rand() % SLOWDOWN_CHANCE == 0);
+	return _hesitation == 0 ? result : result && (rand() % _hesitation == 0);
 }
 
 bool AIController::right() {
@@ -193,7 +193,7 @@ bool AIController::right() {
 	
 	bool result = liveBlock1.x < _targetX;
 
-	return _isFast ? result : result && (rand() % SLOWDOWN_CHANCE == 0);
+	return _hesitation == 0 ? result : result && (rand() % _hesitation == 0);
 }
 
 bool AIController::down() {
@@ -210,7 +210,7 @@ bool AIController::down() {
 	
 	bool result = liveBlock1.x == _targetX;
 
-	return _isFast ? result : result && (rand() % SLOWDOWN_CHANCE == 0);
+	return _hesitation == 0 ? result : result && (rand() % _hesitation == 0);
 }
 
 bool AIController::rotateClockwise() {
@@ -219,7 +219,7 @@ bool AIController::rotateClockwise() {
 	if (_targetRotations > 0) {
 		--_targetRotations;
 
-		return _isFast ? true : rand() % SLOWDOWN_CHANCE == 0;
+		return _hesitation == 0 ? true : rand() % _hesitation == 0;
 	}
 
 	return false;
@@ -231,7 +231,7 @@ bool AIController::rotateAntiClockwise() {
 	if (_targetRotations < 0) {
 		++_targetRotations;
 
-		return _isFast ? true : rand() % SLOWDOWN_CHANCE == 0;
+		return _hesitation == 0 ? true : rand() % _hesitation == 0;
 	}
 
 	return false;
