@@ -239,9 +239,8 @@ s32 Grid::getPotentialChainLength(s32 x, s32 y, BlockBase* block, bool* checkedD
 
 			if ((gridBlock != NULL) && (!checkedData[chain[i].x - 1 + (chain[i].y * GRID_WIDTH)])) {
 
-				checkedData[chain[i].x - 1 + (chain[i].y * GRID_WIDTH)] = true;
-
 				if (gridBlock->getColour() == GarbageBlock::COLOUR) {
+					checkedData[chain[i].x - 1 + (chain[i].y * GRID_WIDTH)] = true;
 					++garbageCount;
 				}
 			}
@@ -251,9 +250,8 @@ s32 Grid::getPotentialChainLength(s32 x, s32 y, BlockBase* block, bool* checkedD
 
 			if ((gridBlock != NULL) && (!checkedData[chain[i].x + 1 + (chain[i].y * GRID_WIDTH)])) {
 
-				checkedData[chain[i].x + 1 + (chain[i].y * GRID_WIDTH)] = true;
-
 				if (gridBlock->getColour() == GarbageBlock::COLOUR) {
+					checkedData[chain[i].x + 1 + (chain[i].y * GRID_WIDTH)] = true;
 					++garbageCount;
 				}
 			}
@@ -263,9 +261,8 @@ s32 Grid::getPotentialChainLength(s32 x, s32 y, BlockBase* block, bool* checkedD
 
 			if ((gridBlock != NULL) && (!checkedData[chain[i].x + ((chain[i].y - 1) * GRID_WIDTH)])) {
 
-				checkedData[chain[i].x + ((chain[i].y - 1) * GRID_WIDTH)] = true;
-
 				if (gridBlock->getColour() == GarbageBlock::COLOUR) {
+					checkedData[chain[i].x + ((chain[i].y - 1) * GRID_WIDTH)] = true;
 					++garbageCount;
 				}
 			}
@@ -275,9 +272,8 @@ s32 Grid::getPotentialChainLength(s32 x, s32 y, BlockBase* block, bool* checkedD
 
 			if ((gridBlock != NULL) && (!checkedData[chain[i].x + ((chain[i].y + 1) * GRID_WIDTH)])) {
 
-				checkedData[chain[i].x + ((chain[i].y + 1) * GRID_WIDTH)] = true;
-
 				if (gridBlock->getColour() == GarbageBlock::COLOUR) {
+					checkedData[chain[i].x + ((chain[i].y + 1) * GRID_WIDTH)] = true;
 					++garbageCount;
 				}
 			}
