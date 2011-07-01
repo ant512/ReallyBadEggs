@@ -229,7 +229,7 @@ s32 Grid::getPotentialChainLength(s32 x, s32 y, BlockBase* block, bool* checkedD
 	// Calculate how many garbage blocks will be exploded by the chain
 	s32 garbageCount = 0;
 
-	if (chain.size() > CHAIN_LENGTH) {
+	if (chain.size() >= CHAIN_LENGTH) {
 		BlockBase* gridBlock = NULL;
 
 		for (s32 i = 0; i < chain.size(); ++i) {
