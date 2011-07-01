@@ -110,6 +110,10 @@ void AIController::analyseGrid() {
 					break;
 				
 				case 2:
+					// If the blocks are the same colour there's no point in
+					// checking this rotation
+					if (block1->getColour() == block2->getColour()) continue;
+					
 					point1.x = x + 1;
 					point1.y = columnYCoords[x + 1];
 
