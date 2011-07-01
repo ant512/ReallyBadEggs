@@ -91,6 +91,17 @@ void AIController::analyseGrid() {
 					break;
 				
 				case 1:
+					// Although the code below allows the AI to rotate shapes
+					// vertically, testing indicates that the AI is considerably
+					// more effective if only horizontal rotations are
+					// considered.  This is probably because horizontal
+					// placements promote the accidental creation of chain
+					// sequences.  The continue statement prevents the code from
+					// executing.
+					//
+					// If planning is ever implemented, this code will be useful
+					// again.
+					continue;
 					point1.x = x;
 					point1.y = columnYCoords[x] - 1;
 
@@ -107,6 +118,8 @@ void AIController::analyseGrid() {
 					break;
 
 				case 3:
+					// Vertical rotation is disabled
+					continue;
 					point1.x = x;
 					point1.y = columnYCoords[x];
 

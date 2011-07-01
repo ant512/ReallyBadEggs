@@ -8,6 +8,11 @@ Engine
  - Replace "game over" text with bitmap.
  - AI should check that it can rotate/move to the targets, and if not reconsider
    the grid and establish a new target.
+ - Perhaps AI should consider the score and the height penalty as separate
+   values rather than conflate them into a single variable - will allow more
+   informed judgements as to whether a move is worth the height increase.
+ - Severe penalty for AI moves that block the top-central 2x2 square of blocks
+   in the grid.
 
 Presentation
 
