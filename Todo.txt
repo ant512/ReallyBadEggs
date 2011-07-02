@@ -1,6 +1,10 @@
 To do
 -----
 
+ - Remove superfluous function parameters from HUD rendering functions.
+ - Rename _level member in GridRunner to _speed (and constructor param).
+ - Level HUD should only be 1 character.
+
 Presentation
 
  - Design layout of bottom screen:
