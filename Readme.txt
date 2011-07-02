@@ -178,6 +178,9 @@ missing from Super Foul Egg.  As it is on-screen for a total of 1/50th of a
 second it is doubtful that anyone has ever noticed this, but Really Bad Eggs
 includes the correct graphic.
 
+The incoming garbage egg display isn't always cleared correctly.  Really Bad
+Eggs fixes this.
+
 
 Really Bad Eggs vs Puyo Puyo
 ----------------------------
