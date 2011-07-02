@@ -71,7 +71,7 @@ public:
 
 		mmEffectEx(&sound);
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
+		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
 #endif
 	};
 
@@ -79,7 +79,7 @@ public:
 #ifndef USING_SDL
 		mmEffect(SFX_DROP);
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
+		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
 #endif
 	};
 
@@ -87,7 +87,7 @@ public:
 #ifndef USING_SDL
 		mmEffect(SFX_DEAD);
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DEAD], 0);
+		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DEAD], 0);
 #endif
 	};
 
@@ -108,7 +108,7 @@ public:
 		mmEffectEx(&sound);
 
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
+		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
 #endif
 	};
 
@@ -125,7 +125,7 @@ public:
 		mmEffectEx(&sound);
 
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_GARBAGE], 0);
+		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_GARBAGE], 0);
 #endif
 	};
 
@@ -142,7 +142,7 @@ public:
 		mmEffectEx(&sound);
 
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_GARBAGEBIG], 0);
+		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_GARBAGEBIG], 0);
 #endif
 	};
 
@@ -159,7 +159,7 @@ public:
 		mmEffectEx(&sound);
 
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_LAND], 0);
+		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_LAND], 0);
 #endif
 	};
 
@@ -167,7 +167,7 @@ public:
 #ifndef USING_SDL
 		mmEffect(SFX_MOVE);
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_MOVE], 0);
+		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_MOVE], 0);
 #endif
 	};
 
@@ -184,7 +184,7 @@ public:
 		mmEffectEx(&sound);
 
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_MOVE], 0);
+		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_MOVE], 0);
 #endif
 	};
 
@@ -201,7 +201,7 @@ public:
 		mmEffectEx(&sound);
 
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[player == 0 ? SFX_MULTICHAIN1 : SFX_MULTICHAIN2], 0);
+		//Mix_PlayChannel(CHANNEL_SFX, _sounds[player == 0 ? SFX_MULTICHAIN1 : SFX_MULTICHAIN2], 0);
 #endif
 	};
 
@@ -212,7 +212,7 @@ public:
 #ifndef USING_SDL
 		mmEffect(SFX_PAUSE);
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_PAUSE], 0);
+		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_PAUSE], 0);
 #endif
 	};
 
@@ -223,7 +223,7 @@ public:
 #ifndef USING_SDL
 		mmEffect(SFX_ROTATE);
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_ROTATE], 0);
+		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_ROTATE], 0);
 #endif
 	};
 
@@ -243,7 +243,7 @@ public:
 		mmEffectEx(&sound);
 
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_ROTATE], 0);
+		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_ROTATE], 0);
 #endif
 	};
 
@@ -251,7 +251,7 @@ public:
 #ifndef USING_SDL
 		mmEffect(SFX_LOSE);
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_LOSE], 0);
+		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_LOSE], 0);
 #endif
 	};
 
@@ -259,16 +259,20 @@ public:
 #ifndef USING_SDL
 		mmEffect(SFX_WIN);
 #else
-		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_WIN], 0);
+		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_WIN], 0);
 #endif
 	};
 
 	static void playTitleMusic() {
+#ifndef USING_SDL
 		mmStart(MOD_TITLE, MM_PLAY_LOOP);
+#endif
 	};
 
 	static void stopMusic() {
+#ifndef USING_SDL
 		mmStop();
+#endif
 	};
 
 	/**

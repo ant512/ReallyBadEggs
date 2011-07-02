@@ -46,8 +46,8 @@ accept all currently-selected options and skip straight to the game.
 
 The menus are as follows:
 
- - Game Type: Choose from the practice game type, or the easy/hard 2-player
-   types.
+ - Game Type: Choose from the practice game type, or the easy/medium/hard
+   player-vs-AI types.
  - Speed: Choose the speed at which the eggs drop down the grid.  Faster speeds
    mean less time to think.
  - Height: Choose the starting height.  The number corresponds to the rows of
@@ -208,10 +208,13 @@ From what I read online, garbage eggs in Puyo Puyo are added to the columns with
 the fewest eggs (ie. the lowest columns) first.  Really Bad Eggs does the same.
 
 The original Puyo Puyo games feature steadily more advanced AI enemies.  Really
-Bad Eggs features just one kind of AI that can be set to "slow" or "fast".  The
-AI is fairly primitive, but it is smart enough to beat me yet not so good that
-it beats me every time I play it.  I am sure that seasoned Puyo Puyo players
-will be able to run rings around it.
+Bad Eggs features just one kind of AI that can be told to hesitate instead of
+move.  The AI is fairly primitive and will only consider the
+potential connections made by moving and rotating the current set of live eggs.
+It does not plan based on the next block nor try to create sequences of chains.
+Despite this, it is smart enough to beat me yet not so good that it beats me
+every time I play it.  I am sure that seasoned Puyo Puyo players will be able to
+run rings around it.
 
 
 Requirements

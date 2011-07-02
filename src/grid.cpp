@@ -198,14 +198,10 @@ void Grid::getLiveBlockPoints(Point& liveBlock1, Point& liveBlock2) const {
 	liveBlock2 = _liveBlocks[1];
 }
 
-s32 Grid::getPotentialChainLength(s32 x, s32 y, BlockBase* block) const {
+// TODO: Rename this to reflect the fact that it doesn't just find chain length;
+// it finds the length of the chain *plus* the amount of garbage removed
+s32 Grid::getPotentialChainLength(s32 x, s32 y, BlockBase* block, bool* checkedData) const {
 	
-	bool* checkedData = new bool[GRID_WIDTH * GRID_HEIGHT];
-
-	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
-		checkedData[i] = false;
-	}
-
 	checkedData[x + (y * GRID_WIDTH)] = true;
 
 	WoopsiArray<Point> chain;
@@ -230,9 +226,64 @@ s32 Grid::getPotentialChainLength(s32 x, s32 y, BlockBase* block) const {
 		getChain(x, y + 1, chain, checkedData);
 	}
 
-	delete[] checkedData;
+	// Calculate how many garbage blocks will be exploded by the chain
+	s32 garbageCount = 0;
 
-	return chain.size() + 1;
+	if (chain.size() >= CHAIN_LENGTH) {
+		BlockBase* gridBlock = NULL;
+
+		for (s32 i = 0; i < chain.size(); ++i) {
+
+			// Left block
+			gridBlock = getBlockAt(chain[i].x - 1, chain[i].y);
+
+			if ((gridBlock != NULL) && (!checkedData[chain[i].x - 1 + (chain[i].y * GRID_WIDTH)])) {
+
+				if (gridBlock->getColour() == GarbageBlock::COLOUR) {
+					checkedData[chain[i].x - 1 + (chain[i].y * GRID_WIDTH)] = true;
+					++garbageCount;
+				}
+			}
+
+			// Right block
+			gridBlock = getBlockAt(chain[i].x + 1, chain[i].y);
+
+			if ((gridBlock != NULL) && (!checkedData[chain[i].x + 1 + (chain[i].y * GRID_WIDTH)])) {
+
+				if (gridBlock->getColour() == GarbageBlock::COLOUR) {
+					checkedData[chain[i].x + 1 + (chain[i].y * GRID_WIDTH)] = true;
+					++garbageCount;
+				}
+			}
+
+			// Top block
+			gridBlock = getBlockAt(chain[i].x, chain[i].y - 1);
+
+			if ((gridBlock != NULL) && (!checkedData[chain[i].x + ((chain[i].y - 1) * GRID_WIDTH)])) {
+
+				if (gridBlock->getColour() == GarbageBlock::COLOUR) {
+					checkedData[chain[i].x + ((chain[i].y - 1) * GRID_WIDTH)] = true;
+					++garbageCount;
+				}
+			}
+
+			// Bottom block
+			gridBlock = getBlockAt(chain[i].x, chain[i].y + 1);
+
+			if ((gridBlock != NULL) && (!checkedData[chain[i].x + ((chain[i].y + 1) * GRID_WIDTH)])) {
+
+				if (gridBlock->getColour() == GarbageBlock::COLOUR) {
+					checkedData[chain[i].x + ((chain[i].y + 1) * GRID_WIDTH)] = true;
+					++garbageCount;
+				}
+			}
+		}
+	}
+
+	// Total length is the number of connected grid blocks found, plus the
+	// block we're trying to place, plus the number of garbage blocks that will
+	// be exploded
+	return chain.size() + 1 + garbageCount;
 }
 
 void Grid::getChain(s32 x, s32 y, WoopsiArray<Point>& chain, bool* checkedData) const {

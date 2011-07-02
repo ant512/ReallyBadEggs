@@ -141,7 +141,7 @@ public:
 	 * @param block The block to place.
 	 * @return The length of the chain created.
 	 */
-	s32 getPotentialChainLength(s32 x, s32 y, BlockBase* block) const;
+	s32 getPotentialChainLength(s32 x, s32 y, BlockBase* block, bool* checkedData) const;
 
 	/**
 	 * Populates the supplied Point references with the co-ordinates of the live

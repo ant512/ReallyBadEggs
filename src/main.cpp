@@ -20,6 +20,12 @@
 #include "twoplayerbgbmp.h"
 #include "winnerbmp.h"
 
+#include "dumbaicontroller.h"
+
+const s32 HARD_AI_HESITATION = 0;
+const s32 MEDIUM_AI_HESITATION = 2;
+const s32 EASY_AI_HESITATION = 4;
+
 enum GameState {
 	GAME_STATE_TITLE = 0,
 	GAME_STATE_MENU = 1,
@@ -71,7 +77,7 @@ int main(int argc, char* argv[]) {
 
 	// Player 1
 	Grid* grid = NULL;
-	PlayerController* controller = new PlayerController();
+	DumbAIController* controller = new DumbAIController(true);
 	GridRunner* runner = NULL;
 	
 	// Player 2
@@ -123,7 +129,7 @@ int main(int argc, char* argv[]) {
 							
 							blockServer = new BlockServer(2, menu->getColours());
 							aiGrid = new Grid(menu->getStartHeight(), 1);
-							aiController = new AIController(false);
+							aiController = new AIController(EASY_AI_HESITATION);
 							aiRunner = new GridRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, menu->getStartLevel());
 
 							aiController->setGridRunner(aiRunner);
@@ -133,7 +139,17 @@ int main(int argc, char* argv[]) {
 
 							blockServer = new BlockServer(2, menu->getColours());
 							aiGrid = new Grid(menu->getStartHeight(), 1);
-							aiController = new AIController(true);
+							aiController = new AIController(MEDIUM_AI_HESITATION);
+							aiRunner = new GridRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, menu->getStartLevel());
+
+							aiController->setGridRunner(aiRunner);
+							break;
+						case 3:
+							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
+
+							blockServer = new BlockServer(2, menu->getColours());
+							aiGrid = new Grid(menu->getStartHeight(), 1);
+							aiController = new AIController(HARD_AI_HESITATION);
 							aiRunner = new GridRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, menu->getStartLevel());
 
 							aiController->setGridRunner(aiRunner);
@@ -142,6 +158,8 @@ int main(int argc, char* argv[]) {
 
 					grid = new Grid(menu->getStartHeight(), 0);
 					runner = new GridRunner(controller, grid, blockServer, 0, runnerX, gameType, menu->getStartLevel());
+
+					controller->setGridRunner(runner);
 
 					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 					gfx->drawBitmap(0, 0, background.getWidth(), background.getHeight(), &background, 0, 0);
