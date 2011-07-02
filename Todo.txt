@@ -1,10 +1,6 @@
 To do
 -----
 
-Engine
-
- - Replace "game over" text with bitmap.
-
 Presentation
 
  - Design layout of bottom screen:

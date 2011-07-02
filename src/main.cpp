@@ -200,8 +200,6 @@ int main(int argc, char* argv[]) {
 
 				if (aiRunner == NULL) {
 					if (runner->isDead()) {
-						showText(runnerX, 0, runnerWidth, runnerHeight, "Game Over");
-
 						SoundPlayer::playDead();
 
 						blanks = 0;
