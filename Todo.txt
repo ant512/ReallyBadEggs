@@ -6,27 +6,14 @@ Engine
  - Use bitmaps for incoming garbage display instead of rects and erase old
    display when display is updated.
  - Replace "game over" text with bitmap.
- - AI should check that it can rotate/move to the targets, and if not reconsider
-   the grid and establish a new target.
- - Perhaps AI should consider the score and the height penalty as separate
-   values rather than conflate them into a single variable - will allow more
-   informed judgements as to whether a move is worth the height increase.
- - Severe penalty for AI moves that block the top-central 2x2 square of blocks
-   in the grid.
 
 Presentation
 
  - Design layout of bottom screen:
-   - Game logo;
-   - Simian Zombie logo;
    - Stats boxes for both players:
      - Incoming garbage;
      - Next block;
      - Score;
      - Level;
      - Chains.
-   - High score for current game type;
  - Title screen on top and bottom screens before menu.
- - High score screen (or several screens) giving top scores for each game type
-   on bottom screen during menu system.
- - High-score entry.

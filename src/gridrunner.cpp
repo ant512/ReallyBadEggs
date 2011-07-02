@@ -112,23 +112,23 @@ void GridRunner::renderIncomingGarbage(s32 x, s32 y) {
 	
 	// Draw face boulders
 	for (s32 i = 0; i < faceBoulders; ++i) {
-		gfx->drawFilledRect(boulderX, bmpY, 20, 20, woopsiRGB(31, 0, 0));
+		gfx->drawBitmap(boulderX, bmpY, _faceBoulderBmp.getWidth(), _faceBoulderBmp.getHeight(), &_faceBoulderBmp, 0, 0);
 
-		bmpY += 20;
+		bmpY += _faceBoulderBmp.getHeight();
 	}
 
 	// Draw large boulders
 	for (s32 i = 0; i < largeBoulders; ++i) {
-		gfx->drawFilledRect(boulderX, bmpY, 10, 10, woopsiRGB(0, 31, 0));
+		gfx->drawBitmap(boulderX, bmpY, _largeBoulderBmp.getWidth(), _largeBoulderBmp.getHeight(), &_largeBoulderBmp, 0, 0);
 
-		bmpY += 10;
+		bmpY += _largeBoulderBmp.getHeight();
 	}
 
 	// Draw small boulders
 	for (s32 i = 0; i < garbage; ++i) {
-		gfx->drawFilledRect(boulderX, bmpY, 5, 5, woopsiRGB(0, 0, 31));
+		gfx->drawBitmap(boulderX, bmpY, _smallBoulderBmp.getWidth(), _smallBoulderBmp.getHeight(), &_smallBoulderBmp, 0, 0);
 
-		bmpY += 5;
+		bmpY += _smallBoulderBmp.getHeight();
 	}
 }
 

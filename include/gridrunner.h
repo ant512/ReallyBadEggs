@@ -9,6 +9,10 @@
 #include "gamefont.h"
 #include "grid.h"
 
+#include "smallboulderbmp.h"
+#include "largeboulderbmp.h"
+#include "faceboulderbmp.h"
+
 /**
  * Controls a grid.  Maintains a state machine that tracks what should happen
  * currently and next as the game progresses.
@@ -159,6 +163,10 @@ private:
 	GameType _gameType;						/**< The type of game being played. */
 
 	GameFont _font;							/**< Font used for rendering text. */
+
+	FaceBoulderBmp _faceBoulderBmp;
+	SmallBoulderBmp _smallBoulderBmp;
+	LargeBoulderBmp _largeBoulderBmp;
 
 	bool _droppingLiveBlocks;
 
