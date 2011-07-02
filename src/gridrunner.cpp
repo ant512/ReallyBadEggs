@@ -40,12 +40,6 @@ GridRunner::GridRunner(ControllerBase* controller,
 
 	// Ensure we have some initial blocks to add to the grid
 	_blockServer->getNextBlocks(_playerNumber, &_nextBlocks[0], &_nextBlocks[1]);
-
-	renderScore(_x, 16);
-	renderLevelNumber(_x, 24);
-	renderChainCount(_x, 32);
-	renderIncomingGarbage(_x, 40);
-	renderOutgoingGarbage(_x, 48);
 }
 
 GridRunner::~GridRunner() {
@@ -59,6 +53,13 @@ GridRunner::~GridRunner() {
 	}
 
 	delete[] _nextBlocks;
+}
+
+void GridRunner::renderHUD() {
+	renderScore(_x, 16);
+	renderLevelNumber(_x, 24);
+	renderChainCount(_x, 32);
+	renderIncomingGarbage(_x, 40);
 }
 
 void GridRunner::renderScore(s32 x, s32 y) {
@@ -91,16 +92,6 @@ void GridRunner::renderChainCount(s32 x, s32 y) {
 	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
 }
 
-void GridRunner::renderOutgoingGarbage(s32 x, s32 y) {
-	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
-
-	WoopsiGfx::WoopsiString str;
-	str.format("%02d", _outgoingGarbageCount);
-
-	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
-	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
-}
-
 void GridRunner::renderIncomingGarbage(s32 x, s32 y) {
 
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
@@ -113,27 +104,29 @@ void GridRunner::renderIncomingGarbage(s32 x, s32 y) {
 	s32 largeBoulders = _incomingGarbageCount / GARBAGE_LARGE_BOULDER_VALUE;
 	garbage -= largeBoulders * GARBAGE_LARGE_BOULDER_VALUE;
 
-	s32 bmpY = y;
+	s32 bmpY = Grid::BLOCK_SIZE;
+	s32 boulderX = _x + (Grid::BLOCK_SIZE * 5);
 
-	// TODO: Erase old boulders
+	// Erase old boulders
+	gfx->drawFilledRect(boulderX, Grid::BLOCK_SIZE, Grid::BLOCK_SIZE, 8 * Grid::BLOCK_SIZE, woopsiRGB(0, 0, 0));
 	
 	// Draw face boulders
 	for (s32 i = 0; i < faceBoulders; ++i) {
-		gfx->drawFilledRect(x, bmpY, 20, 20, woopsiRGB(31, 0, 0));
+		gfx->drawFilledRect(boulderX, bmpY, 20, 20, woopsiRGB(31, 0, 0));
 
 		bmpY += 20;
 	}
 
 	// Draw large boulders
 	for (s32 i = 0; i < largeBoulders; ++i) {
-		gfx->drawFilledRect(x, bmpY, 10, 10, woopsiRGB(0, 31, 0));
+		gfx->drawFilledRect(boulderX, bmpY, 10, 10, woopsiRGB(0, 31, 0));
 
 		bmpY += 10;
 	}
 
 	// Draw small boulders
 	for (s32 i = 0; i < garbage; ++i) {
-		gfx->drawFilledRect(x, bmpY, 5, 5, woopsiRGB(0, 0, 31));
+		gfx->drawFilledRect(boulderX, bmpY, 5, 5, woopsiRGB(0, 0, 31));
 
 		bmpY += 5;
 	}
@@ -322,8 +315,6 @@ void GridRunner::iterate() {
 	_grid->render(_x, 0, gfx);
 
 	++_timer;
-
-	renderOutgoingGarbage(_x, 48);
 
 	switch (_state) {
 		case GRID_RUNNER_STATE_DROP:

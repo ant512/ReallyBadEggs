@@ -15,6 +15,7 @@
 #include "pausedbmp.h"
 #include "playercontroller.h"
 #include "simianzombielogobmp.h"
+#include "statsbackgroundbmp.h"
 #include "aicontroller.h"
 #include "soundplayer.h"
 #include "twoplayerbgbmp.h"
@@ -68,7 +69,8 @@ int main(int argc, char* argv[]) {
 
 	Menu* menu = new Menu();
 
-	TwoPlayerBgBmp background;
+	TwoPlayerBgBmp backgroundBmp;
+	StatsBackgroundBmp statsBackgroundBmp;
 	SimianZombieLogoBmp simianZombieLogoBmp;
 	PausedBmp pausedBmp;
 	WinnerBmp winnerBmp;
@@ -160,7 +162,7 @@ int main(int argc, char* argv[]) {
 					runner = new GridRunner(controller, grid, blockServer, 0, runnerX, gameType, menu->getStartLevel());
 
 					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
-					gfx->drawBitmap(0, 0, background.getWidth(), background.getHeight(), &background, 0, 0);
+					gfx->drawBitmap(0, 0, backgroundBmp.getWidth(), backgroundBmp.getHeight(), &backgroundBmp, 0, 0);
 
 					// Fill second player grid with blank blocks if single
 					// player mode is selected
@@ -175,6 +177,14 @@ int main(int argc, char* argv[]) {
 					}
 
 					Hardware::getTopBuffer()->buffer();
+
+					// Draw the stats background
+					gfx = Hardware::getBottomGfx();
+					gfx->drawBitmap(0, 0, statsBackgroundBmp.getWidth(), statsBackgroundBmp.getHeight(), &statsBackgroundBmp, 0, 0);
+
+					// Draw stats
+					runner->renderHUD();
+					if (aiRunner != NULL) aiRunner->renderHUD();
 
 					SoundPlayer::stopMusic();
 

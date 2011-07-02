@@ -113,6 +113,8 @@ public:
 	 */
 	s32 getLevel() const;
 
+	void renderHUD();
+
 private:
 
 	/**
@@ -192,7 +194,6 @@ private:
 	 */
 	void renderNextBlocks(s32 x, s32 y) const;
 
-	void renderOutgoingGarbage(s32 x, s32 y);
 	void renderIncomingGarbage(s32 x, s32 y);
 
 	void drop();
