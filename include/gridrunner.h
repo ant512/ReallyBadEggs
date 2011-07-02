@@ -199,7 +199,7 @@ private:
 	 */
 	void renderNextBlocks() const;
 
-	void renderIncomingGarbage(s32 x, s32 y);
+	void renderIncomingGarbage();
 
 	void drop();
 	void land();

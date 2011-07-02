@@ -56,7 +56,7 @@ void GridRunner::renderHUD() {
 	renderScore(_x, 16);
 	renderSpeed(_x, 24);
 	renderChainCount(_x, 32);
-	renderIncomingGarbage(_x, 40);
+	renderIncomingGarbage();
 }
 
 void GridRunner::renderScore(s32 x, s32 y) {
@@ -89,7 +89,7 @@ void GridRunner::renderChainCount(s32 x, s32 y) {
 	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
 }
 
-void GridRunner::renderIncomingGarbage(s32 x, s32 y) {
+void GridRunner::renderIncomingGarbage() {
 
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
@@ -222,7 +222,7 @@ void GridRunner::land() {
 		_state = GRID_RUNNER_STATE_DROP;
 
 		_incomingGarbageCount = 0;
-		renderIncomingGarbage(_x, 40);
+		renderIncomingGarbage();
 	} else {
 
 		// Nothing exploded, so we can put a new live block into
@@ -366,7 +366,7 @@ bool GridRunner::addIncomingGarbage(s32 count) {
 
 	_incomingGarbageCount += count;
 
-	renderIncomingGarbage(_x, 40);
+	renderIncomingGarbage();
 
 	return true;
 }
