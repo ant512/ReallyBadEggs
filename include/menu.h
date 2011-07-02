@@ -19,9 +19,9 @@ public:
 
 		_gameTypeMenu = new MenuSet(52, 100, 72, 4, 1, 0, "Game Type");
 		_gameTypeMenu->addOption("Practice", 0);
-		_gameTypeMenu->addOption("Easy AI", 1);
-		_gameTypeMenu->addOption("Medium AI", 2);
-		_gameTypeMenu->addOption("Hard AI", 3);
+		_gameTypeMenu->addOption("Easy", 1);
+		_gameTypeMenu->addOption("Medium" , 2);
+		_gameTypeMenu->addOption("Hard", 3);
 
 		_startLevelMenu = new MenuSet(23, 70, 28, 2, 5, 1, "Speed");
 		_startLevelMenu->addOption("0", 0);
