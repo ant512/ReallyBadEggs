@@ -144,9 +144,9 @@ void GridRunner::renderNextBlocks(s32 x, s32 y) const {
 		BlockBase* block = _nextBlocks[i];
 
 		if (block == NULL) {
-			gfx->drawFilledRect(renderX, y, Grid::BLOCK_SIZE, Grid::BLOCK_SIZE, woopsiRGB(0, 0, 0));
+			gfx->drawFilledRect(renderX, Grid::BLOCK_SIZE, Grid::BLOCK_SIZE, Grid::BLOCK_SIZE, woopsiRGB(0, 0, 0));
 		} else {
-			block->render(renderX, y, gfx);
+			block->render(renderX, Grid::BLOCK_SIZE, gfx);
 		}
 	}
 }

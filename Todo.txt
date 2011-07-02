@@ -3,17 +3,14 @@ To do
 
 Engine
 
- - Use bitmaps for incoming garbage display instead of rects and erase old
-   display when display is updated.
  - Replace "game over" text with bitmap.
 
 Presentation
 
  - Design layout of bottom screen:
-   - Stats boxes for both players:
-     - Incoming garbage;
-     - Next block;
-     - Score;
-     - Level;
-     - Chains.
- - Title screen on top and bottom screens before menu.
+   - Score;
+   - Level;
+   - Chains.
+ - Title screen on top screen before menu.
+ - Title screen also on bottom screen during menu (or variation on title
+   screen).
