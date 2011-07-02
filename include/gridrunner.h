@@ -195,12 +195,9 @@ private:
 	void renderChainCount(s32 x, s32 y);
 
 	/**
-	 * Draws the two next blocks at the specified co-ordinates to the lower
-	 * screen.
-	 * @param x The x co-ordinate to draw at.
-	 * @param y The y co-ordinate to draw at.
+	 * Draws the two next blocks to the lower screen.
 	 */
-	void renderNextBlocks(s32 x, s32 y) const;
+	void renderNextBlocks() const;
 
 	void renderIncomingGarbage(s32 x, s32 y);
 

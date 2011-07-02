@@ -129,15 +129,13 @@ void GridRunner::renderIncomingGarbage(s32 x, s32 y) {
 	}
 }
 
-void GridRunner::renderNextBlocks(s32 x, s32 y) const {
+void GridRunner::renderNextBlocks() const {
 
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
-	s32 renderX = 0;
+	s32 renderX = _x + (((Grid::GRID_WIDTH * Grid::BLOCK_SIZE) - (Grid::BLOCK_SIZE * 2))/ 2);
 
 	for (s32 i = 0; i < 2; ++i) {
-		renderX = x + (i * Grid::BLOCK_SIZE);
-
 		BlockBase* block = _nextBlocks[i];
 
 		if (block == NULL) {
@@ -145,6 +143,8 @@ void GridRunner::renderNextBlocks(s32 x, s32 y) const {
 		} else {
 			block->render(renderX, Grid::BLOCK_SIZE, gfx);
 		}
+
+		renderX += Grid::BLOCK_SIZE;
 	}
 }
 
@@ -237,7 +237,7 @@ void GridRunner::land() {
 			// them
 			_blockServer->getNextBlocks(_playerNumber, &_nextBlocks[0], &_nextBlocks[1]);
 
-			renderNextBlocks(_x + ((Grid::GRID_WIDTH - 2) * Grid::BLOCK_SIZE / 2), 0);
+			renderNextBlocks();
 
 			if (_scoreMultiplier > 1) SoundPlayer::playMultichain(_playerNumber);
 
