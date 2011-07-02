@@ -228,7 +228,7 @@ WoopsiGfx library.
 Credits and Acknowledgements
 ----------------------------
 
-  - Coding                                          - Antony Dzeryn
+  - Coding, reverse engineering and remixing        - Antony Dzeryn
   - Original graphics and sounds                    - David & Michael Hay
   - Simian Zombie logo                              - John Clay
 
