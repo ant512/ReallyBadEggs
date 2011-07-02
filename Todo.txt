@@ -2,13 +2,12 @@ To do
 -----
 
  - Remove superfluous function parameters from HUD rendering functions.
- - Level HUD should only be 1 character.
 
 Presentation
 
  - Design layout of bottom screen:
    - Score;
-   - Level;
+   - Speed;
    - Chains.
  - Title screen on top screen before menu.
  - Title screen also on bottom screen during menu (or variation on title
