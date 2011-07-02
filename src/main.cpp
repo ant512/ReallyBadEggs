@@ -20,6 +20,8 @@
 #include "twoplayerbgbmp.h"
 #include "winnerbmp.h"
 
+#include "dumbaicontroller.h"
+
 const s32 HARD_AI_HESITATION = 0;
 const s32 MEDIUM_AI_HESITATION = 2;
 const s32 EASY_AI_HESITATION = 4;
@@ -75,7 +77,7 @@ int main(int argc, char* argv[]) {
 
 	// Player 1
 	Grid* grid = NULL;
-	PlayerController* controller = new PlayerController();
+	DumbAIController* controller = new DumbAIController(true);
 	GridRunner* runner = NULL;
 	
 	// Player 2
@@ -156,6 +158,8 @@ int main(int argc, char* argv[]) {
 
 					grid = new Grid(menu->getStartHeight(), 0);
 					runner = new GridRunner(controller, grid, blockServer, 0, runnerX, gameType, menu->getStartLevel());
+
+					controller->setGridRunner(runner);
 
 					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 					gfx->drawBitmap(0, 0, background.getWidth(), background.getHeight(), &background, 0, 0);
