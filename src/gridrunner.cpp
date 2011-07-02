@@ -4,10 +4,7 @@
 #include "hardware.h"
 #include "soundplayer.h"
 
-// Hard-coded lookup list for level speeds.  The speed increase between each
-// levels 0 to 10 is larger than the increase between levels 11 to 19 as the
-// increase becomes more significant as the wait period gets shorter
-const s32 GridRunner::LEVEL_SPEEDS[LEVEL_SPEED_COUNT] = { 38, 34, 30, 26, 22, 18, 14, 10, 6, 2 };
+const s32 GridRunner::SPEEDS[SPEED_COUNT] = { 38, 34, 30, 26, 22, 18, 14, 10, 6, 2 };
 
 GridRunner::GridRunner(ControllerBase* controller,
 					   Grid* grid,
@@ -15,7 +12,7 @@ GridRunner::GridRunner(ControllerBase* controller,
 					   s32 playerNumber,
 					   s32 x,
 					   GameType gameType,
-					   s32 startLevel) {
+					   s32 speed) {
 
 	_state = GRID_RUNNER_STATE_DROP;
 	_timer = 0;
@@ -27,7 +24,7 @@ GridRunner::GridRunner(ControllerBase* controller,
 	_gameType = gameType;
 
 	_score = 0;
-	_level = startLevel;
+	_speed = speed;
 	_chains = 0;
 	_scoreMultiplier = 0;
 	_outgoingGarbageCount = 0;
@@ -57,7 +54,7 @@ GridRunner::~GridRunner() {
 
 void GridRunner::renderHUD() {
 	renderScore(_x, 16);
-	renderLevelNumber(_x, 24);
+	renderSpeed(_x, 24);
 	renderChainCount(_x, 32);
 	renderIncomingGarbage(_x, 40);
 }
@@ -72,11 +69,11 @@ void GridRunner::renderScore(s32 x, s32 y) {
 	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
 }
 
-void GridRunner::renderLevelNumber(s32 x, s32 y) {
+void GridRunner::renderSpeed(s32 x, s32 y) {
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
 	WoopsiGfx::WoopsiString str;
-	str.format("%02d", _level);
+	str.format("%d", _speed);
 
 	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
 	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
@@ -210,7 +207,7 @@ void GridRunner::land() {
 		}
 
 		renderScore(_x, 16);
-		renderLevelNumber(_x, 24);
+		renderSpeed(_x, 24);
 		renderChainCount(_x, 32);
 
 		// We need to run the explosion animations next
@@ -263,7 +260,7 @@ void GridRunner::live() {
 
 		// Work out how many frames we need to wait until the blocks drop
 		// automatically
-		s32 timeToDrop = LEVEL_SPEEDS[_level];
+		s32 timeToDrop = SPEEDS[_speed];
 
 		// Process user input
 		if (_controller->left()) {
@@ -394,6 +391,6 @@ s32 GridRunner::getChains() const {
 	return _chains;
 }
 
-s32 GridRunner::getLevel() const {
-	return _level;
+s32 GridRunner::getSpeed() const {
+	return _speed;
 }

@@ -38,7 +38,7 @@ public:
 	 * @param playerNumber The unique number of the player using this runner.
 	 * @param x The x co-ordinate to render at.
 	 * @param gameType The type of game to play.
-	 * @param startLevel The starting level.
+	 * @param speed The auto drop speed.
 	 */
 	GridRunner(ControllerBase* controller,
 			   Grid* grid,
@@ -46,7 +46,7 @@ public:
 			   s32 playerNumber,
 			   s32 x,
 			   GameType gameType,
-			   s32 startLevel);
+			   s32 speed);
 
 	/**
 	 * Destructor.
@@ -112,10 +112,10 @@ public:
 	s32 getChains() const;
 
 	/**
-	 * Get the current level.
-	 * @return The current level.
+	 * Get the current speed.
+	 * @return The current speed.
 	 */
-	s32 getLevel() const;
+	s32 getSpeed() const;
 
 	void renderHUD();
 
@@ -137,8 +137,8 @@ private:
 	static const s32 GARBAGE_FACE_BOULDER_VALUE = 24;	/**< Number of garbage blocks represented by a face boulder. */
 	static const s32 GARBAGE_LARGE_BOULDER_VALUE = 6;	/**< Number of garbage blocks represented by a large boulder. */
 
-	static const s32 LEVEL_SPEED_COUNT = 10;			/**< Number of items in the drop speed array. */
-	static const s32 LEVEL_SPEEDS[LEVEL_SPEED_COUNT];	/**< Array of auto drop speeds for each level. */
+	static const s32 SPEED_COUNT = 10;		/**< Number of items in the drop speed array. */
+	static const s32 SPEEDS[SPEED_COUNT];	/**< Array of auto drop speeds. */
 
 	Grid* _grid;							/**< The grid the runner controls. */
 	GridRunnerState _state;					/**< The state of the state machine. */
@@ -150,7 +150,7 @@ private:
 	s32 _x;									/**< The x co-ordinate to render at. */
 
 	s32 _score;								/**< Current score. */
-	s32 _level;								/**< Current level. */
+	s32 _speed;								/**< Current speed. */
 	s32 _chains;							/**< Number of chains exploded. */
 	s32 _scoreMultiplier;					/**< Increases when multiple chains are exploded in one move. */
 
@@ -179,12 +179,12 @@ private:
 	void renderScore(s32 x, s32 y);
 
 	/**
-	 * Draws the current level number at the specified co-ordinates to the lower
+	 * Draws the current speed at the specified co-ordinates to the lower
 	 * screen.
 	 * @param x The x co-ordinate to draw at.
 	 * @param y The y co-ordinate to draw at.
 	 */
-	void renderLevelNumber(s32 x, s32 y);
+	void renderSpeed(s32 x, s32 y);
 
 	/**
 	 * Draws the current chain count at the specified co-ordinates to the lower
