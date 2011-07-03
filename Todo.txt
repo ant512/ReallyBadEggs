@@ -1,14 +1,6 @@
 To do
 -----
 
- - Remove superfluous function parameters from HUD rendering functions.
-
-Presentation
-
- - Design layout of bottom screen:
-   - Score;
-   - Speed;
-   - Chains.
  - Title screen on top screen before menu.
  - Title screen also on bottom screen during menu (or variation on title
    screen).

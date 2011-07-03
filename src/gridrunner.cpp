@@ -53,16 +53,20 @@ GridRunner::~GridRunner() {
 }
 
 void GridRunner::renderHUD() {
-	renderScore(_x, 16);
-	renderSpeed(_x, 24);
-	renderChainCount(_x, 32);
+	renderScore(_x + (Grid::BLOCK_SIZE / 2), (Grid::BLOCK_SIZE * 2) + (Grid::BLOCK_SIZE / 2));
+	renderSpeed(_x + (Grid::BLOCK_SIZE / 2), (Grid::BLOCK_SIZE * 4) + (Grid::BLOCK_SIZE / 2));
+	renderChainCount(_x + (Grid::BLOCK_SIZE / 2), (Grid::BLOCK_SIZE * 6) + (Grid::BLOCK_SIZE / 2));
 	renderIncomingGarbage();
 }
 
 void GridRunner::renderScore(s32 x, s32 y) {
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
-	WoopsiGfx::WoopsiString str;
+	WoopsiGfx::WoopsiString str("Score");
+	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
+
+	y += _font.getHeight();
+
 	str.format("%06d", _score);
 
 	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
@@ -72,7 +76,11 @@ void GridRunner::renderScore(s32 x, s32 y) {
 void GridRunner::renderSpeed(s32 x, s32 y) {
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
-	WoopsiGfx::WoopsiString str;
+	WoopsiGfx::WoopsiString str("Speed");
+	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
+
+	y += _font.getHeight();
+
 	str.format("%d", _speed);
 
 	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
@@ -82,7 +90,11 @@ void GridRunner::renderSpeed(s32 x, s32 y) {
 void GridRunner::renderChainCount(s32 x, s32 y) {
 	WoopsiGfx::Graphics* gfx = Hardware::getBottomGfx();
 
-	WoopsiGfx::WoopsiString str;
+	WoopsiGfx::WoopsiString str("Chains");
+	gfx->drawText(x, y, &_font, str, 0, str.getLength(), woopsiRGB(31, 31, 31));
+
+	y += _font.getHeight();
+
 	str.format("%04d", _chains);
 
 	gfx->drawFilledRect(x, y, _font.getStringWidth(str), _font.getHeight(), woopsiRGB(0, 0, 0));
@@ -206,9 +218,9 @@ void GridRunner::land() {
 			_accumulatingGarbageCount += garbage;
 		}
 
-		renderScore(_x, 16);
-		renderSpeed(_x, 24);
-		renderChainCount(_x, 32);
+		renderScore(_x + (Grid::BLOCK_SIZE / 2), (Grid::BLOCK_SIZE * 2) + (Grid::BLOCK_SIZE / 2));
+		renderSpeed(_x + (Grid::BLOCK_SIZE / 2), (Grid::BLOCK_SIZE * 4) + (Grid::BLOCK_SIZE / 2));
+		renderChainCount(_x + (Grid::BLOCK_SIZE / 2), (Grid::BLOCK_SIZE * 6) + (Grid::BLOCK_SIZE / 2));
 
 		// We need to run the explosion animations next
 		_state = GRID_RUNNER_STATE_EXPLODING;
