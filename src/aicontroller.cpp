@@ -55,6 +55,10 @@ void AIController::analyseGrid() {
 	s32 rightBlockXCoord = liveBlock1.x > liveBlock2.x ? liveBlock1.x : liveBlock2.x;
 
 	for (s32 i = leftBlockXCoord; i >= 0; --i) {
+		
+		if (i == liveBlock1.x) continue;
+		if (i == liveBlock2.x) continue;
+		
 		if (columnYCoords[i] <= lowestYCoord) {
 			leftBoundary = i;
 			break;
@@ -62,6 +66,10 @@ void AIController::analyseGrid() {
 	}
 
 	for (s32 i = rightBlockXCoord; i < Grid::GRID_WIDTH; ++i) {
+		
+		if (i == liveBlock1.x) continue;
+		if (i == liveBlock2.x) continue;
+		
 		if (columnYCoords[i] <= lowestYCoord) {
 			rightBoundary = i;
 			break;
@@ -139,6 +147,12 @@ void AIController::analyseGrid() {
 			if (point2.y < 0 || point2.y >= Grid::GRID_HEIGHT) continue;
 
 			s32 score = scoreShapePosition(block1, block2, point1, point2);
+
+			// Introduce a horrendous penalty if the block is being placed in
+			// the live block entry position unless the blocks make a chain
+			if ((point1.y == 0 && (point1.x == 2 || point1.x == 3)) || (point2.y == 0 && (point2.x == 2 || point2.x == 3))) {				
+				if (score < 1 << 4) score = -1;
+			}
 
 			// Bonus for not increasing the height of the target column
 			s32 heightBonus = 1 + ((point1.y + point2.y) / 2);

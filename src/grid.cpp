@@ -830,6 +830,17 @@ s32 Grid::getColumnHeight(s32 column) const {
 	s32 height = 0;
 
 	for (s32 y = Grid::GRID_HEIGHT - 1; y >= 0; --y) {
+		
+		// Ignore live blocks
+		if (_hasLiveBlocks) {
+			if (column == _liveBlocks[0].x && y == _liveBlocks[0].y) {
+				break;
+			}
+			if (column == _liveBlocks[1].x && y == _liveBlocks[1].y) {
+				break;
+			}
+		}
+		
 		if (getBlockAt(column, y) != NULL) {
 			++height;
 		} else {
