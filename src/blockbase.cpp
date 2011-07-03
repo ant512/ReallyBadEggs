@@ -24,6 +24,9 @@ BlockBase::~BlockBase() {
 	}
 
 	delete[] _bitmaps;
+
+	delete _landingAnim;
+	delete _explodingAnim;
 }
 
 u16 BlockBase::getColour() const {
