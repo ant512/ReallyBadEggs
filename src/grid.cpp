@@ -198,9 +198,7 @@ void Grid::getLiveBlockPoints(Point& liveBlock1, Point& liveBlock2) const {
 	liveBlock2 = _liveBlocks[1];
 }
 
-// TODO: Rename this to reflect the fact that it doesn't just find chain length;
-// it finds the length of the chain *plus* the amount of garbage removed
-s32 Grid::getPotentialChainLength(s32 x, s32 y, BlockBase* block, bool* checkedData) const {
+s32 Grid::getPotentialExplodedBlockCount(s32 x, s32 y, BlockBase* block, bool* checkedData) const {
 	
 	checkedData[x + (y * GRID_WIDTH)] = true;
 

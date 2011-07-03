@@ -54,11 +54,11 @@ void DumbAIController::analyseGrid() {
 				// Don't try to add blocks to columns that are already as tall
 				// as the grid
 				if (columnY[i] >= 0) {
-					chainLength[0] = grid->getPotentialChainLength(i, columnY[i], grid->getBlockAt(liveBlock1.x, liveBlock1.y), checkedData);
+					chainLength[0] = grid->getPotentialExplodedBlockCount(i, columnY[i], grid->getBlockAt(liveBlock1.x, liveBlock1.y), checkedData);
 				}
 
 				if (columnY[i + 1] >= 0) {
-					chainLength[1] = grid->getPotentialChainLength(i + 1, columnY[i + 1], grid->getBlockAt(liveBlock2.x, liveBlock2.y), checkedData);
+					chainLength[1] = grid->getPotentialExplodedBlockCount(i + 1, columnY[i + 1], grid->getBlockAt(liveBlock2.x, liveBlock2.y), checkedData);
 				}
 
 				// Basic score is the number of blocks connected together,

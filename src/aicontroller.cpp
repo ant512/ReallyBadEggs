@@ -216,8 +216,8 @@ s32 AIController::scoreShapePosition(BlockBase* block1, BlockBase* block2, const
 	// are added together).  This would lead to positions where both blocks
 	// touched same colour blocks being massively overweighted and possibly
 	// supplant better positions.
-	s32 score1 = grid->getPotentialChainLength(point1.x, point1.y, block1, checkedData);
-	s32 score2 = grid->getPotentialChainLength(point2.x, point2.y, block2, checkedData);
+	s32 score1 = grid->getPotentialExplodedBlockCount(point1.x, point1.y, block1, checkedData);
+	s32 score2 = grid->getPotentialExplodedBlockCount(point2.x, point2.y, block2, checkedData);
 
 	delete[] checkedData;
 

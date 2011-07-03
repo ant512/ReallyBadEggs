@@ -139,9 +139,11 @@ public:
 	 * @param x The x co-ordinate of the block.
 	 * @param y The y co-ordinate of the block.
 	 * @param block The block to place.
+	 * @param checkedData Array of bools the same size as the grid that
+	 * indicates which blocks have already been checked.
 	 * @return The length of the chain created.
 	 */
-	s32 getPotentialChainLength(s32 x, s32 y, BlockBase* block, bool* checkedData) const;
+	s32 getPotentialExplodedBlockCount(s32 x, s32 y, BlockBase* block, bool* checkedData) const;
 
 	/**
 	 * Populates the supplied Point references with the co-ordinates of the live
