@@ -56,6 +56,20 @@ public:
 		Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, AUDIO_S8, MIX_DEFAULT_CHANNELS, 512);		
 		Mix_Volume(-1, 60);
 
+		// Load sfx from resources folder
+		loadWav(SFX_CHAIN, "../Resources/chain.wav");
+		loadWav(SFX_DEAD, "../Resources/dead.wav");
+		loadWav(SFX_DROP, "../Resources/drop.wav");
+		loadWav(SFX_GARBAGE, "../Resources/garbage.wav");
+		loadWav(SFX_GARBAGEBIG, "../Resources/garbagebig.wav");
+		loadWav(SFX_LAND, "../Resources/land.wav");
+		loadWav(SFX_LOSE, "../Resources/lose.wav");
+		loadWav(SFX_MOVE, "../Resources/move.wav");
+		loadWav(SFX_MULTICHAIN1, "../Resources/multichain1.wav");
+		loadWav(SFX_MULTICHAIN2, "../Resources/multichain2.wav");
+		loadWav(SFX_PAUSE, "../Resources/pause.wav");
+		loadWav(SFX_ROTATE, "../Resources/rotate.wav");
+		loadWav(SFX_WIN, "../Resources/win.wav");
 #endif
 	};
 
@@ -71,7 +85,7 @@ public:
 
 		mmEffectEx(&sound);
 #else
-		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_CHAIN], 0);
 #endif
 	};
 
@@ -79,7 +93,7 @@ public:
 #ifndef USING_SDL
 		mmEffect(SFX_DROP);
 #else
-		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
 #endif
 	};
 
@@ -87,7 +101,7 @@ public:
 #ifndef USING_SDL
 		mmEffect(SFX_DEAD);
 #else
-		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DEAD], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DEAD], 0);
 #endif
 	};
 
@@ -108,7 +122,7 @@ public:
 		mmEffectEx(&sound);
 
 #else
-		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_DROP], 0);
 #endif
 	};
 
@@ -125,7 +139,7 @@ public:
 		mmEffectEx(&sound);
 
 #else
-		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_GARBAGE], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_GARBAGE], 0);
 #endif
 	};
 
@@ -142,7 +156,7 @@ public:
 		mmEffectEx(&sound);
 
 #else
-		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_GARBAGEBIG], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_GARBAGEBIG], 0);
 #endif
 	};
 
@@ -159,7 +173,7 @@ public:
 		mmEffectEx(&sound);
 
 #else
-		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_LAND], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_LAND], 0);
 #endif
 	};
 
@@ -167,7 +181,7 @@ public:
 #ifndef USING_SDL
 		mmEffect(SFX_MOVE);
 #else
-		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_MOVE], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_MOVE], 0);
 #endif
 	};
 
@@ -184,7 +198,7 @@ public:
 		mmEffectEx(&sound);
 
 #else
-		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_MOVE], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_MOVE], 0);
 #endif
 	};
 
@@ -201,7 +215,7 @@ public:
 		mmEffectEx(&sound);
 
 #else
-		//Mix_PlayChannel(CHANNEL_SFX, _sounds[player == 0 ? SFX_MULTICHAIN1 : SFX_MULTICHAIN2], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[player == 0 ? SFX_MULTICHAIN1 : SFX_MULTICHAIN2], 0);
 #endif
 	};
 
@@ -212,7 +226,7 @@ public:
 #ifndef USING_SDL
 		mmEffect(SFX_PAUSE);
 #else
-		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_PAUSE], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_PAUSE], 0);
 #endif
 	};
 
@@ -223,7 +237,7 @@ public:
 #ifndef USING_SDL
 		mmEffect(SFX_ROTATE);
 #else
-		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_ROTATE], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_ROTATE], 0);
 #endif
 	};
 
@@ -243,7 +257,7 @@ public:
 		mmEffectEx(&sound);
 
 #else
-		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_ROTATE], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_ROTATE], 0);
 #endif
 	};
 
@@ -251,7 +265,7 @@ public:
 #ifndef USING_SDL
 		mmEffect(SFX_LOSE);
 #else
-		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_LOSE], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_LOSE], 0);
 #endif
 	};
 
@@ -259,7 +273,7 @@ public:
 #ifndef USING_SDL
 		mmEffect(SFX_WIN);
 #else
-		//Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_WIN], 0);
+		Mix_PlayChannel(CHANNEL_SFX, _sounds[SFX_WIN], 0);
 #endif
 	};
 
@@ -315,15 +329,26 @@ private:
 	
 #else
 	
-	static const u32 SOUND_TYPE_COUNT = 1;
+	static const u32 SOUND_TYPE_COUNT = 13;
 	
 	enum SFXType {
-		SFX_PAUSE = 0
+		SFX_CHAIN = 0,
+		SFX_DEAD = 1,
+		SFX_DROP = 2,
+		SFX_GARBAGE = 3,
+		SFX_GARBAGEBIG = 4,
+		SFX_LAND = 5,
+		SFX_LOSE = 6,
+		SFX_MOVE = 7,
+		SFX_MULTICHAIN1 = 8,
+		SFX_MULTICHAIN2 = 9,
+		SFX_PAUSE = 10,
+		SFX_ROTATE = 11,
+		SFX_WIN = 12
 	};
 	
 	enum ChannelType {
-		CHANNEL_SFX = -1,
-		CHANNEL_MUSIC = 0
+		CHANNEL_SFX = -1
 	};
 	
 	static Mix_Chunk* _sounds[SOUND_TYPE_COUNT];

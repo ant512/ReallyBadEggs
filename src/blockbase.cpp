@@ -24,7 +24,7 @@ BlockBase::~BlockBase() {
 	}
 
 	delete[] _bitmaps;
-
+	
 	delete _landingAnim;
 	delete _explodingAnim;
 }
