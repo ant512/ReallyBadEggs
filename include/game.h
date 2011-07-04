@@ -25,8 +25,6 @@
 #include "twoplayerbgbmp.h"
 #include "winnerbmp.h"
 
-#include "dumbaicontroller.h"
-
 class Game {
 public:
 
