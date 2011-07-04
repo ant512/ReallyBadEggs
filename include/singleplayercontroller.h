@@ -1,5 +1,5 @@
-#ifndef _PLAYER_CONTROLLER_H_
-#define _PLAYER_CONTROLLER_H_
+#ifndef _SINGLE_PLAYER_CONTROLLER_H_
+#define _SINGLE_PLAYER_CONTROLLER_H_
 
 #include <nds.h>
 
@@ -10,18 +10,18 @@
 /**
  * Watches the DS' buttons and reports their states appropriately.
  */
-class PlayerController : public ControllerBase {
+class SinglePlayerController : public ControllerBase {
 public:
 
 	/**
 	 * Constructor.
 	 */
-	PlayerController() { };
+	SinglePlayerController() { };
 
 	/**
 	 * Destructor.
 	 */
-	~PlayerController() { };
+	~SinglePlayerController() { };
 
 	/**
 	 * Is the left control active?

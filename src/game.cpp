@@ -10,8 +10,8 @@ Game::~Game() {
 
 void Game::main() {
 
-	s32 runnerX = Grid::BLOCK_SIZE;
-	s32 aiRunnerX = SCREEN_WIDTH - (Grid::GRID_WIDTH * Grid::BLOCK_SIZE) - Grid::BLOCK_SIZE;
+	s32 p1RunnerX = Grid::BLOCK_SIZE;
+	s32 p2RunnerX = SCREEN_WIDTH - (Grid::GRID_WIDTH * Grid::BLOCK_SIZE) - Grid::BLOCK_SIZE;
 	s32 runnerWidth = Grid::GRID_WIDTH * Grid::BLOCK_SIZE;
 	s32 runnerHeight = Grid::GRID_HEIGHT * Grid::BLOCK_SIZE;
 	GridRunner::GameType gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
@@ -28,14 +28,14 @@ void Game::main() {
 	BlockServer* blockServer = NULL;
 
 	// Player 1
-	Grid* grid = NULL;
-	PlayerController* controller = new PlayerController();
-	GridRunner* runner = NULL;
+	Grid* p1Grid = NULL;
+	ControllerBase* p1Controller = NULL;
+	GridRunner* p1Runner = NULL;
 	
 	// Player 2
-	Grid* aiGrid = NULL;
-	AIController* aiController = NULL;
-	GridRunner* aiRunner = NULL;
+	Grid* p2Grid = NULL;
+	ControllerBase* p2Controller = NULL;
+	GridRunner* p2Runner = NULL;
 
 	const Pad& pad = Hardware::getPad();
 
@@ -95,44 +95,66 @@ void Game::main() {
 					srand(blanks);
 
 					switch (menu->getGameType()) {
-						case 0:
+						case GAME_TYPE_PRACTICE:
 							gameType = GridRunner::GAME_TYPE_SINGLE_PLAYER;
+
 							blockServer = new BlockServer(1, menu->getColours());
+							p1Controller = new SinglePlayerController();
 							break;
-						case 1:
+
+						case GAME_TYPE_EASY:
 							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
 							
 							blockServer = new BlockServer(2, menu->getColours());
-							aiGrid = new Grid(menu->getStartHeight(), 1);
-							aiController = new AIController(EASY_AI_HESITATION);
-							aiRunner = new GridRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, menu->getStartLevel());
+							p1Controller = new SinglePlayerController();
 
-							aiController->setGridRunner(aiRunner);
+							p2Grid = new Grid(menu->getStartHeight(), 1);
+							p2Controller = new AIController(EASY_AI_HESITATION);
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getStartLevel());
+
+							((AIController*)p2Controller)->setGridRunner(p2Runner);
 							break;
-						case 2:
+
+						case GAME_TYPE_MEDIUM:
 							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
 
 							blockServer = new BlockServer(2, menu->getColours());
-							aiGrid = new Grid(menu->getStartHeight(), 1);
-							aiController = new AIController(MEDIUM_AI_HESITATION);
-							aiRunner = new GridRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, menu->getStartLevel());
+							p1Controller = new SinglePlayerController();
 
-							aiController->setGridRunner(aiRunner);
+							p2Grid = new Grid(menu->getStartHeight(), 1);
+							p2Controller = new AIController(MEDIUM_AI_HESITATION);
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getStartLevel());
+
+							((AIController*)p2Controller)->setGridRunner(p2Runner);
 							break;
-						case 3:
+
+						case GAME_TYPE_HARD:
 							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
 
 							blockServer = new BlockServer(2, menu->getColours());
-							aiGrid = new Grid(menu->getStartHeight(), 1);
-							aiController = new AIController(HARD_AI_HESITATION);
-							aiRunner = new GridRunner(aiController, aiGrid, blockServer, 1, aiRunnerX, gameType, menu->getStartLevel());
+							p1Controller = new SinglePlayerController();
 
-							aiController->setGridRunner(aiRunner);
+							p2Grid = new Grid(menu->getStartHeight(), 1);
+							p2Controller = new AIController(HARD_AI_HESITATION);
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getStartLevel());
+
+							((AIController*)p2Controller)->setGridRunner(p2Runner);
+							break;
+						
+						case GAME_TYPE_2_PLAYER:
+							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
+
+							blockServer = new BlockServer(2, menu->getColours());
+							p1Controller = new Player1Controller();
+
+							p2Grid = new Grid(menu->getStartHeight(), 1);
+							p2Controller = new Player2Controller();
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getStartLevel());
 							break;
 					}
 
-					grid = new Grid(menu->getStartHeight(), 0);
-					runner = new GridRunner(controller, grid, blockServer, 0, runnerX, gameType, menu->getStartLevel());
+					p1Grid = new Grid(menu->getStartHeight(), 0);
+					p1Runner = new GridRunner(p1Controller, p1Grid, blockServer, 0, p1RunnerX, gameType, menu->getStartLevel());
 
 					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 					gfx->drawBitmap(0, 0, backgroundBmp.getWidth(), backgroundBmp.getHeight(), &backgroundBmp, 0, 0);
@@ -144,7 +166,7 @@ void Game::main() {
 
 						for (s32 x = 0; x < Grid::GRID_WIDTH; ++x) {
 							for (s32 y = 0; y < Grid::GRID_HEIGHT; ++y) {
-								gfx->drawBitmap(aiRunnerX + (x * Grid::BLOCK_SIZE), y * Grid::BLOCK_SIZE, blankBlockBmp.getWidth(), blankBlockBmp.getHeight(), &blankBlockBmp, 0, 0);
+								gfx->drawBitmap(p2RunnerX + (x * Grid::BLOCK_SIZE), y * Grid::BLOCK_SIZE, blankBlockBmp.getWidth(), blankBlockBmp.getHeight(), &blankBlockBmp, 0, 0);
 							}
 						}
 					}
@@ -156,8 +178,8 @@ void Game::main() {
 					gfx->drawBitmap(0, 0, statsBackgroundBmp.getWidth(), statsBackgroundBmp.getHeight(), &statsBackgroundBmp, 0, 0);
 
 					// Draw stats
-					runner->renderHUD();
-					if (aiRunner != NULL) aiRunner->renderHUD();
+					p1Runner->renderHUD();
+					if (p2Runner != NULL) p2Runner->renderHUD();
 
 					SoundPlayer::stopMusic();
 
@@ -169,22 +191,22 @@ void Game::main() {
 			case GAME_STATE_ACTIVE:
 
 				// Standard mode
-				runner->iterate();
+				p1Runner->iterate();
 
-				if (aiRunner == NULL) {
-					if (runner->isDead()) {
+				if (p2Runner == NULL) {
+					if (p1Runner->isDead()) {
 						SoundPlayer::playDead();
 
 						blanks = 0;
 						state = GAME_STATE_GAME_OVER;
 					}
 				} else {
-					aiRunner->iterate();
+					p2Runner->iterate();
 
-					if (runner->isDead() && !aiRunner->isDead()) {
+					if (p1Runner->isDead() && !p2Runner->isDead()) {
 						WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 						
-						gfx->drawBitmap(aiRunnerX, (runnerHeight - 16) / 2, winnerBmp.getWidth(), winnerBmp.getHeight(), &winnerBmp, 0, 0);
+						gfx->drawBitmap(p2RunnerX, (runnerHeight - 16) / 2, winnerBmp.getWidth(), winnerBmp.getHeight(), &winnerBmp, 0, 0);
 
 						Hardware::getTopBuffer()->buffer();
 
@@ -192,10 +214,10 @@ void Game::main() {
 
 						blanks = 0;
 						state = GAME_STATE_GAME_OVER;
-					} else if (aiRunner->isDead() && !runner->isDead()) {
+					} else if (p2Runner->isDead() && !p1Runner->isDead()) {
 						WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 						
-						gfx->drawBitmap(runnerX, (runnerHeight - 16) / 2, winnerBmp.getWidth(), winnerBmp.getHeight(), &winnerBmp, 0, 0);
+						gfx->drawBitmap(p1RunnerX, (runnerHeight - 16) / 2, winnerBmp.getWidth(), winnerBmp.getHeight(), &winnerBmp, 0, 0);
 
 						Hardware::getTopBuffer()->buffer();
 
@@ -203,11 +225,11 @@ void Game::main() {
 
 						blanks = 0;
 						state = GAME_STATE_GAME_OVER;
-					} else if (aiRunner->isDead() && runner->isDead()) {
+					} else if (p2Runner->isDead() && p1Runner->isDead()) {
 						WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 
-						gfx->drawBitmap(runnerX, (runnerHeight - 16) / 2, winnerBmp.getWidth(), winnerBmp.getHeight(), &winnerBmp, 0, 0);
-						gfx->drawBitmap(aiRunnerX, (runnerHeight - 16) / 2, winnerBmp.getWidth(), winnerBmp.getHeight(), &winnerBmp, 0, 0);
+						gfx->drawBitmap(p1RunnerX, (runnerHeight - 16) / 2, winnerBmp.getWidth(), winnerBmp.getHeight(), &winnerBmp, 0, 0);
+						gfx->drawBitmap(p2RunnerX, (runnerHeight - 16) / 2, winnerBmp.getWidth(), winnerBmp.getHeight(), &winnerBmp, 0, 0);
 
 						Hardware::getTopBuffer()->buffer();
 
@@ -217,24 +239,24 @@ void Game::main() {
 						state = GAME_STATE_GAME_OVER;
 					}
 
-					if (runner->addIncomingGarbage(aiRunner->getOutgoingGarbageCount())) {
-						aiRunner->clearOutgoingGarbageCount();
+					if (p1Runner->addIncomingGarbage(p2Runner->getOutgoingGarbageCount())) {
+						p2Runner->clearOutgoingGarbageCount();
 					}
 
-					if (aiRunner->addIncomingGarbage(runner->getOutgoingGarbageCount())) {
-						runner->clearOutgoingGarbageCount();
+					if (p2Runner->addIncomingGarbage(p1Runner->getOutgoingGarbageCount())) {
+						p1Runner->clearOutgoingGarbageCount();
 					}
 				}
 
 				if (pad.isStartNewPress()) {
 					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 
-					gfx->drawFilledRect(runnerX, 0, runnerWidth, runnerHeight, woopsiRGB(0, 0, 0));
-					gfx->drawBitmap(runnerX, (runnerHeight - 16) / 2, pausedBmp.getWidth(), pausedBmp.getHeight(), &pausedBmp, 0, 0);
+					gfx->drawFilledRect(p1RunnerX, 0, runnerWidth, runnerHeight, woopsiRGB(0, 0, 0));
+					gfx->drawBitmap(p1RunnerX, (runnerHeight - 16) / 2, pausedBmp.getWidth(), pausedBmp.getHeight(), &pausedBmp, 0, 0);
 
-					if (aiGrid != NULL) {
-						gfx->drawFilledRect(aiRunnerX, 0, runnerWidth, runnerHeight, woopsiRGB(0, 0, 0));
-						gfx->drawBitmap(aiRunnerX, (runnerHeight - 16) / 2, pausedBmp.getWidth(), pausedBmp.getHeight(), &pausedBmp, 0, 0);
+					if (p2Grid != NULL) {
+						gfx->drawFilledRect(p2RunnerX, 0, runnerWidth, runnerHeight, woopsiRGB(0, 0, 0));
+						gfx->drawBitmap(p2RunnerX, (runnerHeight - 16) / 2, pausedBmp.getWidth(), pausedBmp.getHeight(), &pausedBmp, 0, 0);
 					}
 
 					Hardware::getTopBuffer()->buffer();
@@ -256,19 +278,22 @@ void Game::main() {
 					// Quit to menu
 					delete blockServer;
 
-					delete runner;
-					delete grid;
+					delete p1Runner;
+					delete p1Grid;
+					delete p1Controller;
 
-					delete aiRunner;
-					delete aiGrid;
-					delete aiController;
+					delete p2Runner;
+					delete p2Grid;
+					delete p2Controller;
 
 					blockServer = NULL;
-					runner = NULL;
-					grid = NULL;
-					aiRunner = NULL;
-					aiGrid = NULL;
-					aiController = NULL;
+					p1Runner = NULL;
+					p1Grid = NULL;
+					p1Controller = NULL;
+
+					p2Runner = NULL;
+					p2Grid = NULL;
+					p2Controller = NULL;
 
 					menu->setActiveMenu(1);
 
@@ -285,8 +310,8 @@ void Game::main() {
 			case GAME_STATE_GAME_OVER:
 
 				if (blanks == 200) {
-					if (aiRunner != NULL) {
-						if (aiRunner->isDead()) {
+					if (p2Runner != NULL) {
+						if (p2Runner->isDead()) {
 							SoundPlayer::playWin();
 						} else {
 							SoundPlayer::playLose();
@@ -298,19 +323,22 @@ void Game::main() {
 
 					delete blockServer;
 
-					delete runner;
-					delete grid;
+					delete p1Runner;
+					delete p1Grid;
+					delete p1Controller;
 
-					delete aiRunner;
-					delete aiGrid;
-					delete aiController;
+					delete p2Runner;
+					delete p2Grid;
+					delete p2Controller;
 
 					blockServer = NULL;
-					runner = NULL;
-					grid = NULL;
-					aiRunner = NULL;
-					aiGrid = NULL;
-					aiController = NULL;
+					p1Runner = NULL;
+					p1Grid = NULL;
+					p1Controller = NULL;
+
+					p2Runner = NULL;
+					p2Grid = NULL;
+					p2Controller = NULL;
 
 					menu->setActiveMenu(1);
 
@@ -329,7 +357,6 @@ void Game::main() {
 	}
 
 	delete menu;
-	delete controller;
 	delete scroller;
 }
 

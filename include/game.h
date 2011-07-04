@@ -16,7 +16,9 @@
 #include "hardware.h"
 #include "menu.h"
 #include "pausedbmp.h"
-#include "playercontroller.h"
+#include "singleplayercontroller.h"
+#include "player1controller.h"
+#include "player2controller.h"
 #include "scroller.h"
 #include "simianzombielogobmp.h"
 #include "statsbackgroundbmp.h"
@@ -27,6 +29,14 @@
 
 class Game {
 public:
+
+	enum GameType {
+		GAME_TYPE_PRACTICE = 0,
+		GAME_TYPE_EASY = 1,
+		GAME_TYPE_MEDIUM = 2,
+		GAME_TYPE_HARD = 3,
+		GAME_TYPE_2_PLAYER = 4
+	};
 
 	Game();
 
