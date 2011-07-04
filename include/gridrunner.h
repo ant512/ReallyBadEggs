@@ -117,6 +117,9 @@ public:
 	 */
 	s32 getSpeed() const;
 
+	/**
+	 * Draws the stats (score, chains, speed, etc) to the bottom screen.
+	 */
 	void renderHUD();
 
 private:
@@ -164,11 +167,11 @@ private:
 
 	GameFont _font;							/**< Font used for rendering text. */
 
-	FaceBoulderBmp _faceBoulderBmp;
-	SmallBoulderBmp _smallBoulderBmp;
-	LargeBoulderBmp _largeBoulderBmp;
+	FaceBoulderBmp _faceBoulderBmp;			/**< Bitmap representing 24 incoming garbage blocks. */
+	SmallBoulderBmp _smallBoulderBmp;		/**< Bitmap representing 1 incoming garbage block. */
+	LargeBoulderBmp _largeBoulderBmp;		/**< Bitmap representing 6 incoming garbage blocks. */
 
-	bool _droppingLiveBlocks;
+	bool _droppingLiveBlocks;				/**< True if live blocks are dropping automatically. */
 
 	/**
 	 * Draws the current score at the specified co-ordinates to the lower
@@ -199,10 +202,24 @@ private:
 	 */
 	void renderNextBlocks() const;
 
+	/**
+	 * Renders the incoming garbage count to the bottom screen.
+	 */
 	void renderIncomingGarbage();
 
+	/**
+	 * Drops blocks in the grid.  Called when the grid is in drop mode.
+	 */
 	void drop();
+
+	/**
+	 * Lands blocks in the grid.  Called when the grid is in land mode.
+	 */
 	void land();
+
+	/**
+	 * Process live blocks in the grid.  Called when the grid is in live mode.
+	 */
 	void live();
 
 	/**

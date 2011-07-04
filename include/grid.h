@@ -23,6 +23,8 @@ public:
 	 * Constructor.
 	 * @param startingHeight Number of rows that are filled with grey blocks at
 	 * the start of the game.
+	 * @param playerNumber The number of the player that is controlling this
+	 * grid.
 	 */
 	Grid(s32 startingHeight, s32 playerNumber);
 
