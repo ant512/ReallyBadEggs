@@ -212,12 +212,12 @@ the fewest eggs (ie. the lowest columns) first.  Really Bad Eggs does the same.
 
 The original Puyo Puyo games feature steadily more advanced AI enemies.  Really
 Bad Eggs features just one kind of AI that can be told to hesitate instead of
-move.  The AI is fairly primitive and will only consider the
-potential connections made by moving and rotating the current set of live eggs.
-It does not plan based on the next block nor try to create sequences of chains.
-Despite this, it is smart enough to beat me yet not so good that it beats me
-every time I play it.  I am sure that seasoned Puyo Puyo players will be able to
-run rings around it.
+move.  The AI is fairly primitive and will only consider the potential
+connections made by moving and rotating the current set of live eggs.  It does
+not plan based on the next block nor try to create sequences of chains.  Despite
+this, it is smart enough to beat me yet not so good that it beats me every time
+I play it.  I am sure that seasoned Puyo Puyo players will be able to run rings
+around it.
 
 
 Requirements
