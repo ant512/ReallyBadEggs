@@ -70,6 +70,9 @@ public:
 		loadWav(SFX_PAUSE, "../Resources/pause.wav");
 		loadWav(SFX_ROTATE, "../Resources/rotate.wav");
 		loadWav(SFX_WIN, "../Resources/win.wav");
+		
+		_titleMod = loadMod("../Resources/title.mod");
+		
 #endif
 	};
 
@@ -329,6 +332,8 @@ public:
 	static void playTitleMusic() {
 #ifndef USING_SDL
 		mmStart(MOD_TITLE, MM_PLAY_LOOP);
+#else
+		Mix_PlayMusic(_titleMod, -1);
 #endif
 	};
 
@@ -338,6 +343,8 @@ public:
 	static void stopMusic() {
 #ifndef USING_SDL
 		mmStop();
+#else
+		Mix_HaltMusic();
 #endif
 	};
 
@@ -366,6 +373,8 @@ public:
 		
 #else
 		
+		Mix_FreeMusic(_titleMod);
+		
 		for (u32 i = 0; i < SOUND_TYPE_COUNT; i++) {
 			Mix_FreeChunk(_sounds[i]);
 		}
@@ -377,9 +386,7 @@ public:
 	};
 
 private:
-#ifndef USING_SDL
-	
-#else
+#ifdef USING_SDL
 	
 	static const u32 SOUND_TYPE_COUNT = 13;
 	
@@ -404,6 +411,8 @@ private:
 	};
 	
 	static Mix_Chunk* _sounds[SOUND_TYPE_COUNT];
+	
+	static Mix_Music* _titleMod;
 
 	static void loadWav(SFXType type, const char* fileName) {
 		
@@ -428,6 +437,33 @@ private:
 		_sounds[type] = Mix_LoadWAV(buffer);
 		
 		delete[] buffer;
+	};
+	
+	static Mix_Music* loadMod(const char* fileName) {
+		
+		// Get path of executable
+		char path[1024];
+		uint32_t size = sizeof(path);
+		_NSGetExecutablePath(path, &size);
+		
+		WoopsiGfx::WoopsiString str(path);
+		
+		// Strip the name of the executable
+		s32 lastIndex = str.lastIndexOf('/');
+		str = str.subString(0, lastIndex);
+		
+		// Add the name of the wav
+		str.append("/");
+		str.append(fileName);
+		
+		char* buffer = new char[str.getByteCount() + 1];
+		str.copyToCharArray(buffer);
+		
+		Mix_Music* music = Mix_LoadMUS(buffer);
+		
+		delete[] buffer;
+		
+		return music;
 	};
 
 #endif

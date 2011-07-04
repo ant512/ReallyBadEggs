@@ -40,9 +40,9 @@ void Game::main() {
 	const Pad& pad = Hardware::getPad();
 
 	Scroller* scroller = new Scroller(".... Really Bad Eggs is a remake of Super "
-									  " FoulEgg, a Commodore Amiga version of "
-									  "Puyo Puyo released as an Amiga Power "
-									  "coverdisk in 1995 "
+									  "Foul Egg, a Commodore Amiga version of "
+									  "Puyo Puyo.  The original was released as "
+									  "an Amiga Power coverdisk in 1995 "
 									  ".... Connect eggs into chains of 4 or "
 									  "more by moving and rotating them as they "
 									  "fall "
