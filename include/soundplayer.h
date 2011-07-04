@@ -76,7 +76,8 @@ public:
 	/**
 	 * Plays the chain explosion sound.
 	 * @param player The number of the player who triggered the sound.
-	 * @param The score multiplier applied when the chain exploded.
+	 * @param scoreMultiplier The score multiplier applied when the chain
+	 * exploded.
 	 */
 	static void playChain(s32 player, s32 scoreMultiplier) {
 #ifndef USING_SDL

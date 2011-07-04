@@ -29,7 +29,7 @@ public:
 	/**
 	 * Decides where to move the current live block.  Checks the state of the
 	 * grid and works out how many points are given from landing the current
-	 * block at each possible location without rotating it.
+	 * block at each possible location.
 	 */
 	void analyseGrid();
 
