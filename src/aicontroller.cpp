@@ -233,48 +233,6 @@ s32 AIController::scoreShapePosition(BlockBase* block1, BlockBase* block2, const
 	return score;
 }
 
-bool AIController::canMoveToTarget() {
-
-	const Grid* grid = _gridRunner->getGrid();
-
-	Point liveBlock1;
-	Point liveBlock2;
-
-	grid->getLiveBlockPoints(liveBlock1, liveBlock2);
-
-	// Get the y co-ords of the topmost blank block in each column
-	s32* columnYCoords = new s32[Grid::GRID_WIDTH];
-
-	for (s32 i = 0; i < Grid::GRID_WIDTH; ++i) {
-		columnYCoords[i] = (Grid::GRID_HEIGHT - grid->getColumnHeight(i)) - 1;
-	}
-
-	bool movePossible = true;
-
-	if (_targetX < liveBlock1.x) {
-
-		// Need to move left
-		for (s32 x = liveBlock1.x; x >= _targetX; --x) {
-
-			// If either block is lower than the column we're looking at, it is
-			// impossible for the block to be moved to the target column
-			if (columnYCoords[x] < liveBlock1.y || columnYCoords[x] < liveBlock2.y) {
-				movePossible = false;
-			}
-		}
-	} else if (_targetX > liveBlock1.x) {
-
-		// Need to move right
-		for (s32 x = liveBlock1.x; x <= _targetX; ++x) {
-			if (columnYCoords[x] < liveBlock1.y || columnYCoords[x] < liveBlock2.y) {
-				movePossible = false;
-			}
-		}
-	}
-
-	return movePossible;
-}
-
 bool AIController::left() {
 	analyseGrid();
 

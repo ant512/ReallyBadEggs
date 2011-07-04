@@ -16,7 +16,8 @@ public:
 
 	/**
 	 * Constructor.
-	 * @param isFast True to make the AI hard; false to make it easier.
+	 * @param hesitation Amount of hesitation to apply when making a decision to
+	 * move.  Larger values == greater chance of hesitation.
 	 */
 	AIController(s32 hesitation);
 
@@ -78,9 +79,14 @@ private:
 	s32 _hesitation;						/**< Chance that the AI will hesitate (larger value = more likely;
 												 0 = no hesitation). */
 
+	/**
+	 * Get a score for the proposed co-ordinates of the supplied blocks.
+	 * @param block1 First block in the shape.
+	 * @param block2 Second block in the shape.
+	 * @param point1 The co-ordinates of the first block.
+	 * @param point2 The co-ordinates of the second block.
+	 */
 	s32 scoreShapePosition(BlockBase* block1, BlockBase* block2, const Point& point1, const Point& point2);
-
-	bool canMoveToTarget();
 };
 
 #endif
