@@ -11,25 +11,25 @@ Menu::Menu() {
 	_gameTypeMenu->addOption("Hard", Game::GAME_TYPE_HARD);
 	_gameTypeMenu->addOption("2 Player", Game::GAME_TYPE_2_PLAYER);
 
-	_startLevelMenu = new MenuSet(23, 70, 28, 2, 5, 1, "Speed");
-	_startLevelMenu->addOption("0", 0);
-	_startLevelMenu->addOption("1", 1);
-	_startLevelMenu->addOption("2", 2);
-	_startLevelMenu->addOption("3", 3);
-	_startLevelMenu->addOption("4", 4);
-	_startLevelMenu->addOption("5", 5);
-	_startLevelMenu->addOption("6", 6);
-	_startLevelMenu->addOption("7", 7);
-	_startLevelMenu->addOption("8", 8);
-	_startLevelMenu->addOption("9", 9);
+	_speedMenu = new MenuSet(23, 70, 28, 2, 5, 1, "Speed");
+	_speedMenu->addOption("0", 0);
+	_speedMenu->addOption("1", 1);
+	_speedMenu->addOption("2", 2);
+	_speedMenu->addOption("3", 3);
+	_speedMenu->addOption("4", 4);
+	_speedMenu->addOption("5", 5);
+	_speedMenu->addOption("6", 6);
+	_speedMenu->addOption("7", 7);
+	_speedMenu->addOption("8", 8);
+	_speedMenu->addOption("9", 9);
 
-	_startHeightMenu = new MenuSet(81, 56, 28, 2, 3, 2, "Height");
-	_startHeightMenu->addOption("0", 0);
-	_startHeightMenu->addOption("1", 1);
-	_startHeightMenu->addOption("2", 2);
-	_startHeightMenu->addOption("3", 3);
-	_startHeightMenu->addOption("4", 4);
-	_startHeightMenu->addOption("5", 5);
+	_heightMenu = new MenuSet(81, 56, 28, 2, 3, 2, "Height");
+	_heightMenu->addOption("0", 0);
+	_heightMenu->addOption("1", 1);
+	_heightMenu->addOption("2", 2);
+	_heightMenu->addOption("3", 3);
+	_heightMenu->addOption("4", 4);
+	_heightMenu->addOption("5", 5);
 
 	_coloursMenu = new MenuSet(139, 42, 14, 1, 3, 3, "Egg Colours");
 	_coloursMenu->addOption("4", 4);
@@ -39,8 +39,8 @@ Menu::Menu() {
 
 Menu::~Menu() {
 	delete _gameTypeMenu;
-	delete _startLevelMenu;
-	delete _startHeightMenu;
+	delete _speedMenu;
+	delete _heightMenu;
 	delete _coloursMenu;
 }
 
@@ -51,8 +51,8 @@ void Menu::render() {
 	if (_activeMenu == 0) {
 		_gameTypeMenu->render(true, &_font, gfx);
 	} else {
-		_startLevelMenu->render(_activeMenu == 1, &_font, gfx);
-		_startHeightMenu->render(_activeMenu == 2, &_font, gfx);
+		_speedMenu->render(_activeMenu == 1, &_font, gfx);
+		_heightMenu->render(_activeMenu == 2, &_font, gfx);
 		_coloursMenu->render(_activeMenu == 3, &_font, gfx);
 	}
 }
@@ -104,10 +104,10 @@ void Menu::iterate() {
 			_gameTypeMenu->iterate();
 			break;
 		case 1:
-			_startLevelMenu->iterate();
+			_speedMenu->iterate();
 			break;
 		case 2:
-			_startHeightMenu->iterate();
+			_heightMenu->iterate();
 			break;
 		case 3:
 			_coloursMenu->iterate();
@@ -121,12 +121,12 @@ s32 Menu::getGameType() const {
 	return _gameTypeMenu->getSelectedValue();
 }
 
-s32 Menu::getStartLevel() const {
-	return _startLevelMenu->getSelectedValue();
+s32 Menu::getSpeed() const {
+	return _speedMenu->getSelectedValue();
 }
 
-s32 Menu::getStartHeight() const {
-	return _startHeightMenu->getSelectedValue();
+s32 Menu::getHeight() const {
+	return _heightMenu->getSelectedValue();
 }
 
 s32 Menu::getColours() const {

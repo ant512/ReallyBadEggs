@@ -108,9 +108,9 @@ void Game::main() {
 							blockServer = new BlockServer(2, menu->getColours());
 							p1Controller = new SinglePlayerController();
 
-							p2Grid = new Grid(menu->getStartHeight(), 1);
+							p2Grid = new Grid(menu->getHeight(), 1);
 							p2Controller = new AIController(EASY_AI_HESITATION);
-							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getStartLevel());
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getSpeed());
 
 							((AIController*)p2Controller)->setGridRunner(p2Runner);
 							break;
@@ -121,9 +121,9 @@ void Game::main() {
 							blockServer = new BlockServer(2, menu->getColours());
 							p1Controller = new SinglePlayerController();
 
-							p2Grid = new Grid(menu->getStartHeight(), 1);
+							p2Grid = new Grid(menu->getHeight(), 1);
 							p2Controller = new AIController(MEDIUM_AI_HESITATION);
-							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getStartLevel());
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getSpeed());
 
 							((AIController*)p2Controller)->setGridRunner(p2Runner);
 							break;
@@ -134,9 +134,9 @@ void Game::main() {
 							blockServer = new BlockServer(2, menu->getColours());
 							p1Controller = new SinglePlayerController();
 
-							p2Grid = new Grid(menu->getStartHeight(), 1);
+							p2Grid = new Grid(menu->getHeight(), 1);
 							p2Controller = new AIController(HARD_AI_HESITATION);
-							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getStartLevel());
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getSpeed());
 
 							((AIController*)p2Controller)->setGridRunner(p2Runner);
 							break;
@@ -147,14 +147,14 @@ void Game::main() {
 							blockServer = new BlockServer(2, menu->getColours());
 							p1Controller = new Player1Controller();
 
-							p2Grid = new Grid(menu->getStartHeight(), 1);
+							p2Grid = new Grid(menu->getHeight(), 1);
 							p2Controller = new Player2Controller();
-							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getStartLevel());
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getSpeed());
 							break;
 					}
 
-					p1Grid = new Grid(menu->getStartHeight(), 0);
-					p1Runner = new GridRunner(p1Controller, p1Grid, blockServer, 0, p1RunnerX, gameType, menu->getStartLevel());
+					p1Grid = new Grid(menu->getHeight(), 0);
+					p1Runner = new GridRunner(p1Controller, p1Grid, blockServer, 0, p1RunnerX, gameType, menu->getSpeed());
 
 					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 					gfx->drawBitmap(0, 0, backgroundBmp.getWidth(), backgroundBmp.getHeight(), &backgroundBmp, 0, 0);
