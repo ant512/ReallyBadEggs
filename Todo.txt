@@ -4,3 +4,10 @@ To do
  - Title screen on top screen before menu.
  - Title screen also on bottom screen during menu (or variation on title
    screen).
+
+SDL:
+
+ - Add music to title screen.
+ - Pan samples left/right depending on player.
+ - Set frequency of chain sample depending on score multiplier (doesn't seem to
+   be possible in SDL).

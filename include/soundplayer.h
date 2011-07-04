@@ -73,6 +73,11 @@ public:
 #endif
 	};
 
+	/**
+	 * Plays the chain explosion sound.
+	 * @param player The number of the player who triggered the sound.
+	 * @param The score multiplier applied when the chain exploded.
+	 */
 	static void playChain(s32 player, s32 scoreMultiplier) {
 #ifndef USING_SDL
 
@@ -89,6 +94,9 @@ public:
 #endif
 	};
 
+	/**
+	 * Plays the previous menu selection sound.
+	 */
 	static void playMenuBack() {
 #ifndef USING_SDL
 		mmEffect(SFX_DROP);
@@ -97,6 +105,9 @@ public:
 #endif
 	};
 
+	/**
+	 * Plays the game over sound.
+	 */
 	static void playDead() {
 #ifndef USING_SDL
 		mmEffect(SFX_DEAD);
@@ -105,6 +116,10 @@ public:
 #endif
 	};
 
+	/**
+	 * Plays the drop block sound.
+	 * @param player The number of the player who triggered the sound.
+	 */
 	static void playDrop(s32 player) {
 
 		// Don't play drop sound for CPU as it is maddeningly annoying
@@ -126,6 +141,10 @@ public:
 #endif
 	};
 
+	/**
+	 * Plays the garbage land sound.
+	 * @param player The number of the player who triggered the sound.
+	 */
 	static void playGarbage(s32 player) {
 #ifndef USING_SDL
 
@@ -143,6 +162,10 @@ public:
 #endif
 	};
 
+	/**
+	 * Plays the incoming garbage sound.
+	 * @param player The number of the player who triggered the sound.
+	 */
 	static void playGarbageBig(s32 player) {
 #ifndef USING_SDL
 
@@ -160,6 +183,10 @@ public:
 #endif
 	};
 
+	/**
+	 * Plays the land block sound.
+	 * @param player The number of the player who triggered the sound.
+	 */
 	static void playLand(s32 player) {
 #ifndef USING_SDL
 
@@ -177,6 +204,9 @@ public:
 #endif
 	};
 
+	/**
+	 * Plays the menu selection moved sound.
+	 */
 	static void playMenuMove() {
 #ifndef USING_SDL
 		mmEffect(SFX_MOVE);
@@ -185,6 +215,10 @@ public:
 #endif
 	};
 
+	/**
+	 * Plays the move block sound.
+	 * @param player The number of the player who triggered the sound.
+	 */
 	static void playMove(s32 player) {
 #ifndef USING_SDL
 
@@ -202,6 +236,10 @@ public:
 #endif
 	};
 
+	/**
+	 * Plays the multichain achieved sound.
+	 * @param player The number of the player who triggered the sound.
+	 */
 	static void playMultichain(s32 player) {
 #ifndef USING_SDL
 
@@ -243,6 +281,7 @@ public:
 
 	/**
 	 * Plays the block rotation sound.
+	 * @param player The number of the player who triggered the sound.
 	 */
 	static void playRotate(s32 player) {
 #ifndef USING_SDL
@@ -261,6 +300,9 @@ public:
 #endif
 	};
 
+	/**
+	 * Plays the game lost sound.
+	 */
 	static void playLose() {
 #ifndef USING_SDL
 		mmEffect(SFX_LOSE);
@@ -269,6 +311,9 @@ public:
 #endif
 	};
 
+	/**
+	 * Plays the game won sound.
+	 */
 	static void playWin() {
 #ifndef USING_SDL
 		mmEffect(SFX_WIN);
@@ -277,12 +322,18 @@ public:
 #endif
 	};
 
+	/**
+	 * Plays the title music.
+	 */
 	static void playTitleMusic() {
 #ifndef USING_SDL
 		mmStart(MOD_TITLE, MM_PLAY_LOOP);
 #endif
 	};
 
+	/**
+	 * Stops the title music.
+	 */
 	static void stopMusic() {
 #ifndef USING_SDL
 		mmStop();
