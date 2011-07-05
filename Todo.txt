@@ -4,7 +4,3 @@ To do
  - Title screen on top screen before menu.
  - Title screen also on bottom screen during menu (or variation on title
    screen).
-
-SDL:
-
- - Pan samples left/right depending on player.
