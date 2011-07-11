@@ -59,7 +59,7 @@ void Grid::clear() {
 }
 
 BlockBase* Grid::getBlockAt(s32 x, s32 y) const {
-	if (!isValidCoordinate(x, y)) return 0;
+	if (!isValidCoordinate(x, y)) return NULL;
 
 	return _data[x + (y * GRID_WIDTH)];
 }
