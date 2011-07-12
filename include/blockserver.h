@@ -8,7 +8,7 @@
 
 /**
  * Each time a new set of blocks is added to a grid, the grid asks an instance
- * of this clss for the blocks.  All grids must share the same BlockServer
+ * of this class for the blocks.  All grids must share the same BlockServer
  * instance.
  *
  * This class maintains a list of block pairs and the position in the list of

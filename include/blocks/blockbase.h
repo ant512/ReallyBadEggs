@@ -102,11 +102,11 @@ public:
 	void land();
 
 	/**
-	 * If any animations - landing or exploding - the animations run.  If the
-	 * block is landing and the landing animation has finished, the isLanding()
-	 * property is set to false.  Alternatively, if the block is exploding and
-	 * the explosion animation has finished, the isExploded() property is set to
-	 * true.
+	 * If any animations - landing or exploding - are active, the animations
+	 * run.  If the block is landing and the landing animation has finished, the
+	 * isLanding() property is set to false.  Alternatively, if the block is
+	 * exploding and the explosion animation has finished, the isExploded()
+	 * property is set to true.
 	 */
 	void animate();
 
