@@ -38,6 +38,12 @@ public:
 	inline bool isHeld() const { return _touch > 0; };
 
 	/**
+	 * Check if the stylus is newly released.
+	 * @return True if the stylus is newly released.
+	 */
+	inline bool isReleased() const { return _touch == -1; };
+
+	/**
 	 * Check if the stylus is repeating.  If the stylus has been held for a
 	 * while it is occasionally useful to treat that as a repeat press.  If this
 	 * method returns true, then a repeat action can be triggered.
@@ -63,19 +69,33 @@ public:
 	 */
 	void update() {
 
+		// If we released _touch on the previous iteration, we need to reset it
+		// to 0
+		if (_touch == -1) ++_touch;
+
 #ifndef USING_SDL
 
 		s32 pressed = keysDown();	// buttons pressed this loop
 		s32 held = keysHeld();		// buttons currently held
 		s32 allKeys = pressed | held;
 
-		allKeys & KEY_TOUCH ? _touch++ : _touch = -1;
+		if (allKeys & KEY_TOUCH) {
+
+			// Stylus is held
+			++_touch;
+		} else if (_touch > 0) {
+
+			// Stylus is released
+			_touch = -1;
+		}
 
 		touchPosition touch;
 		touchRead(&touch);
 
-		_x = touch.px;
-		_y = touch.py;
+		if (pressed || held) {
+			_x = touch.px;
+			_y = touch.py;
+		}
 
 #else
 
@@ -86,10 +106,21 @@ public:
 		int mouseState = SDL_GetMouseState(&mouseX, &mouseY);
 		
 		// Check buttons
-		mouseState & SDL_BUTTON_LEFT ? _touch++ : _touch = 0;
+		if (mouseState & SDL_BUTTON_LEFT) {
+
+			// Stylus is held
+			++_touch;
+		} else if (_touch > 0) {
+
+			// Stylus is released
+			_touch = -1;
+		}
 		
-		_x = mouseX;
-		_y = mouseY - SCREEN_HEIGHT;
+		if (pressed || held) {
+			_x = mouseX;
+			_y = mouseY - SCREEN_HEIGHT;
+		}
+
 #endif
 	};
 

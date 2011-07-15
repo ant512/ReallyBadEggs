@@ -107,6 +107,78 @@ public:
 	inline bool isSelectNewPress() const { return _select == 1; };
 
 	/**
+	 * Check if up is newly released since the last call to update().
+	 * @return True if newly released.
+	 */
+	inline bool isUpReleased() const { return _up == -1; };
+
+	/**
+	 * Check if down is newly released since the last call to update().
+	 * @return True if newly released.
+	 */
+	inline bool isDownReleased() const { return _down == -1; };
+
+	/**
+	 * Check if left is newly released since the last call to update().
+	 * @return True if newly released.
+	 */
+	inline bool isLeftReleased() const { return _left == -1; };
+
+	/**
+	 * Check if right is newly released since the last call to update().
+	 * @return True if newly released.
+	 */
+	inline bool isRightReleased() const { return _right == -1; };
+
+	/**
+	 * Check if A is newly released since the last call to update().
+	 * @return True if newly released.
+	 */
+	inline bool isAReleased() const { return _a == -1; };
+
+	/**
+	 * Check if B is newly released since the last call to update().
+	 * @return True if newly released.
+	 */
+	inline bool isBReleased() const { return _b == -1; };
+
+	/**
+	 * Check if X is newly released since the last call to update().
+	 * @return True if newly released.
+	 */
+	inline bool isXReleased() const { return _x == -1; };
+
+	/**
+	 * Check if Y is newly released since the last call to update().
+	 * @return True if newly released.
+	 */
+	inline bool isYReleased() const { return _y == -1; };
+
+	/**
+	 * Check if L is newly released since the last call to update().
+	 * @return True if newly released.
+	 */
+	inline bool isLReleased() const { return _l == -1; };
+
+	/**
+	 * Check if R is newly released since the last call to update().
+	 * @return True if newly released.
+	 */
+	inline bool isRReleased() const { return _r == -1; };
+
+	/**
+	 * Check if start is newly released since the last call to update().
+	 * @return True if newly released.
+	 */
+	inline bool isStartReleased() const { return _start == -1; };
+
+	/**
+	 * Check if select is newly released since the last call to update().
+	 * @return True if newly released.
+	 */
+	inline bool isSelectReleased() const { return _select == -1; };
+
+	/**
 	 * Check if up is held down.
 	 * @return True if held down.
 	 */
@@ -266,6 +338,21 @@ public:
 	 */
 	void update() {
 
+		// If we released any keys on the previous iteration we need to reset
+		// them
+		if (_up == -1) ++_up;
+		if (_down == -1) ++_down;
+		if (_left == -1) ++_left;
+		if (_right == -1) ++_right;
+		if (_l == -1) ++_l;
+		if (_r == -1) ++_r;
+		if (_a == -1) ++_a;
+		if (_b == -1) ++_b;
+		if (_x == -1) ++_x;
+		if (_y == -1) ++_y;
+		if (_start == -1) ++_start;
+		if (_select == -1) ++_select;
+
 #ifndef USING_SDL
 
 		scanKeys();
@@ -274,35 +361,153 @@ public:
 		s32 held = keysHeld();		// Buttons currently held
 		s32 allKeys = pressed | held;
 
-		allKeys & KEY_UP ? _up++ : _up = 0;
-		allKeys & KEY_DOWN ? _down++ : _down = 0;
-		allKeys & KEY_LEFT ? _left++ : _left = 0;
-		allKeys & KEY_RIGHT ? _right++ : _right = 0;
-		allKeys & KEY_L ? _l++ : _l = 0;
-		allKeys & KEY_R ? _r++ : _r = 0;
-		allKeys & KEY_A ? _a++ : _a = 0;
-		allKeys & KEY_B ? _b++ : _b = 0;
-		allKeys & KEY_X ? _x++ : _x = 0;
-		allKeys & KEY_Y ? _y++ : _y = 0;
-		allKeys & KEY_START ? _start++ : _start = 0;
-		allKeys & KEY_SELECT ? _select++ : _select = 0;
+		if (allKeys & KEY_UP) {
+			++_up;
+		} else if (_up > 0) {
+			_up = -1;
+		}
+
+		if (allKeys & KEY_DOWN) {
+			++_down;
+		} else if (_down > 0) {
+			_down = -1;
+		}
+
+		if (allKeys & KEY_LEFT) {
+			++_left;
+		} else if (_left > 0) {
+			_left = -1;
+		}
+
+		if (allKeys & KEY_RIGHT) {
+			++_right;
+		} else if (_right > 0) {
+			_right = -1;
+		}
+
+		if (allKeys & KEY_L) {
+			++_l;
+		} else if (_l > 0) {
+			_l = -1;
+		}
+
+		if (allKeys & KEY_R) {
+			++_r;
+		} else if (_r > 0) {
+			_r = -1;
+		}
+
+		if (allKeys & KEY_A) {
+			++_a;
+		} else if (_a > 0) {
+			_a = -1;
+		}
+
+		if (allKeys & KEY_B) {
+			++_b;
+		} else if (_b > 0) {
+			_b = -1;
+		}
+
+		if (allKeys & KEY_X) {
+			++_x;
+		} else if (_x > 0) {
+			_x = -1;
+		}
+
+		if (allKeys & KEY_Y) {
+			++_y;
+		} else if (_y > 0) {
+			_y = -1;
+		}
+
+		if (allKeys & KEY_START) {
+			++_start;
+		} else if (_start > 0) {
+			_start = -1;
+		}
+
+		if (allKeys & KEY_SELECT) {
+			++_select;
+		} else if (_select > 0) {
+			_select = -1;
+		}
 
 #else
 
 		Uint8* keyState = SDL_GetKeyState(NULL);
 
-		keyState[SDLK_UP] ? _up++ : _up = 0;
-		keyState[SDLK_DOWN] ? _down++ : _down = 0;
-		keyState[SDLK_LEFT] ? _left++ : _left = 0;
-		keyState[SDLK_RIGHT] ? _right++ : _right = 0;
-		keyState[SDLK_a] ? _l++ : _l = 0;
-		keyState[SDLK_s] ? _r++ : _r = 0;
-		keyState[SDLK_z] ? _a++ : _a = 0;
-		keyState[SDLK_x] ? _b++ : _b = 0;
-		keyState[SDLK_c] ? _x++ : _x = 0;
-		keyState[SDLK_v] ? _y++ : _y = 0;
-		keyState[SDLK_d] ? _start++ : _start = 0;
-		keyState[SDLK_f] ? _select++ : _select = 0;
+		if (keyState[SDLK_UP] & KEY_UP) {
+			++_up;
+		} else if (_up > 0) {
+			_up = -1;
+		}
+
+		if (keyState[SDLK_DOWN] & KEY_DOWN) {
+			++_down;
+		} else if (_down > 0) {
+			_down = -1;
+		}
+
+		if (keyState[SDLK_LEFT] & KEY_LEFT) {
+			++_left;
+		} else if (_left > 0) {
+			_left = -1;
+		}
+
+		if (keyState[SDLK_RIGHT] & KEY_RIGHT) {
+			++_right;
+		} else if (_right > 0) {
+			_right = -1;
+		}
+
+		if (keyState[SDLK_a] & KEY_L) {
+			++_l;
+		} else if (_l > 0) {
+			_l = -1;
+		}
+
+		if (keyState[SDLK_s] & KEY_R) {
+			++_r;
+		} else if (_r > 0) {
+			_r = -1;
+		}
+
+		if (keyState[SDLK_z] & KEY_A) {
+			++_a;
+		} else if (_a > 0) {
+			_a = -1;
+		}
+
+		if (keyState[SDLK_x] & KEY_B) {
+			++_b;
+		} else if (_b > 0) {
+			_b = -1;
+		}
+
+		if (keyState[SDLK_c] & KEY_X) {
+			++_x;
+		} else if (_x > 0) {
+			_x = -1;
+		}
+
+		if (keyState[SDLK_v] & KEY_Y) {
+			++_y;
+		} else if (_y > 0) {
+			_y = -1;
+		}
+
+		if (keyState[SDLK_d] & KEY_START) {
+			++_start;
+		} else if (_start > 0) {
+			_start = -1;
+		}
+
+		if (keyState[SDLK_f] & KEY_SELECT) {
+			++_select;
+		} else if (_select > 0) {
+			_select = -1;
+		}
 
 #endif
 	};
@@ -310,8 +515,9 @@ public:
 private:
 
 	/**
-	 * Each value represents the amount of time (jn VBLs) that the button has
+	 * Each value represents the amount of time (in VBLs) that the button has
 	 * been held.  Therefore:
+	 *  -1 = released;
 	 *   0 = not held;
 	 *   1 = newly held;
 	 *  >1 = held for n frames.

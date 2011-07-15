@@ -78,9 +78,6 @@ Select:                 Quit to menu (when paused)
 Controls - Two-Player Mode
 --------------------------
 
-The controls for player 2 are rather awkward, so gentlemanly play requires that
-the participants swap sides between games.
-
 Player 1
 
 Move shape left:        Left
