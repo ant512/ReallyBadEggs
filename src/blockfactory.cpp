@@ -1,6 +1,6 @@
 #include <limits.h>
 
-#include "blockserver.h"
+#include "blockfactory.h"
 
 #include "blueblock.h"
 #include "greenblock.h"
@@ -9,7 +9,7 @@
 #include "redblock.h"
 #include "yellowblock.h"
 
-BlockServer::BlockServer(s32 playerCount, s32 blockColourCount) {
+BlockFactory::BlockFactory(s32 playerCount, s32 blockColourCount) {
 	_blockColourCount = blockColourCount;
 	_playerCount = playerCount;
 
@@ -18,11 +18,11 @@ BlockServer::BlockServer(s32 playerCount, s32 blockColourCount) {
 	clear();
 }
 
-BlockServer::~BlockServer() {
+BlockFactory::~BlockFactory() {
 	delete[] _playerBlockListIndices;
 }
 
-void BlockServer::clear() {
+void BlockFactory::clear() {
 	for (s32 i = 0; i < _playerCount; ++i) {
 		_playerBlockListIndices[i] = 0;
 	}
@@ -30,7 +30,7 @@ void BlockServer::clear() {
 	_blockList.clear();
 }
 
-BlockBase* BlockServer::newBlock(s32 player) {
+BlockBase* BlockFactory::newBlock(s32 player) {
 	s32 index = _playerBlockListIndices[player]++;
 
 	// If the player is requesting a block past the end of the block list,
@@ -47,11 +47,11 @@ BlockBase* BlockServer::newBlock(s32 player) {
 	return block;
 }
 
-void BlockServer::addRandomBlock() {
+void BlockFactory::addRandomBlock() {
 	_blockList.push_back(getRandomBlockType());
 }
 
-BlockBase* BlockServer::newBlockFromType(BlockServer::BlockType type) const {
+BlockBase* BlockFactory::newBlockFromType(BlockFactory::BlockType type) const {
 	switch (type) {
 		case BLOCK_RED:
 			return new RedBlock();
@@ -71,7 +71,7 @@ BlockBase* BlockServer::newBlockFromType(BlockServer::BlockType type) const {
 	return new RedBlock();
 }
 
-void BlockServer::expireUsedBlocks() {
+void BlockFactory::expireUsedBlocks() {
 	s32 minimumBlock = INT_MAX;
 
 	// Locate the earliest-used block in the list
@@ -92,6 +92,6 @@ void BlockServer::expireUsedBlocks() {
 	}
 }
 
-BlockServer::BlockType BlockServer::getRandomBlockType() const {
-	return (BlockServer::BlockType)(rand() % _blockColourCount);
+BlockFactory::BlockType BlockFactory::getRandomBlockType() const {
+	return (BlockFactory::BlockType)(rand() % _blockColourCount);
 }

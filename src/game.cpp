@@ -25,7 +25,7 @@ void Game::main() {
 	PausedBmp pausedBmp;
 	WinnerBmp winnerBmp;
 
-	BlockServer* blockServer = NULL;
+	BlockFactory* blockFactory = NULL;
 
 	// Player 1
 	Grid* p1Grid = NULL;
@@ -98,19 +98,19 @@ void Game::main() {
 						case GAME_TYPE_PRACTICE:
 							gameType = GridRunner::GAME_TYPE_SINGLE_PLAYER;
 
-							blockServer = new BlockServer(1, menu->getColours());
+							blockFactory = new BlockFactory(1, menu->getColours());
 							p1Controller = new SinglePlayerController();
 							break;
 
 						case GAME_TYPE_EASY:
 							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
 							
-							blockServer = new BlockServer(2, menu->getColours());
+							blockFactory = new BlockFactory(2, menu->getColours());
 							p1Controller = new SinglePlayerController();
 
 							p2Grid = new Grid(menu->getHeight(), 1);
 							p2Controller = new AIController(EASY_AI_HESITATION);
-							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getSpeed());
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockFactory, 1, p2RunnerX, gameType, menu->getSpeed());
 
 							((AIController*)p2Controller)->setGridRunner(p2Runner);
 							break;
@@ -118,12 +118,12 @@ void Game::main() {
 						case GAME_TYPE_MEDIUM:
 							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
 
-							blockServer = new BlockServer(2, menu->getColours());
+							blockFactory = new BlockFactory(2, menu->getColours());
 							p1Controller = new SinglePlayerController();
 
 							p2Grid = new Grid(menu->getHeight(), 1);
 							p2Controller = new AIController(MEDIUM_AI_HESITATION);
-							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getSpeed());
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockFactory, 1, p2RunnerX, gameType, menu->getSpeed());
 
 							((AIController*)p2Controller)->setGridRunner(p2Runner);
 							break;
@@ -131,12 +131,12 @@ void Game::main() {
 						case GAME_TYPE_HARD:
 							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
 
-							blockServer = new BlockServer(2, menu->getColours());
+							blockFactory = new BlockFactory(2, menu->getColours());
 							p1Controller = new SinglePlayerController();
 
 							p2Grid = new Grid(menu->getHeight(), 1);
 							p2Controller = new AIController(HARD_AI_HESITATION);
-							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getSpeed());
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockFactory, 1, p2RunnerX, gameType, menu->getSpeed());
 
 							((AIController*)p2Controller)->setGridRunner(p2Runner);
 							break;
@@ -144,17 +144,17 @@ void Game::main() {
 						case GAME_TYPE_2_PLAYER:
 							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
 
-							blockServer = new BlockServer(2, menu->getColours());
+							blockFactory = new BlockFactory(2, menu->getColours());
 							p1Controller = new Player1Controller();
 
 							p2Grid = new Grid(menu->getHeight(), 1);
 							p2Controller = new Player2Controller();
-							p2Runner = new GridRunner(p2Controller, p2Grid, blockServer, 1, p2RunnerX, gameType, menu->getSpeed());
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockFactory, 1, p2RunnerX, gameType, menu->getSpeed());
 							break;
 					}
 
 					p1Grid = new Grid(menu->getHeight(), 0);
-					p1Runner = new GridRunner(p1Controller, p1Grid, blockServer, 0, p1RunnerX, gameType, menu->getSpeed());
+					p1Runner = new GridRunner(p1Controller, p1Grid, blockFactory, 0, p1RunnerX, gameType, menu->getSpeed());
 
 					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 					gfx->drawBitmap(0, 0, backgroundBmp.getWidth(), backgroundBmp.getHeight(), &backgroundBmp, 0, 0);
@@ -276,7 +276,7 @@ void Game::main() {
 				} else if (pad.isSelectNewPress()) {
 
 					// Quit to menu
-					delete blockServer;
+					delete blockFactory;
 
 					delete p1Runner;
 					delete p1Grid;
@@ -286,7 +286,7 @@ void Game::main() {
 					delete p2Grid;
 					delete p2Controller;
 
-					blockServer = NULL;
+					blockFactory = NULL;
 					p1Runner = NULL;
 					p1Grid = NULL;
 					p1Controller = NULL;
@@ -321,7 +321,7 @@ void Game::main() {
 
 				if ((blanks > 200) && (pad.isStartNewPress() || pad.isANewPress() || pad.isBNewPress())) {
 
-					delete blockServer;
+					delete blockFactory;
 
 					delete p1Runner;
 					delete p1Grid;
@@ -331,7 +331,7 @@ void Game::main() {
 					delete p2Grid;
 					delete p2Controller;
 
-					blockServer = NULL;
+					blockFactory = NULL;
 					p1Runner = NULL;
 					p1Grid = NULL;
 					p1Controller = NULL;

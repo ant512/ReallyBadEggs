@@ -1,5 +1,5 @@
-#ifndef _BLOCK_SERVER_H_
-#define _BLOCK_SERVER_H_
+#ifndef _BLOCK_FACTORY_H_
+#define _BLOCK_FACTORY_H_
 
 #include <nds.h>
 #include <woopsiarray.h>
@@ -22,7 +22,7 @@
  * used them.  This ensures that all players are given the same set of blocks in
  * the same order.
  */
-class BlockServer {
+class BlockFactory {
 public:
 
 	/**
@@ -30,12 +30,12 @@ public:
 	 * @param playerCount The number of players in the game.
 	 * @param blockColourCount The number of block colours available.
 	 */
-	BlockServer(s32 playerCount, s32 blockColourCount);
+	BlockFactory(s32 playerCount, s32 blockColourCount);
 
 	/**
 	 * Destructor.
 	 */
-	~BlockServer();
+	~BlockFactory();
 
 	/**
 	 * Get a new block for the specified player.
@@ -52,7 +52,7 @@ public:
 private:
 
 	/**
-	 * List of all block types that the class can serve.
+	 * List of all block types that the class can create.
 	 */
 	enum BlockType {
 		BLOCK_RED = 0,			/**< Red block. */

@@ -4,7 +4,7 @@
 #include <graphics.h>
 #include <nds.h>
 
-#include "blockserver.h"
+#include "blockfactory.h"
 #include "controllerbase.h"
 #include "gamefont.h"
 #include "grid.h"
@@ -33,8 +33,8 @@ public:
 	 * @param controller A controller object that will provide input for the
 	 * movement of live blocks.
 	 * @param grid Grid to run.
-	 * @param blockServer The block server to use to produce next blocks for the
-	 * grid.
+	 * @param blockFactory The block factory to use to produce next blocks for
+	 * the grid.
 	 * @param playerNumber The unique number of the player using this runner.
 	 * @param x The x co-ordinate to render at.
 	 * @param gameType The type of game to play.
@@ -42,7 +42,7 @@ public:
 	 */
 	GridRunner(ControllerBase* controller,
 			   Grid* grid,
-			   BlockServer* blockServer,
+			   BlockFactory* blockFactory,
 			   s32 playerNumber,
 			   s32 x,
 			   GameType gameType,
@@ -147,7 +147,7 @@ private:
 	GridRunnerState _state;					/**< The state of the state machine. */
 	s32 _timer;								/**< Frames since the last event took place. */
 	ControllerBase* _controller;			/**< Controller that feeds user input to live blocks. */
-	BlockServer* _blockServer;				/**< Produces next blocks for the grid. */
+	BlockFactory* _blockFactory;			/**< Produces next blocks for the grid. */
 	BlockBase** _nextBlocks;				/**< Array of 2 blocks that will be placed next. */
 	s32 _playerNumber;						/**< Unique number of the player using this runner. */
 	s32 _x;									/**< The x co-ordinate to render at. */

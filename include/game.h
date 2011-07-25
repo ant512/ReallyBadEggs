@@ -9,7 +9,7 @@
 #include <woopsistring.h>
 
 #include "blankblockbmp.h"
-#include "blockserver.h"
+#include "blockfactory.h"
 #include "gamefont.h"
 #include "grid.h"
 #include "gridrunner.h"

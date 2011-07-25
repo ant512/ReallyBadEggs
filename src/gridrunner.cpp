@@ -8,7 +8,7 @@ const s32 GridRunner::SPEEDS[SPEED_COUNT] = { 38, 34, 30, 26, 22, 18, 14, 10, 6,
 
 GridRunner::GridRunner(ControllerBase* controller,
 					   Grid* grid,
-					   BlockServer* blockServer,
+					   BlockFactory* blockFactory,
 					   s32 playerNumber,
 					   s32 x,
 					   GameType gameType,
@@ -18,7 +18,7 @@ GridRunner::GridRunner(ControllerBase* controller,
 	_timer = 0;
 	_controller = controller;
 	_grid = grid;
-	_blockServer = blockServer;
+	_blockFactory = blockFactory;
 	_playerNumber = playerNumber;
 	_x = x;
 	_gameType = gameType;
@@ -36,8 +36,8 @@ GridRunner::GridRunner(ControllerBase* controller,
 	_nextBlocks = new BlockBase*[2];
 
 	// Ensure we have some initial blocks to add to the grid
-	_nextBlocks[0] = _blockServer->newBlock(_playerNumber);
-	_nextBlocks[1] = _blockServer->newBlock(_playerNumber);
+	_nextBlocks[0] = _blockFactory->newBlock(_playerNumber);
+	_nextBlocks[1] = _blockFactory->newBlock(_playerNumber);
 }
 
 GridRunner::~GridRunner() {
@@ -246,10 +246,10 @@ void GridRunner::land() {
 			_state = GRID_RUNNER_STATE_DEAD;
 		} else {
 
-			// Fetch the next blocks from the block server and remember
+			// Fetch the next blocks from the block factory and remember
 			// them
-			_nextBlocks[0] = _blockServer->newBlock(_playerNumber);
-			_nextBlocks[1] = _blockServer->newBlock(_playerNumber);
+			_nextBlocks[0] = _blockFactory->newBlock(_playerNumber);
+			_nextBlocks[1] = _blockFactory->newBlock(_playerNumber);
 
 			renderNextBlocks();
 
