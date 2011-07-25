@@ -50,14 +50,14 @@ accept all currently-selected options and skip straight to the game.
 
 The menus are as follows:
 
- - Game Type: Choose from the practice game type, the easy/medium/hard
+ - **Game Type**: Choose from the practice game type, the easy/medium/hard
    player-vs-AI types, or the two-player game.
- - Speed: Choose the speed at which the eggs drop down the grid.  Faster speeds
+ - **Speed**: Choose the speed at which the eggs drop down the grid.  Faster speeds
    mean less time to think.
- - Height: Choose the starting height.  The number corresponds to the rows of
+ - **Height**: Choose the starting height.  The number corresponds to the rows of
    garbage eggs added to the grid at the start of the game.  More rows mean the
    game is initially faster paced and harder.
- - Colours: The number of different colours of eggs in the game.  Each
+ - **Colours**: The number of different colours of eggs in the game.  Each
    additional colour reduces the chance of a particular colour egg being
    created, making it more difficult to set up elaborate sequences of egg
    chains.
@@ -66,13 +66,13 @@ The menus are as follows:
 Controls - Practice and Vs CPU Modes
 ------------------------------------
 
- * Move shape left:        Left
- * Move shape right:       Right
- * Drop shape:             Down
- * Rotate clockwise:       A
- * Rotate anticlockwise:   B
- * Pause/unpause:          Start
- * Select:                 Quit to menu (when paused)
+ * Move shape left:            Left
+ * Move shape right:           Right
+ * Drop shape:                 Down
+ * Rotate clockwise:           A
+ * Rotate anticlockwise:       B
+ * Pause/unpause:              Start
+ * Select:                     Quit to menu (when paused)
 
 
 Controls - Two-Player Mode
@@ -80,22 +80,22 @@ Controls - Two-Player Mode
 
 **Player 1**
 
- * Move shape left:        Left
- * Move shape right:       Right
- * Drop shape:             Down
- * Rotate clockwise:       L
- * Rotate anticlockwise:   Up
+ * Move shape left:            Left
+ * Move shape right:           Right
+ * Drop shape:                 Down
+ * Rotate clockwise:           L
+ * Rotate anticlockwise:       Up
 
 **Player 2**
 
- * Move shape left:        Y
- * Move shape right:       A
- * Drop shape:             B
- * Rotate clockwise:       R
- * Rotate anticlockwise:   X
+ * Move shape left:            Y
+ * Move shape right:           A
+ * Drop shape:                 B
+ * Rotate clockwise:           R
+ * Rotate anticlockwise:       X
 
- * Pause/unpause:          Start
- * Select:                 Quit to menu (when paused)
+ * Pause/unpause:              Start
+ * Quit to menu (when paused): Select
 
 
 Scoring
@@ -250,9 +250,9 @@ WoopsiGfx library.
 Credits and Acknowledgements
 ----------------------------
 
- - Coding, reverse engineering and remixing        - Antony Dzeryn
- - Original graphics and sounds                    - David & Michael Hay
- - Simian Zombie logo                              - John Clay
+ - Coding, reverse engineering and remixing        - **Antony Dzeryn**
+ - Original graphics and sounds                    - **David & Michael Hay**
+ - Simian Zombie logo                              - **John Clay**
 
 
 Links
