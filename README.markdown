@@ -52,11 +52,11 @@ The menus are as follows:
 
  - **Game Type**: Choose from the practice game type, the easy/medium/hard
    player-vs-AI types, or the two-player game.
- - **Speed**: Choose the speed at which the eggs drop down the grid.  Faster speeds
-   mean less time to think.
- - **Height**: Choose the starting height.  The number corresponds to the rows of
-   garbage eggs added to the grid at the start of the game.  More rows mean the
-   game is initially faster paced and harder.
+ - **Speed**: Choose the speed at which the eggs drop down the grid.  Faster
+   speeds mean less time to think.
+ - **Height**: Choose the starting height.  The number corresponds to the rows
+   of garbage eggs added to the grid at the start of the game.  More rows mean
+   the game is initially faster paced and harder.
  - **Colours**: The number of different colours of eggs in the game.  Each
    additional colour reduces the chance of a particular colour egg being
    created, making it more difficult to set up elaborate sequences of egg
