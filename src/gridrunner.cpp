@@ -36,7 +36,8 @@ GridRunner::GridRunner(ControllerBase* controller,
 	_nextBlocks = new BlockBase*[2];
 
 	// Ensure we have some initial blocks to add to the grid
-	_blockServer->getNextBlocks(_playerNumber, &_nextBlocks[0], &_nextBlocks[1]);
+	_nextBlocks[0] = _blockServer->newBlock(_playerNumber);
+	_nextBlocks[1] = _blockServer->newBlock(_playerNumber);
 }
 
 GridRunner::~GridRunner() {
@@ -247,7 +248,8 @@ void GridRunner::land() {
 
 			// Fetch the next blocks from the block server and remember
 			// them
-			_blockServer->getNextBlocks(_playerNumber, &_nextBlocks[0], &_nextBlocks[1]);
+			_nextBlocks[0] = _blockServer->newBlock(_playerNumber);
+			_nextBlocks[1] = _blockServer->newBlock(_playerNumber);
 
 			renderNextBlocks();
 

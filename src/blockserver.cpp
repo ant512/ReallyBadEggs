@@ -30,28 +30,25 @@ void BlockServer::clear() {
 	_blockList.clear();
 }
 
-void BlockServer::getNextBlocks(s32 player, BlockBase** block1, BlockBase** block2) {
+BlockBase* BlockServer::newBlock(s32 player) {
 	s32 index = _playerBlockListIndices[player]++;
 
 	// If the player is requesting a block past the end of the block list,
-	// we need to append a new pair before we can return it
+	// we need to append a new block before we can return it
 	if (index == _blockList.size()) {
-		addRandomBlockPair();
+		addRandomBlock();
 	}
 
-	*block1 = newBlockFromType(_blockList[index].block1);
-	*block2 = newBlockFromType(_blockList[index].block2);
+	BlockBase* block = newBlockFromType(_blockList[index]);
 
 	// We can try to expire any old blocks in the list now
 	expireUsedBlocks();
+
+	return block;
 }
 
-void BlockServer::addRandomBlockPair() {
-	BlockPair pair;
-	pair.block1 = getRandomBlockType();
-	pair.block2 = getRandomBlockType();
-
-	_blockList.push_back(pair);
+void BlockServer::addRandomBlock() {
+	_blockList.push_back(getRandomBlockType());
 }
 
 BlockBase* BlockServer::newBlockFromType(BlockServer::BlockType type) const {

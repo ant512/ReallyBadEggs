@@ -11,15 +11,16 @@
  * of this class for the blocks.  All grids must share the same BlockServer
  * instance.
  *
- * This class maintains a list of block pairs and the position in the list of
- * each player.  Thus, player 1 could request a block pair.  If no blocks exist
- * in the list a pair of random blocks is added.  When player 2 requests a pair
- * he will receive the pair previously given to player 1.  If there are no more
- * players in the list then that pair is forgotten.  If there are more players,
- * the pair is retained in the list until all players have used it.  If player 1
- * requests 10 pairs whilst player 2 is working on his first pair, the 9 pairs
- * between the two players are retained until both players have used them.  This
- * ensures that all players are given the same set of blocks in the same order.
+ * This class maintains a list of blocks and the position in the list of
+ * each player.  Thus, player 1 could request a block.  If no blocks exist in
+ * the list a random block is added.  When player 2 requests a block he will
+ * receive the block previously given to player 1.  If there are no more
+ * players in the list then that block is forgotten.  If there are more players,
+ * the block is retained in the list until all players have used it.  If player
+ * 1 requests 10 blocks whilst player 2 is working on his first set of blocks,
+ * the 9 blocks between the two players are retained until both players have
+ * used them.  This ensures that all players are given the same set of blocks in
+ * the same order.
  */
 class BlockServer {
 public:
@@ -37,17 +38,11 @@ public:
 	~BlockServer();
 
 	/**
-	 * Get the next pair of blocks for the specified player.
+	 * Get a new block for the specified player.
 	 * @param player The number of the player for whom to fetch the next pair
-	 * of blocks (player is 0-based).
-	 * @param block1 Pointer-to-a-pointer-to-a-block.  The block pointer will be
-	 * populated with a pointer to the new block.  This is the first block in
-	 * the pair.
-	 * @param block2 Pointer-to-a-pointer-to-a-block.  The block pointer will be
-	 * populated with a pointer to the new block.  This is the second block in
-	 * the pair.
+	 * of blocks (number is 0-based).
 	 */
-	void getNextBlocks(s32 player, BlockBase** block1, BlockBase** block2);
+	BlockBase* newBlock(s32 player);
 
 	/**
 	 * Empties the server block list.
@@ -68,24 +63,16 @@ private:
 		BLOCK_ORANGE = 5		/**< Orange block. */
 	};
 
-	/**
-	 * A pair of block types.
-	 */
-	typedef struct {
-		BlockType block1;		/**< Left-hand block in the pair. */
-		BlockType block2;		/**< Right-hand block in the pair. */
-	} BlockPair;
-
-	WoopsiArray<BlockPair> _blockList;	/**< List of blocks that get served to players. */
+	WoopsiArray<BlockType> _blockList;	/**< List of blocks that get served to players. */
 	s32* _playerBlockListIndices;		/**< Each item in the array represents the index within
 											 _blockList that each player is currently using. */
 	s32 _blockColourCount;				/**< Number of colours that the server can produce. */
 	s32 _playerCount;					/**< Number of players in the game. */
 
 	/**
-	 * Adds a new pair of random blocks to the block list.
+	 * Adds a new random block to the block list.
 	 */
-	void addRandomBlockPair();
+	void addRandomBlock();
 
 	/**
 	 * Creates a BlockBase object from a BlockType value.
