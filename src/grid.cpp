@@ -850,16 +850,16 @@ s32 Grid::getColumnHeight(s32 column) const {
 }
 
 void Grid::addGarbage(s32 count) {
-	s32 columnHeights[6];
-	s32 columns[6];
+	s32 columnHeights[GRID_WIDTH];
+	s32 columns[GRID_WIDTH];
 	s32 items = 0;
 
-	for (s32 i = 0; i < 6; ++i) {
+	for (s32 i = 0; i < GRID_WIDTH; ++i) {
 		columnHeights[i] = -1;
 	}
 
 	// Add all column heights to the array in sorted order
-	for (s32 i = 0; i < 6; ++i) {
+	for (s32 i = 0; i < GRID_WIDTH; ++i) {
 		s32 height = getColumnHeight(i);
 		s32 insertPoint = 0;
 
@@ -894,7 +894,7 @@ void Grid::addGarbage(s32 count) {
 
 		s32 oldCount = count;
 
-		while (activeColumns < 6 && columnHeights[activeColumns] <= y) ++activeColumns;
+		while (activeColumns < GRID_WIDTH && columnHeights[activeColumns] <= y) ++activeColumns;
 
 		for (s32 i = 0; i < activeColumns; ++i) {
 
