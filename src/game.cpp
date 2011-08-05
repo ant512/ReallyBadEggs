@@ -14,7 +14,6 @@ void Game::main() {
 	s32 p2RunnerX = SCREEN_WIDTH - (Grid::GRID_WIDTH * Grid::BLOCK_SIZE) - Grid::BLOCK_SIZE;
 	s32 runnerWidth = Grid::GRID_WIDTH * Grid::BLOCK_SIZE;
 	s32 runnerHeight = Grid::GRID_HEIGHT * Grid::BLOCK_SIZE;
-	GridRunner::GameType gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
 	GameState state = GAME_STATE_TITLE;
 
 	Menu* menu = new Menu();
@@ -96,65 +95,55 @@ void Game::main() {
 
 					switch (menu->getGameType()) {
 						case GAME_TYPE_PRACTICE:
-							gameType = GridRunner::GAME_TYPE_SINGLE_PLAYER;
-
 							blockFactory = new BlockFactory(1, menu->getColours());
 							p1Controller = new SinglePlayerController();
 							break;
 
 						case GAME_TYPE_EASY:
-							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
-							
 							blockFactory = new BlockFactory(2, menu->getColours());
 							p1Controller = new SinglePlayerController();
 
 							p2Grid = new Grid(menu->getHeight(), 1);
 							p2Controller = new AIController(EASY_AI_HESITATION);
-							p2Runner = new GridRunner(p2Controller, p2Grid, blockFactory, 1, p2RunnerX, gameType, menu->getSpeed());
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockFactory, 1, p2RunnerX, menu->getSpeed());
 
 							((AIController*)p2Controller)->setGridRunner(p2Runner);
 							break;
 
 						case GAME_TYPE_MEDIUM:
-							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
-
 							blockFactory = new BlockFactory(2, menu->getColours());
 							p1Controller = new SinglePlayerController();
 
 							p2Grid = new Grid(menu->getHeight(), 1);
 							p2Controller = new AIController(MEDIUM_AI_HESITATION);
-							p2Runner = new GridRunner(p2Controller, p2Grid, blockFactory, 1, p2RunnerX, gameType, menu->getSpeed());
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockFactory, 1, p2RunnerX, menu->getSpeed());
 
 							((AIController*)p2Controller)->setGridRunner(p2Runner);
 							break;
 
 						case GAME_TYPE_HARD:
-							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
-
 							blockFactory = new BlockFactory(2, menu->getColours());
 							p1Controller = new SinglePlayerController();
 
 							p2Grid = new Grid(menu->getHeight(), 1);
 							p2Controller = new AIController(HARD_AI_HESITATION);
-							p2Runner = new GridRunner(p2Controller, p2Grid, blockFactory, 1, p2RunnerX, gameType, menu->getSpeed());
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockFactory, 1, p2RunnerX, menu->getSpeed());
 
 							((AIController*)p2Controller)->setGridRunner(p2Runner);
 							break;
 						
 						case GAME_TYPE_2_PLAYER:
-							gameType = GridRunner::GAME_TYPE_TWO_PLAYER;
-
 							blockFactory = new BlockFactory(2, menu->getColours());
 							p1Controller = new Player1Controller();
 
 							p2Grid = new Grid(menu->getHeight(), 1);
 							p2Controller = new Player2Controller();
-							p2Runner = new GridRunner(p2Controller, p2Grid, blockFactory, 1, p2RunnerX, gameType, menu->getSpeed());
+							p2Runner = new GridRunner(p2Controller, p2Grid, blockFactory, 1, p2RunnerX, menu->getSpeed());
 							break;
 					}
 
 					p1Grid = new Grid(menu->getHeight(), 0);
-					p1Runner = new GridRunner(p1Controller, p1Grid, blockFactory, 0, p1RunnerX, gameType, menu->getSpeed());
+					p1Runner = new GridRunner(p1Controller, p1Grid, blockFactory, 0, p1RunnerX, menu->getSpeed());
 
 					WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
 					gfx->drawBitmap(0, 0, backgroundBmp.getWidth(), backgroundBmp.getHeight(), &backgroundBmp, 0, 0);

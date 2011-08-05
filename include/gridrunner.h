@@ -21,14 +21,6 @@ class GridRunner {
 public:
 
 	/**
-	 * All types of game that can be played.
-	 */
-	enum GameType {
-		GAME_TYPE_TWO_PLAYER = 0,						/**< Player vs AI. */
-		GAME_TYPE_SINGLE_PLAYER = 1,					/**< Single player. */
-	};
-
-	/**
 	 * Constructor.
 	 * @param controller A controller object that will provide input for the
 	 * movement of live blocks.
@@ -37,7 +29,6 @@ public:
 	 * the grid.
 	 * @param playerNumber The unique number of the player using this runner.
 	 * @param x The x co-ordinate to render at.
-	 * @param gameType The type of game to play.
 	 * @param speed The auto drop speed.
 	 */
 	GridRunner(ControllerBase* controller,
@@ -45,7 +36,6 @@ public:
 			   BlockFactory* blockFactory,
 			   s32 playerNumber,
 			   s32 x,
-			   GameType gameType,
 			   s32 speed);
 
 	/**
@@ -162,8 +152,6 @@ private:
 												 _outgoinggGarbageCount member. */
 	s32 _outgoingGarbageCount;				/**< Number of garbage blocks to send to the other player. */
 	s32 _incomingGarbageCount;				/**< Number of garbage blocks sent from the other player. */
-
-	GameType _gameType;						/**< The type of game being played. */
 
 	GameFont _font;							/**< Font used for rendering text. */
 
