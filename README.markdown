@@ -127,7 +127,7 @@ of 4 blue eggs.  These explode giving the following score:
 He gets 10 points for each egg (10 * 4 = 40).  The chain includes only the
 minimum number of eggs (4 - 3) so he gets no bonus there.  However, this is
 the second set of chains exploded, so the final score is doubled (40 * 2 = 80).
-The running total so far is 120.
+The running total so far is 220.
 
 The grid drops to fill in any gaps again, and two more chains are created: 6
 yellow eggs and 5 orange eggs.  The scores this time are:
@@ -135,7 +135,7 @@ yellow eggs and 5 orange eggs.  The scores this time are:
     10 * 6 * (6 - 3) * 3 = 540
     10 * 5 * (5 - 3) * 3 = 300
 
-The total for these two chains is 840, giving an overall score of 960.
+The total for these two chains is 840, giving an overall score of 1060.
 
 Play then resumes, and the sequence multiplier resets to 1.
 
