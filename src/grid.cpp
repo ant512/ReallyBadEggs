@@ -800,15 +800,21 @@ bool Grid::animate() {
 	for (s32 i = 0; i < GRID_WIDTH * GRID_HEIGHT; ++i) {
 		
 		if (_data[i] == NULL) continue;
-		
-		if (_data[i]->getState() == BlockBase::BLOCK_STATE_EXPLODED) {
-			delete _data[i];
-			_data[i] = NULL;
-			result = true;
-		} else if (_data[i]->getState() == BlockBase::BLOCK_STATE_EXPLODING) {
-			result = true;
-		} else if (_data[i]->getState() == BlockBase::BLOCK_STATE_LANDING) {
-			result = true;
+
+		switch (_data[i]->getState()) {
+			case BlockBase::BLOCK_STATE_EXPLODED:
+				delete _data[i];
+				_data[i] = NULL;
+				result = true;
+				break;
+			
+			case BlockBase::BLOCK_STATE_EXPLODING:
+			case BlockBase::BLOCK_STATE_LANDING:
+				result = true;
+				break;
+			
+			default:
+				break;
 		}
 
 		if (_data[i] != NULL) _data[i]->animate();
