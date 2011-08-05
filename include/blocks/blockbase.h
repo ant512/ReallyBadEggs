@@ -13,6 +13,17 @@ class BlockBase {
 public:
 
 	/**
+	 * List of all possible block states.
+	 */
+	enum BlockState {
+		BLOCK_STATE_NORMAL = 0,		/**< Block is doing nothing. */
+		BLOCK_STATE_FALLING = 1,	/**< Block is falling down the grid. */
+		BLOCK_STATE_LANDING = 2,	/**< Block is landing. */
+		BLOCK_STATE_EXPLODING = 3,	/**< Block is exploding. */
+		BLOCK_STATE_EXPLODED = 4	/**< Block has exploded. */
+	};
+
+	/**
 	 * Constructor.
 	 * @param colour The colour of the block.  This should be unique to the
 	 * inheriting class so that blocks can be compared without resorting to
@@ -56,35 +67,10 @@ public:
 	bool hasBottomConnection() const;
 
 	/**
-	 * Check if the block is currently landing.
-	 * @return True if the block is landing.
+	 * Get the state of the block.
+	 * @return The state of the block.
 	 */
-	bool isLanding() const;
-
-	/**
-	 * Check if the block is currently falling.
-	 * @return True if the block is falling.
-	 */
-	bool isFalling() const;
-
-	/**
-	 * Check if the block is currently exploding.
-	 * @return True if the block is exploding.
-	 */
-	bool isExploding() const;
-
-	/**
-	 * Check if the block has finished exploding and needs to be removed from
-	 * the grid.
-	 * @return True if the block has exploded.
-	 */
-	bool isExploded() const;
-
-	/**
-	 * Check if the block can establish connections.
-	 * @return True if the block can establish connections.
-	 */
-	bool isConnectable() const;
+	BlockState getState() const;
 
 	/**
 	 * Inform the block that it is falling.
@@ -161,9 +147,7 @@ protected:
 
 	u8 _connections;						/**< Bitmask of active connections. */
 	u16 _colour;							/**< Colour of the block. */
-	bool _isExploding;						/**< True if the block is exploding. */
-	bool _isLanding;						/**< True if the block is landing. */
-	bool _isFalling;						/**< True if the block is falling. */
+	BlockState _state;
 	bool _hasDroppedHalfBlock;				/**< True if the block has dropped half a grid square. */
 
 	WoopsiGfx::BitmapBase** _bitmaps;		/**< Array of bitmaps showing all possible connections. */

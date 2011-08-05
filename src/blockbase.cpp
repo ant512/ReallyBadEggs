@@ -3,9 +3,7 @@
 BlockBase::BlockBase(u16 colour) {
 	_colour = colour;
 	_connections = 0;
-	_isFalling = true;
-	_isLanding = false;
-	_isExploding = false;
+	_state = BLOCK_STATE_NORMAL;
 	_hasDroppedHalfBlock = false;
 
 	_bitmaps = new WoopsiGfx::BitmapBase*[16];
@@ -49,51 +47,44 @@ bool BlockBase::hasBottomConnection() const {
 	return _connections & CONNECTION_BOTTOM;
 }
 
-bool BlockBase::isLanding() const {
-	return _isLanding;
-}
-
-bool BlockBase::isFalling() const {
-	return _isFalling;
-}
-
-bool BlockBase::isExploding() const {
-	return _isExploding;
-}
-
-bool BlockBase::isExploded() const {
-	return _isExploding && _explodingAnim->getStatus() == WoopsiGfx::Animation::ANIMATION_STATUS_STOPPED;
-};
-
-bool BlockBase::isConnectable() const {
-	return !_isLanding && !_isFalling && !_isExploding;
+BlockBase::BlockState BlockBase::getState() const {
+	return _state;
 }
 
 void BlockBase::fall() {
-	_isFalling = true;
-	_isLanding = false;
+	_state = BLOCK_STATE_FALLING;
 }
 
 void BlockBase::land() {
-	_isFalling = false;
-	_isLanding = true;
+	_state = BLOCK_STATE_LANDING;
 	_landingAnim->play();
 }
 
 void BlockBase::explode() {
-	_isExploding = true;
+	_state = BLOCK_STATE_EXPLODING;
 	_explodingAnim->play();
 }
 
 void BlockBase::animate() {
-	if (_isExploding) {
-		_explodingAnim->run();
-	} else if (_isLanding) {
-		_landingAnim->run();
+	switch (_state) {
+		case BLOCK_STATE_EXPLODING:
+			_explodingAnim->run();
 
-		if (_landingAnim->getStatus() == WoopsiGfx::Animation::ANIMATION_STATUS_STOPPED) {
-			_isLanding = false;
-		}
+			if (_explodingAnim->getStatus() == WoopsiGfx::Animation::ANIMATION_STATUS_STOPPED) {
+				_state = BLOCK_STATE_EXPLODED;
+			}
+			break;
+		
+		case BLOCK_STATE_LANDING:
+			_landingAnim->run();
+
+			if (_landingAnim->getStatus() == WoopsiGfx::Animation::ANIMATION_STATUS_STOPPED) {
+				_state = BLOCK_STATE_NORMAL;
+			}
+			break;
+		
+		default:
+			break;
 	}
 }
 
@@ -101,17 +92,19 @@ void BlockBase::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 	const WoopsiGfx::BitmapBase* bmp = getBitmap();
 
 	gfx->drawBitmap(x, y, bmp->getWidth(), bmp->getHeight(), bmp, 0, 0);
-	//gfx->drawFilledRect(x, y, 3, 3, getColour());
 }
 
 const WoopsiGfx::BitmapBase* BlockBase::getBitmap() const {
-	if (_isExploding) {
-		return _explodingAnim->getCurrentBitmap();
-	} else if (_isLanding)  {
-		return _landingAnim->getCurrentBitmap();
+	switch (_state) {
+		case BLOCK_STATE_EXPLODING:
+			return _explodingAnim->getCurrentBitmap();
+		
+		case BLOCK_STATE_LANDING:
+			return _landingAnim->getCurrentBitmap();
+	
+		default:
+			return _bitmaps[_connections];
 	}
-
-	return _bitmaps[_connections];
 }
 
 void BlockBase::setConnections(bool top, bool right, bool bottom, bool left) {

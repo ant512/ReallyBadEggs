@@ -403,7 +403,7 @@ void Grid::dropLiveBlocks() {
 			if (blockBelow != NULL) {
 
 				// Do not land if the block below is also falling
-				if (!blockBelow->isFalling()) {
+				if (blockBelow->getState() != BlockBase::BLOCK_STATE_FALLING) {
 					_hasLiveBlocks = false;
 
 					BlockBase* block = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y);
@@ -451,7 +451,7 @@ bool Grid::dropBlocks() {
 	for (s32 x = 0; x < GRID_WIDTH; ++x) {
 		BlockBase* block = getBlockAt(x, GRID_HEIGHT - 1);
 
-		if (block != NULL && block->isFalling()) {
+		if (block != NULL && block->getState() == BlockBase::BLOCK_STATE_FALLING) {
 
 			// Shake the column
 			if (block->getColour() == GarbageBlock::COLOUR) {
@@ -486,9 +486,9 @@ bool Grid::dropBlocks() {
 				block->fall();
 
 				hasDropped = true;
-			} else if (block->isFalling()) {
+			} else if (block->getState() == BlockBase::BLOCK_STATE_FALLING) {
 
-				if (!getBlockAt(x, y + 1)->isFalling()) {
+				if (getBlockAt(x, y + 1)->getState() != BlockBase::BLOCK_STATE_FALLING) {
 					block->land();
 					hasLanded = true;
 
@@ -801,13 +801,13 @@ bool Grid::animate() {
 		
 		if (_data[i] == NULL) continue;
 		
-		if (_data[i]->isExploded()) {
+		if (_data[i]->getState() == BlockBase::BLOCK_STATE_EXPLODED) {
 			delete _data[i];
 			_data[i] = NULL;
 			result = true;
-		} else if (_data[i]->isExploding()) {
+		} else if (_data[i]->getState() == BlockBase::BLOCK_STATE_EXPLODING) {
 			result = true;
-		} else if (_data[i]->isLanding()) {
+		} else if (_data[i]->getState() == BlockBase::BLOCK_STATE_LANDING) {
 			result = true;
 		}
 
