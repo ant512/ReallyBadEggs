@@ -400,7 +400,7 @@ void Grid::dropLiveBlocks() {
 			// Check if the block has landed on another
 			BlockBase* blockBelow = getBlockAt(_liveBlocks[i].x, _liveBlocks[i].y + 1);
 
-			if (blockBelow != NULL) {
+			if (blockBelow != NULL && _liveBlocks[i].y + 1 != _liveBlocks[1].y) {
 
 				// Do not land if the block below is also falling
 				if (blockBelow->getState() != BlockBase::BLOCK_STATE_FALLING) {

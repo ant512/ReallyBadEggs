@@ -109,7 +109,7 @@ void GridRunner::renderIncomingGarbage() {
 	s32 faceBoulders = garbage / GARBAGE_FACE_BOULDER_VALUE;
 	garbage -= faceBoulders * GARBAGE_FACE_BOULDER_VALUE;
 
-	s32 largeBoulders = _incomingGarbageCount / GARBAGE_LARGE_BOULDER_VALUE;
+	s32 largeBoulders = garbage / GARBAGE_LARGE_BOULDER_VALUE;
 	garbage -= largeBoulders * GARBAGE_LARGE_BOULDER_VALUE;
 
 	s32 bmpY = Grid::BLOCK_SIZE;
