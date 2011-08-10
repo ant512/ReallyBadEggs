@@ -97,6 +97,7 @@ void BlockBase::render(s32 x, s32 y, WoopsiGfx::Graphics* gfx) {
 const WoopsiGfx::BitmapBase* BlockBase::getBitmap() const {
 	switch (_state) {
 		case BLOCK_STATE_EXPLODING:
+		case BLOCK_STATE_EXPLODED:
 			return _explodingAnim->getCurrentBitmap();
 		
 		case BLOCK_STATE_LANDING:

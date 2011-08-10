@@ -871,18 +871,31 @@ void Grid::addGarbage(s32 count) {
 
 		// Locate where to insert this value
 		for (s32 j = 0; j < items; ++j) {
-			if (height < columnHeights[j]) {
-
-				// Shuffle all items back one space to create a gap for the new
-				// value
-				for (s32 k = items; k > j; --k) {
-					columnHeights[k] = columnHeights[k - 1];
-					columns[k] = columns[k - 1];
-				}
+			if (height <= columnHeights[j]) {
+				insertPoint = j;
 				break;
 			}
-
-			insertPoint++;
+			
+			++insertPoint;
+		}
+				
+		// Find the last column with the same height as the target.
+		// Once this is known, we'll insert into a random column between
+		// the two.  This ensures that the garbage insertion pattern
+		// isn't predictable
+		s32 targetEnd = insertPoint;
+				
+		while (targetEnd < items - 1 && columnHeights[targetEnd + 1] == height) {
+			++targetEnd;
+		}
+				
+		// Choose a column between the start and end at random
+		insertPoint += rand() % (targetEnd - insertPoint + 1);
+		
+		// Shuffle items back one space to create a gap for the new value
+		for (s32 k = items; k > insertPoint; --k) {
+			columnHeights[k] = columnHeights[k - 1];
+			columns[k] = columns[k - 1];
 		}
 
 		columnHeights[insertPoint] = height;
