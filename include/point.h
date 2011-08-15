@@ -4,9 +4,9 @@
 /**
  * A single co-ordinate.
  */
-typedef struct {
+struct Point {
 	s32 x;			/**< The x co-ordinate of the point. */
 	s32 y;			/**< The y co-ordinate of the point. */
-} Point;
+};
 
 #endif
