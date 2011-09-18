@@ -21,6 +21,7 @@ void Game::main() {
 	TwoPlayerBgBmp backgroundBmp;
 	StatsBackgroundBmp statsBackgroundBmp;
 	SimianZombieLogoBmp simianZombieLogoBmp;
+	TitleBmp titleBmp;
 	PausedBmp pausedBmp;
 	WinnerBmp winnerBmp;
 
@@ -61,9 +62,7 @@ void Game::main() {
 
 	s32 blanks = 0;
 
-	// Draw title screen
-	// TODO: Replace with bitmap
-	showText(0, 0, 256, 192, "Really Bad Eggs");
+	Hardware::getTopGfx()->drawBitmap(0, 0, titleBmp.getWidth(), titleBmp.getHeight(), &titleBmp, 0, 0);
 
 	Hardware::getBottomGfx()->drawBitmap(0, 0, simianZombieLogoBmp.getWidth(), simianZombieLogoBmp.getHeight(), &simianZombieLogoBmp, 0, 0);
 	Hardware::getTopBuffer()->buffer();
@@ -77,7 +76,7 @@ void Game::main() {
 		switch (state) {
 			case GAME_STATE_TITLE:
 				if (pad.isANewPress() || pad.isStartNewPress()) {
-					clearScreens();
+					Hardware::getBottomGfx()->drawBitmap(0, 0, titleBmp.getWidth(), titleBmp.getHeight(), &titleBmp, 0, 0);
 
 					menu->reset();
 					state = GAME_STATE_MENU;
@@ -286,7 +285,7 @@ void Game::main() {
 
 					menu->setActiveMenu(1);
 
-					clearScreens();
+					Hardware::getBottomGfx()->drawBitmap(0, 0, titleBmp.getWidth(), titleBmp.getHeight(), &titleBmp, 0, 0);
 
 					SoundPlayer::playTitleMusic();
 
@@ -331,7 +330,7 @@ void Game::main() {
 
 					menu->setActiveMenu(1);
 
-					clearScreens();
+					Hardware::getBottomGfx()->drawBitmap(0, 0, titleBmp.getWidth(), titleBmp.getHeight(), &titleBmp, 0, 0);
 
 					SoundPlayer::playTitleMusic();
 
@@ -347,24 +346,4 @@ void Game::main() {
 
 	delete menu;
 	delete scroller;
-}
-
-void Game::showText(s32 x, s32 y, s32 width, s32 height, const WoopsiGfx::WoopsiString& text) {
-
-	WoopsiGfx::Graphics* gfx = Hardware::getTopGfx();
-
-	GameFont font;
-
-	s32 textX = (width - font.getStringWidth(text)) / 2;
-	s32 textY = (height - font.getHeight()) / 2;
-
-	gfx->drawText(x + textX, textY, &font, text, 0, text.getLength(), woopsiRGB(31, 31, 0));
-
-	Hardware::getTopBuffer()->buffer();
-}
-
-void Game::clearScreens() {
-	Hardware::getTopGfx()->drawFilledRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, woopsiRGB(0, 0, 0));
-	Hardware::getBottomGfx()->drawFilledRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, woopsiRGB(0, 0, 0));
-	Hardware::getTopBuffer()->buffer();
 }

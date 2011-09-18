@@ -26,6 +26,7 @@
 #include "soundplayer.h"
 #include "twoplayerbgbmp.h"
 #include "winnerbmp.h"
+#include "titlebmp.h"
 
 /**
  * Main game class.
@@ -74,14 +75,6 @@ private:
 		GAME_STATE_PAUSED = 3,						/**< Game paused. */
 		GAME_STATE_GAME_OVER = 4					/**< Game ended. */
 	};
-
-	/**
-	 * Clears both DS screens to black.
-	 */
-	void clearScreens();
-
-	// TODO: Delete this when title screen is in place.
-	void showText(s32 x, s32 y, s32 width, s32 height, const WoopsiGfx::WoopsiString& text);
 };
 
 #endif

@@ -17,8 +17,8 @@ void Scroller::render(s32 y, WoopsiGfx::Graphics* gfx) {
 		start = 0;
 	}
 
-	gfx->drawFilledRect(0, y, SCREEN_WIDTH, _font.getHeight(), woopsiRGB(0, 0, 0));
-	gfx->drawText(x, y, &_font, _text, start, length, woopsiRGB(31, 31, 31));
+	gfx->drawFilledRect(0, y, SCREEN_WIDTH, _font.getHeight(), woopsiRGB(31, 31, 31));
+	gfx->drawText(x, y, &_font, _text, start, length, woopsiRGB(0, 0, 0));
 
 	_offset += 2;
 

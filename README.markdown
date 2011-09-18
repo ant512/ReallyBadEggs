@@ -252,7 +252,7 @@ Credits and Acknowledgements
 
  - Coding, reverse engineering and remixing        - **Antony Dzeryn**
  - Original graphics and sounds                    - **David & Michael Hay**
- - Simian Zombie logo                              - **John Clay**
+ - Simian Zombie logo and title screen             - **John Clay**
 
 
 Links
