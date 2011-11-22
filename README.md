@@ -262,7 +262,7 @@ Links
  - [BitBucket page][2]
  - [WoopsiGfx library][3]
 
-  [1]: http://ant.simianzombie.com
+  [1]: http://simianzombie.com
   [2]: http://bitbucket.org/ant512/reallybadeggs
   [3]: http://bitbucket.org/ant512/woopsigfx
 

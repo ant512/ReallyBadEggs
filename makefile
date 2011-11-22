@@ -11,7 +11,7 @@ include $(DEVKITARM)/ds_rules
 # set the texts that appear in the loader menus
 GAME_TITLE		:= Really Bad Eggs
 GAME_SUBTITLE1	:= Using WoopsiGfx
-GAME_SUBTITLE2	:= ant.simianzombie.com
+GAME_SUBTITLE2	:= simianzombie.com
 
 # 4-bit-deep bitmap file to use as icon in loader menus
 GAME_ICON 		:= $(CURDIR)/../icon.bmp

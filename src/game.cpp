@@ -50,7 +50,7 @@ void Game::main() {
 									  "Dzeryn "
 									  ".... Original game (c) 1995 Impact "
 									  "Productions "
-									  ".... See ant.simianzombie.com for other "
+									  ".... See simianzombie.com for other "
 									  "projects "
 									  ".... Really Bad Eggs was written "
 									  "using WoopsiGfx, a 2D graphics library "
