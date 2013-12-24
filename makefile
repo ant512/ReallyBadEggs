@@ -1,6 +1,6 @@
-#-------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
 .SUFFIXES:
-#-------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
 
 ifeq ($(strip $(DEVKITARM)),)
 $(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM")
@@ -16,219 +16,147 @@ GAME_SUBTITLE2	:= simianzombie.com
 # 4-bit-deep bitmap file to use as icon in loader menus
 GAME_ICON 		:= $(CURDIR)/../icon.bmp
 
-#-------------------------------------------------------------------------------
-# TARGET is the name of the output file
+#---------------------------------------------------------------------------------
+# TARGET is the name of the output
 # BUILD is the directory where object files & intermediate files will be placed
-# RELEASE is where the binary files will be placed
 # SOURCES is a list of directories containing source code
 # INCLUDES is a list of directories containing extra header files
-# DEFINES is a set of -Dsym[=value] settings to pass to the compilers
-#-------------------------------------------------------------------------------
-
-TARGET		:=	$(shell basename $(CURDIR))
+# DATA is a list of directories containing binary data
+# GRAPHICS is a list of directories containing files to be processed by grit
+#
+# All directories are specified relative to the project directory where
+# the makefile is found
+#
+#---------------------------------------------------------------------------------
+TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-RELEASE		:=	Release
 SOURCES		:=	src src/bmp
 INCLUDES	:=	include include/bmp include/blocks build
-DEFINES		:=
-MUSIC		:=	sfx
+MUSIC       :=  sfx
 
-# we do *not* do -o thing - WinterMute points out that this stops our
-# resultant .nds from working on some loaders.  By default, ndstool puts boot
-# code into the wifi-logospace and since its not visible anywhere else, its
-# downright churlish for us to overwrite it.  If you want to, put it back, but
-# its not the default.
-# LOGO		:= -o $(CURDIR)/../data/logo_wifi.bmp
+#---------------------------------------------------------------------------------
+# options for code generation
+#---------------------------------------------------------------------------------
+ARCH		:=	-mthumb -mthumb-interwork
 
-#===============================================================================
-# options for code generation - unlikely you'll want to change this
-#===============================================================================
+CFLAGS	:=	-g -Wall -O2\
+ 			-march=armv5te -mtune=arm946e-s -fomit-frame-pointer\
+			-ffast-math \
+			$(ARCH)
 
-ARCH		:=	-mthumb-interwork
+CFLAGS	+=	$(INCLUDE) -DARM9
+CXXFLAGS	:=	$(CFLAGS) -fno-exceptions
 
-# uncomment to generate debugging information
-#MINUSG		:=	-g
+ASFLAGS	:=	-g $(ARCH)
+LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-# baseline flags for 
-CFLAGS		:=	$(MINUSG) $(ARCH) \
-				-Wall -O2 \
-				-mcpu=arm9tdmi -mtune=arm9tdmi -fomit-frame-pointer \
-				-ffast-math
+#---------------------------------------------------------------------------------
+# any extra libraries we wish to link with the project
+#---------------------------------------------------------------------------------
+LIBS	:= -lmm9 -lfat -lnds9 -lwoopsigfx
+ 
+ 
+#---------------------------------------------------------------------------------
+# list of directories containing libraries, this must be the top level containing
+# include and lib
+#---------------------------------------------------------------------------------
+LIBDIRS	:=	$(LIBNDS)
+LIBDIRS	+=	$(DEVKITPRO)/libwoopsigfx
 
-CFLAGS		+=	-DARM9
-ASFLAGS		:=	$(MINUSG) $(ARCH)
-LDFLAGS		:=	$(MINUSG) $(ARCH) -mno-fpu
+#---------------------------------------------------------------------------------
+# no real need to edit anything past this point unless you need to add additional
+# rules for different file extensions
+#---------------------------------------------------------------------------------
 
-# enable dead-code stripping
-CFLAGS		+=	-ffunction-sections -fdata-sections
-LDFLAGS		+=	-Wl,--gc-sections
 
-# link map (optional)
-# LDFLAGS		+=	-Wl,-Map,$(OUTPUT).map
-
-#===============================================================================
-# no real need to edit anything past this point unless you need to add 
-# additional rules for different file extensions
-#===============================================================================
-
-# disable all default rules
-.SUFFIXES:
-
-# ensure that we can see the compiler toolset
-PATH 		:= $(DEVKITARM)/bin:$(PATH)
-
-ifneq ($(BUILD),$(notdir $(CURDIR)))
-
-# from here on, any symbols we want to propagate into the real build must be
-# exported - all the lines above the 'ifneq' are evaluated in both cases...
-
-# directory name is used to construct the target.nds filename
+ifneq ($(BUILDDIR), $(CURDIR))
+#---------------------------------------------------------------------------------
+ 
 export OUTPUT	:=	$(CURDIR)/$(RELEASE)/$(TARGET)
-
-# name the GNU toolset
-PREFIX			:=	arm-eabi-
-export CC		:=	$(PREFIX)gcc
-export CXX		:=	$(PREFIX)g++
-export AR		:=	$(PREFIX)ar
-export OBJCOPY	:=	$(PREFIX)objcopy
-export LD		:=	$(CXX)
-
-# scan source directory for all possible source files (things we can turn into .o) 
-CFILES			:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
-CPPFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
-SFILES			:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
-BINFILES		:=	soundbank.bin
-
-export AUDIOFILES	:=   $(foreach dir,$(notdir $(wildcard $(MUSIC)/*.*)),$(CURDIR)/$(MUSIC)/$(dir))
-
-# build list of .o filenames 
-export OFILES	:=	$(BINFILES:.bin=.o) $(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
  
-#-------------------------------------------------------------------------------
-# standard magic to run the build from a build directory - this works because
-# we poke all the source directories into VPATH
-export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir))
+export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
+					$(foreach dir,$(DATA),$(CURDIR)/$(dir)) \
+					$(foreach dir,$(GRAPHICS),$(CURDIR)/$(dir))
 
-.PHONY: $(BUILD) clean rebuild
+export DEPSDIR	:=	$(CURDIR)/$(BUILD)
+
+CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
+CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
+SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
+BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*))) soundbank.bin
+
+export AUDIOFILES	:=	$(foreach dir,$(notdir $(wildcard $(MUSIC)/*.*)),$(CURDIR)/$(MUSIC)/$(dir))
+
+#---------------------------------------------------------------------------------
+# use CXX for linking C++ projects, CC for standard C
+#---------------------------------------------------------------------------------
+ifeq ($(strip $(CPPFILES)),)
+#---------------------------------------------------------------------------------
+	export LD	:=	$(CC)
+#---------------------------------------------------------------------------------
+else
+#---------------------------------------------------------------------------------
+	export LD	:=	$(CXX)
+#---------------------------------------------------------------------------------
+endif
+#---------------------------------------------------------------------------------
+
+export OFILES	:=	$(addsuffix .o,$(BINFILES)) \
+					$(BMPFILES:.bmp=.o) \
+					$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
  
-$(BUILD): $(CURDIR)/$(RELEASE)
+export INCLUDE	:=	$(foreach dir,$(INCLUDES),-iquote $(CURDIR)/$(dir)) \
+					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
+					-I$(CURDIR)/$(BUILD)
+ 
+export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
+
+.PHONY: $(BUILD) clean
+ 
+#---------------------------------------------------------------------------------
+$(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/makefile
+	@make BUILDDIR=`cd $(BUILD) && pwd` --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
-$(CURDIR)/$(RELEASE):
-	@-mkdir -p $(CURDIR)/$(RELEASE)
- 
+#---------------------------------------------------------------------------------
 clean:
 	@echo Cleaning... $(TARGET)
-	@rm -fr $(BUILD) *.elf *.*ds* $(RELEASE)/*.*ds*
+	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds 
  
-rebuild: clean $(BUILD)
-
-#-------------------------------------------------------------------------------
-
-else	# executing in the build directory
  
-#-------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
+else
+ 
+#---------------------------------------------------------------------------------
 # main targets
-#-------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
+$(OUTPUT).nds   :       $(OUTPUT).elf
+$(OUTPUT).elf   :       $(OFILES)
 
-$(OUTPUT).nds		: 	$(OFILES)
- 
-#-------------------------------------------------------------------------------
-# every directory mentioned in INCLUDES and LIBDIRS is expected to have a corresponding
-# ./include directory which needs to be passed with -I to the C(++) compiler
-#-------------------------------------------------------------------------------
-LIBDIRS		+= $(DEVKITPRO)/libnds
-LIBDIRS		+= $(DEVKITPRO)/libwoopsigfx
+#---------------------------------------------------------------------------------
+# The bin2o rule should be copied and modified
+# for each extension used in the data directories
+#---------------------------------------------------------------------------------
 
-# add all directories specified in INCLUDES and SOURCES
-_INCS		+= $(foreach dir,$(INCLUDES),-I$(CURDIR)/../$(dir))
-_INCS		+= $(foreach dir,$(SOURCES),-I$(CURDIR)/../$(dir))
+#---------------------------------------------------------------------------------
+# rule to build soundbank from music files
+#---------------------------------------------------------------------------------
+soundbank.bin : $(AUDIOFILES)
+#---------------------------------------------------------------------------------
+	@mmutil $^ -d -osoundbank.bin -hsoundbank.h
 
-# add all directories specified in LIBDIRS
-_INCS		+= $(foreach dir,$(LIBDIRS),-I$(dir)/include)
-_INCS		+= $(foreach dir,$(LIBDIRS),-I$(dir)/include/nds)
-
-# and the build directory
-_INCS		+= -I$(CURDIR)/$(BUILD)
-
-#-------------------------------------------------------------------------------
-# every directory mentioned in LIBDIRS is expected to have a corresponding
-# ./lib directory which needs to be passed with -L to the linker
-#-------------------------------------------------------------------------------
-_LPATHS		:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
-
-#-------------------------------------------------------------------------------
-# look at the various options that have been selected and switch in the
-# appropriate -D, -I, -l and -L options
-#-------------------------------------------------------------------------------
-
-_DEFS		= $(DEFINES)
-
-# use WoopsiGfx
-_INCS		+= -I$(DEVKITPRO)/libwoopsigfx/include
-_LIBS		+= -L$(DEVKITPRO)/libwoopsigfx/lib -lwoopsigfx
-
-_INCS		+= -I$(DEVKITPRO)/libfat/include
-_LIBS		+= -L$(DEVKITPRO)/libfat/lib -lfat 
-
-# and of course we need libnds
-_LIBS		+= -lnds9 -lmm9
-
-# this makes it easier to type the ndstool command line
-_BANNER 		:= -b $(GAME_ICON) "$(GAME_TITLE);$(GAME_SUBTITLE1);$(GAME_SUBTITLE2)"
-
-#-------------------------------------------------------------------------------
-# rule to build a .nds binary - forces the link every time because we don't have
-# proper dependencies in here...
-%.nds: $(OFILES)
-	@echo Linking...
-	@$(LD) $(LDFLAGS) -specs=ds_arm9.specs $(OFILES) $(_LPATHS) $(_LIBS) -o $(TARGET).elf
-	@$(OBJCOPY) -O binary $(TARGET).elf $(TARGET).bin
-	@ndstool -c $@ -9 $(TARGET).bin $(_ARM7BIN) $(LOGO) $(_BANNER)
-	@echo Built: $(notdir $(OUTPUT)).nds
- 
-#-------------------------------------------------------------------------------
-# rule to compile C++
-#
-%.o : %.cpp
-	@echo Compiling $(notdir $<)
-	@$(CXX) -MMD -MF $*.d -MP $(CFLAGS) $(_DEFS) $(_INCS) -c $< -o$@
- 
-#-------------------------------------------------------------------------------
-# rule to compile C
-#
-%.o : %.c
-	@echo Compiling $(notdir $<)
-	@$(CC) -MMD -MF $*.d -MP $(CFLAGS) $(_DEFS) $(_INCS) -c $< -o$@
- 
-#-------------------------------------------------------------------------------
-# rule to compile Assembler
-#
-%.o : %.s
-	@echo Assembling $(notdir $<)
-	@$(CC) -MMD -MF $*.d -MP $(ASFLAGS) $(_DEFS) $(_INCS) -c $< -o$@
-	
-#-------------------------------------------------------------------------------
-# rule to build soundbank from music files 
-#-------------------------------------------------------------------------------
-soundbank.bin : $(AUDIOFILES) 
-#-------------------------------------------------------------------------------
-	@mmutil $^ -d -osoundbank.bin -hsoundbank.h 
- 
-#-------------------------------------------------------------------------------
-%.o	:	%.bin
-#-------------------------------------------------------------------------------
-	@echo Converting $(notdir $<)
+#---------------------------------------------------------------------------------
+# This rule links in binary data with the .bin extension
+#---------------------------------------------------------------------------------
+%.bin.o	:	%.bin
+#---------------------------------------------------------------------------------
+	@echo $(notdir $<)
 	@$(bin2o)
 
-#-------------------------------------------------------------------------------
-# now include all the dependency files, one per object file - we assume that the
-# .d file is next to the .o file, which is what our C/C++/Assembler rules are
-# set up to do...
-#
-DEPENDS	:= $(OFILES:.o=.d)
--include $(DEPENDS) 
 
+ 
+-include $(DEPSDIR)/*.d
+ 
+#---------------------------------------------------------------------------------------
 endif
-
+#---------------------------------------------------------------------------------------

@@ -4,7 +4,6 @@
 #include <nds.h>
 
 #include <graphics.h>
-#include <pad.h>
 #include <woopsiarray.h>
 #include <woopsistring.h>
 
@@ -15,6 +14,7 @@
 #include "gridrunner.h"
 #include "hardware.h"
 #include "menu.h"
+#include "pad.h"
 #include "pausedbmp.h"
 #include "singleplayercontroller.h"
 #include "player1controller.h"
