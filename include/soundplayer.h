@@ -12,7 +12,7 @@
 
 #else
 
-#include <SDL_mixer/SDL_mixer.h>
+#include <SDL2_mixer/SDL_mixer.h>
 #include <unistd.h>
 #include <mach-o/dyld.h>
 #include <woopsistring.h>

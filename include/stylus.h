@@ -92,7 +92,7 @@ public:
 		touchPosition touch;
 		touchRead(&touch);
 
-		if (pressed || held) {
+		if (_touch > 0) {
 			_x = touch.px;
 			_y = touch.py;
 		}
@@ -116,7 +116,7 @@ public:
 			_touch = -1;
 		}
 		
-		if (pressed || held) {
+		if (_touch > 0) {
 			_x = mouseX;
 			_y = mouseY - SCREEN_HEIGHT;
 		}

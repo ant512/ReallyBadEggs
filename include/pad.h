@@ -435,75 +435,75 @@ public:
 
 #else
 
-		Uint8* keyState = SDL_GetKeyState(NULL);
+		const Uint8* keyState = SDL_GetKeyboardState(NULL);
 
-		if (keyState[SDLK_UP] & KEY_UP) {
+		if (keyState[SDL_SCANCODE_UP]) {
 			++_up;
 		} else if (_up > 0) {
 			_up = -1;
 		}
 
-		if (keyState[SDLK_DOWN] & KEY_DOWN) {
+		if (keyState[SDL_SCANCODE_DOWN]) {
 			++_down;
 		} else if (_down > 0) {
 			_down = -1;
 		}
 
-		if (keyState[SDLK_LEFT] & KEY_LEFT) {
+		if (keyState[SDL_SCANCODE_LEFT]) {
 			++_left;
 		} else if (_left > 0) {
 			_left = -1;
 		}
 
-		if (keyState[SDLK_RIGHT] & KEY_RIGHT) {
+		if (keyState[SDL_SCANCODE_RIGHT]) {
 			++_right;
 		} else if (_right > 0) {
 			_right = -1;
 		}
 
-		if (keyState[SDLK_a] & KEY_L) {
+		if (keyState[SDL_SCANCODE_A]) {
 			++_l;
 		} else if (_l > 0) {
 			_l = -1;
 		}
 
-		if (keyState[SDLK_s] & KEY_R) {
+		if (keyState[SDL_SCANCODE_S]) {
 			++_r;
 		} else if (_r > 0) {
 			_r = -1;
 		}
 
-		if (keyState[SDLK_z] & KEY_A) {
+		if (keyState[SDL_SCANCODE_Z]) {
 			++_a;
 		} else if (_a > 0) {
 			_a = -1;
 		}
 
-		if (keyState[SDLK_x] & KEY_B) {
+		if (keyState[SDL_SCANCODE_X]) {
 			++_b;
 		} else if (_b > 0) {
 			_b = -1;
 		}
 
-		if (keyState[SDLK_c] & KEY_X) {
+		if (keyState[SDL_SCANCODE_C]) {
 			++_x;
 		} else if (_x > 0) {
 			_x = -1;
 		}
 
-		if (keyState[SDLK_v] & KEY_Y) {
+		if (keyState[SDL_SCANCODE_V]) {
 			++_y;
 		} else if (_y > 0) {
 			_y = -1;
 		}
 
-		if (keyState[SDLK_d] & KEY_START) {
+		if (keyState[SDL_SCANCODE_D]) {
 			++_start;
 		} else if (_start > 0) {
 			_start = -1;
 		}
 
-		if (keyState[SDLK_f] & KEY_SELECT) {
+		if (keyState[SDL_SCANCODE_F]) {
 			++_select;
 		} else if (_select > 0) {
 			_select = -1;

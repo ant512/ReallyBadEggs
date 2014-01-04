@@ -3,15 +3,20 @@
 Pad Hardware::_pad;
 Stylus Hardware::_stylus;
 
-SDLFrameBuffer* Hardware::_topBuffer = NULL;
-SDLFrameBuffer* Hardware::_bottomBuffer = NULL;
+FrameBuffer* Hardware::_topBuffer = NULL;
+FrameBuffer* Hardware::_bottomBuffer = NULL;
 
 WoopsiGfx::Graphics* Hardware::_topGfx = NULL;
 WoopsiGfx::Graphics* Hardware::_bottomGfx = NULL;
 
 #ifdef USING_SDL
 
-SDL_Surface* Hardware::_surface = NULL;
+SDL_Window* Hardware::_window = NULL;
+SDL_Renderer* Hardware::_renderer = NULL;
+SDL_Texture* Hardware::_texture = NULL;
+
+u16* Hardware::_topBitmap = NULL;
+u16* Hardware::_bottomBitmap = NULL;
 
 #else
 
@@ -36,14 +41,12 @@ void Hardware::init() {
 	bgInit(3, BgType_Bmp16, BgSize_B16_256x256, 0, 0);
 	bgInitSub(3, BgType_Bmp16, BgSize_B16_256x256, 0, 0);
 
-	_topBuffer = new SDLFrameBuffer((u16*)BG_BMP_RAM(6), (u16*)BG_BMP_RAM(0), SCREEN_WIDTH, SCREEN_HEIGHT);
-	_bottomBuffer = new SDLFrameBuffer((u16*)BG_BMP_RAM_SUB(0), SCREEN_WIDTH, SCREEN_HEIGHT);
+	_topBuffer = new FrameBuffer((u16*)BG_BMP_RAM(6), (u16*)BG_BMP_RAM(0), SCREEN_WIDTH, SCREEN_HEIGHT);
+	_bottomBuffer = new FrameBuffer((u16*)BG_BMP_RAM_SUB(0), SCREEN_WIDTH, SCREEN_HEIGHT);
 
 #else
 
 	Uint32 initflags = SDL_INIT_VIDEO;
-	Uint8 video_bpp = 0;
-	Uint32 videoflags = SDL_SWSURFACE;
 
 	// Initialize the SDL library
 	if (SDL_Init(initflags) < 0) {
@@ -52,15 +55,19 @@ void Hardware::init() {
 	}
 
 	// Set video mode
-	_surface = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT * 2, video_bpp, videoflags);
-	if (_surface == NULL) {
-		fprintf(stderr, "Couldn't set %dx%dx%d video mode: %s\n", SCREEN_WIDTH, SCREEN_HEIGHT, video_bpp, SDL_GetError());
-		SDL_Quit();
-		exit(2);
-	}
+    _window = SDL_CreateWindow("Really Bad Eggs", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT * 2, 0);
+    _renderer = SDL_CreateRenderer(_window, -1, 0);
+    SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
+    SDL_RenderClear(_renderer);
+    SDL_RenderPresent(_renderer);
 
-	_topBuffer = new SDLFrameBuffer(_surface, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
-	_bottomBuffer = new SDLFrameBuffer(_surface, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_HEIGHT);
+    _texture = SDL_CreateTexture(_renderer, SDL_PIXELFORMAT_ABGR1555, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT * 2);
+
+    _topBitmap = new u16[SCREEN_WIDTH * SCREEN_HEIGHT];
+    _bottomBitmap = new u16[SCREEN_WIDTH * SCREEN_HEIGHT];
+
+	_topBuffer = new FrameBuffer(_topBitmap, SCREEN_WIDTH, SCREEN_HEIGHT);
+	_bottomBuffer = new FrameBuffer(_bottomBitmap, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 #endif
 
@@ -75,7 +82,12 @@ void Hardware::shutdown() {
 	delete _bottomBuffer;
 	
 #ifdef USING_SDL
-	delete _surface;
+	SDL_DestroyRenderer(_renderer);
+    SDL_DestroyTexture(_texture);
+    SDL_DestroyWindow(_window);
+    
+    delete _topBitmap;
+    delete _bottomBitmap;
 #endif
 }
 
@@ -96,8 +108,21 @@ void Hardware::waitForVBlank() {
 
 #else
 
-	SDL_Delay(10);
-	SDL_Flip(_surface);
+	SDL_Delay(15);
+
+    SDL_Rect rect;
+    rect.x = 0;
+    rect.y = 0;
+    rect.w = SCREEN_WIDTH;
+    rect.h = SCREEN_HEIGHT;
+	SDL_UpdateTexture(_texture, &rect, _topBitmap, SCREEN_WIDTH * sizeof(u16));
+
+    rect.y = SCREEN_HEIGHT;
+    SDL_UpdateTexture(_texture, &rect, _bottomBitmap, SCREEN_WIDTH * sizeof(u16));
+
+    SDL_RenderClear(_renderer);
+    SDL_RenderCopy(_renderer, _texture, NULL, NULL);
+    SDL_RenderPresent(_renderer);
 
 	// SDL event pump
 	SDL_Event event;
