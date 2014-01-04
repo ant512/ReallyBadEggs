@@ -56,7 +56,7 @@ void Hardware::init() {
 
 	// Set video mode
     _window = SDL_CreateWindow("Really Bad Eggs", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT * 2, 0);
-    _renderer = SDL_CreateRenderer(_window, -1, 0);
+    _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
     SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
     SDL_RenderClear(_renderer);
     SDL_RenderPresent(_renderer);
@@ -107,8 +107,6 @@ void Hardware::waitForVBlank() {
 	REG_BG3CNT = BG_BMP16_256x256 | BG_BMP_BASE(_topBackgroundBase);
 
 #else
-
-	SDL_Delay(10);
 
     SDL_Rect rect;
     rect.x = 0;
