@@ -108,7 +108,7 @@ void Hardware::waitForVBlank() {
 
 #else
 
-	SDL_Delay(15);
+	SDL_Delay(10);
 
     SDL_Rect rect;
     rect.x = 0;
