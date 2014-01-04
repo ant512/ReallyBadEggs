@@ -119,8 +119,6 @@ void Hardware::waitForVBlank() {
 
     rect.y = SCREEN_HEIGHT;
     SDL_UpdateTexture(_texture, &rect, _bottomBitmap, SCREEN_WIDTH * sizeof(u16));
-
-    SDL_RenderClear(_renderer);
     SDL_RenderCopy(_renderer, _texture, NULL, NULL);
     SDL_RenderPresent(_renderer);
 
